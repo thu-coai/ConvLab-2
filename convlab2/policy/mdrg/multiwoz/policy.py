@@ -15,7 +15,6 @@ import torch
 from convlab2.policy.policy import Policy
 from convlab2.policy.mdrg.multiwoz.utils import delexicalize, util
 from convlab2.policy.mdrg.multiwoz.utils.nlp import normalize
-from convlab2.policy.mdrg.multiwoz.evaluator import evaluateModel
 from convlab2.policy.mdrg.multiwoz.mdrg_model import Model
 from convlab2.policy.mdrg.multiwoz.create_delex_data import delexicaliseReferenceNumber, get_dial
 
