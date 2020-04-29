@@ -28,8 +28,8 @@ def auto_download():
 # loading databases
 domains = ['restaurant', 'hotel', 'attraction', 'train', 'hospital', 'taxi', 'police']
 dbs = {}
+auto_download()
 for domain in domains:
-    auto_download()
     dbs[domain] = json.load(open(os.path.join(
         os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 
         'db/{}_db.json'.format(domain))))
