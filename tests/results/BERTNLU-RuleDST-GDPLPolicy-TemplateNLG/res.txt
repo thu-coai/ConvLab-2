@@ -1,0 +1,8 @@
+complete number of dialogs/tot: 0.579
+success number of dialogs/tot: 0.495
+average precision: 0.6698519692353618
+average recall: 0.7639243270863209
+average f1: 0.6823902525712193
+average book rate: 0.3348931623931624
+average turn (succ): 11.478787878787879
+average turn (all): 24.328

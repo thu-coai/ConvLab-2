@@ -1,0 +1,16 @@
+data: 'data/save_data'
+log: 'data/log/'
+epoch: 15
+batch_size: 16
+learning_rate: 0.0005
+max_grad_norm: 2
+learning_rate_decay: 0.5
+bidirec: True
+emb_size: 1024
+encoder_hidden_size: 256
+decoder_hidden_size: 512
+num_layers: 2
+dropout: 0
+eval_interval: 1
+save_interval: 5
+log_interval: 20
