@@ -131,6 +131,8 @@ By running `convlab2/nlu/evaluate.py MultiWOZ $model all`:
 
 ### DST 
 
+By running `convlab2/dst/evaluate.py MultiWOZ $model`:
+
 |             |  Joint accuracy  | Slot accuracy | Joint F1  |
 | --------    |   -------------   | -------------  | --------|
 |  MDBT       |   0.06           |      0.89       | 0.43    |
