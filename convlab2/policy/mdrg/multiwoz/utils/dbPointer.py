@@ -2,12 +2,34 @@ import sqlite3
 import os
 
 import numpy as np
-
+import zipfile
+from convlab2.util.file_util import cached_path
 from convlab2.policy.mdrg.multiwoz.utils.nlp import normalize
+
+
+def auto_download():
+    model_path = os.path.join(os.path.dirname(__file__), os.pardir,  'model')
+    data_path = os.path.join(os.path.dirname(__file__), os.pardir, 'data')
+    db_path = os.path.join(os.path.dirname(__file__), os.pardir, 'db')
+    root_path = os.path.join(os.path.dirname(__file__), os.pardir)
+
+    urls = {model_path: 'https://convlab.blob.core.windows.net/convlab-2/mdrg_model.zip',
+            data_path: 'https://convlab.blob.core.windows.net/convlab-2/mdrg_data.zip',
+            db_path: 'https://convlab.blob.core.windows.net/convlab-2/mdrg_db.zip'}
+
+    for path in [model_path, data_path, db_path]:
+        if not os.path.exists(path):
+            file_url = urls[path]
+            print('Downloading from: ', file_url)
+            archive_file = cached_path(file_url)
+            print('Extracting...')
+            archive = zipfile.ZipFile(archive_file, 'r')
+            archive.extractall(root_path)
 
 # loading databases
 domains = ['restaurant', 'hotel', 'attraction', 'train', 'taxi', 'hospital']#, 'police']
 dbs = {}
+auto_download()
 for domain in domains:
     db = os.path.join(os.path.dirname(__file__), os.pardir, 'db/{}-dbase.db'.format(domain))
     conn = sqlite3.connect(db)
