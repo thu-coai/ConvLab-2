@@ -13,7 +13,7 @@ import numpy as np
 import torch
 
 from convlab2.policy.policy import Policy
-from convlab2.policy.mdrg.multiwoz.utils import delexicalize, util, dbPointer
+from convlab2.policy.mdrg.multiwoz.utils import delexicalize, util
 from convlab2.policy.mdrg.multiwoz.utils.nlp import normalize
 from convlab2.policy.mdrg.multiwoz.evaluator import evaluateModel
 from convlab2.policy.mdrg.multiwoz.mdrg_model import Model
@@ -127,6 +127,42 @@ def addBookingPointer(task, turn, pointer_vector):
 
     return pointer_vector
 
+
+def oneHotVector(num, domain, vector):
+    """Return number of available entities for particular domain."""
+    number_of_options = 6
+    if domain != 'train':
+        idx = domains.index(domain)
+        if num == 0:
+            vector[idx * 6: idx * 6 + 6] = np.array([1, 0, 0, 0, 0,0])
+        elif num == 1:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 1, 0, 0, 0, 0])
+        elif num == 2:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 0, 1, 0, 0, 0])
+        elif num == 3:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 0, 0, 1, 0, 0])
+        elif num == 4:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 0, 0, 0, 1, 0])
+        elif num >= 5:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 0, 0, 0, 0, 1])
+    else:
+        idx = domains.index(domain)
+        if num == 0:
+            vector[idx * 6: idx * 6 + 6] = np.array([1, 0, 0, 0, 0, 0])
+        elif num <= 2:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 1, 0, 0, 0, 0])
+        elif num <= 5:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 0, 1, 0, 0, 0])
+        elif num <= 10:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 0, 0, 1, 0, 0])
+        elif num <= 40:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 0, 0, 0, 1, 0])
+        elif num > 40:
+            vector[idx * 6: idx * 6 + 6] = np.array([0, 0, 0, 0, 0, 1])
+
+    return vector
+
+
 def addDBPointer(state, db):
     '''Create database pointer for all related domains.
     domains = ['restaurant', 'hotel', 'attraction', 'train']
@@ -153,7 +189,7 @@ def addDBPointer(state, db):
             # db_results[domain] = dict(zip(fields, entities[0]))
             db_results[domain] = entities[0]
         # pointer_vector = dbPointer.oneHotVector(len(entities), domain, pointer_vector)
-        pointer_vector = dbPointer.oneHotVector(len(entities), domain, pointer_vector)
+        pointer_vector = oneHotVector(len(entities), domain, pointer_vector)
 
     return pointer_vector, db_results, num_entities
 
