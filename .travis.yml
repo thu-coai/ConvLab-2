@@ -1,0 +1,39 @@
+language: python
+
+python:
+  - 3.6
+
+cache: pip
+
+install:
+  - pip install --upgrade pip
+  - pip install --progress-bar off -e .[develop]
+  - pip install sphinx
+
+script:
+  # - python setup.py test
+  - cd docs && rm source/convlab2.*.rst
+  - sphinx-apidoc -o ./source ../convlab2/
+  - cd source && python gen_rst.py --project convlab2 && cd ..
+  - make html
+  - cd source
+  - python modify_py_modindex.py -d ../build/html/
+  - cd ..
+  - mv ./build/html ./build/docs && rm -r ./build/doctrees && mv LICENSE.txt ./build && mv README.md ./build && cd ..
+  
+deploy:
+  - provider: pages
+    skip-cleanup: true
+    github-token: $DEPLOY_KEY
+    keep-history: true
+    repo: thu-coai/convlab2_docs
+    target-branch: master
+    local-dir: ./docs/build
+    on:
+      branch: master
+  - provider: script
+    skip-cleanup: true
+    script: coveralls
+    on:
+      all_branches: true
+      condition: true
