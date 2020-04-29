@@ -75,6 +75,8 @@ class Analyzer:
             datefmt="%m/%d/%Y %H:%M:%S",
             level=logging.INFO,
         )
+        if not os.path.exists('results'):
+            os.mkdir('results')
         output_dir = os.path.join('results', model_name)
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
