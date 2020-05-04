@@ -12,14 +12,14 @@ install:
 
 script:
   # - python setup.py test
-  - cd docs && rm source/convlab2.*.rst
-  - sphinx-apidoc -o ./source ../convlab2/
-  - cd source && python gen_rst.py --project convlab2 && cd ..
-  - make html
-  - cd source
-  - python modify_py_modindex.py -d ../build/html/
-  - cd ..
-  - mv ./build/html ./build/docs && rm -r ./build/doctrees && mv LICENSE.txt ./build && mv README.md ./build && cd ..
+#  - cd docs && rm source/convlab2.*.rst
+#  - sphinx-apidoc -o ./source ../convlab2/
+#  - cd source && python gen_rst.py --project convlab2 && cd ..
+#  - make html
+#  - cd source
+#  - python modify_py_modindex.py -d ../build/html/
+#  - cd ..
+#  - mv ./build/html ./build/docs && rm -r ./build/doctrees && mv LICENSE.txt ./build && mv README.md ./build && cd ..
   
 deploy:
   - provider: pages
