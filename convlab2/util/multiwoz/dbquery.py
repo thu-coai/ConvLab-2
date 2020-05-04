@@ -54,7 +54,7 @@ class Database(object):
                         elif ignore_open and key in ['destination', 'departure']:
                             continue
                         else:
-                            if val.strip() != record[key].strip():
+                            if val.strip().lower() != record[key].strip().lower():
                                 break
                     except:
                         continue
