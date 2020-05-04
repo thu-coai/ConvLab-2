@@ -11,6 +11,7 @@ install:
   - pip install sphinx
 
 script:
+  - cd ..
   # - python setup.py test
 #  - cd docs && rm source/convlab2.*.rst
 #  - sphinx-apidoc -o ./source ../convlab2/
