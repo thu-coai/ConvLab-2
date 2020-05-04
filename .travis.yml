@@ -22,19 +22,19 @@ script:
 #  - cd ..
 #  - mv ./build/html ./build/docs && rm -r ./build/doctrees && mv LICENSE.txt ./build && mv README.md ./build && cd ..
   
-deploy:
-  - provider: pages
-    skip-cleanup: true
-    github-token: $DEPLOY_KEY
-    keep-history: true
-    repo: thu-coai/convlab2_docs
-    target-branch: master
-    local-dir: ./docs/build
-    on:
-      branch: master
-  - provider: script
-    skip-cleanup: true
-    script: coveralls
-    on:
-      all_branches: true
-      condition: true
+#deploy:
+#  - provider: pages
+#    skip-cleanup: true
+#    github-token: $DEPLOY_KEY
+#    keep-history: true
+#    repo: thu-coai/convlab2_docs
+#    target-branch: master
+#    local-dir: ./docs/build
+#    on:
+#      branch: master
+#  - provider: script
+#    skip-cleanup: true
+#    script: coveralls
+#    on:
+#      all_branches: true
+#      condition: true
