@@ -11,7 +11,6 @@ install:
   - pip install sphinx
 
 script:
-  - pytest tests
   - cd docs
   - make html && mv ./build/html ./build/docs && rm -r ./build/doctrees
   - cd ..
