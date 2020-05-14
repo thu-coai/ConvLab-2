@@ -1,13 +1,6 @@
 convlab2.dst.trade package
 ==========================
 
-Subpackages
------------
-
-.. toctree::
-
-   convlab2.dst.trade.multiwoz
-
 Submodules
 ----------
 
