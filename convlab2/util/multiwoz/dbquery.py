@@ -29,6 +29,9 @@ class Database(object):
             return self.dbs['police']
         if domain == 'hospital':
             return self.dbs['hospital']
+        for ele in constraints:
+            if ele[0] == 'area' and ele[1] == 'center':
+                ele[1] = 'centre'
 
         found = []
         for i, record in enumerate(self.dbs[domain]):
