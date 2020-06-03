@@ -1,0 +1,7 @@
+{
+    "name": "Bob",
+    "gender": "female",
+    "age": 20,
+    "hobbies": ["ping pang ball", "badminton"],
+    "parents": "no"
+}
