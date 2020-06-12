@@ -35,7 +35,7 @@
         "config_file": "crosswoz_all.json",
         "model_file": "https://convlab.blob.core.windows.net/convlab-2/bert_crosswoz_all.zip"
       },
-      "model_name": "bert-mul",
+      "model_name": "bert-cro",
       "max_core": 1,
       "preload": false,
       "enable": true
@@ -77,7 +77,7 @@
       "class_path": "convlab2.dst.rule.crosswoz.dst.RuleDST",
       "data_set": "crosswoz",
       "ini_params": {},
-      "model_name": "rule-mul",
+      "model_name": "rule-cro",
       "max_core": 1,
       "preload": true,
       "enable": true
@@ -182,7 +182,7 @@
         "is_user": false,
         "mode": "auto_manual"
       },
-      "model_name": "tmp-auto_manual-mul",
+      "model_name": "tmp-auto_manual-cro",
       "max_core": 1,
       "preload": true,
       "enable": true
