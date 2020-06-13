@@ -29,7 +29,7 @@ annotation translation are categorized by slot:
 
 #### Machine translation for dialogue data
 
-- **mt_data.zip**: machine translated dialogue data using the translated ontology and translator().
+- **mt_data.zip**: machine translated dialogue data using the translated ontology and google translator.
 
 
 
