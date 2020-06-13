@@ -139,13 +139,13 @@ By running `convlab2/dst/evaluate.py MultiWOZ $model`:
 |  SUMBT      |    0.30         |       0.96       | 0.83    |
 |   TRADE     |    0.40         |       0.96       | 0.84    |
 
-Note: You may want to download pre-traiend bert models and translation-train pre-trained DST models provided by us [here](https://github.com/function2-llx/ConvLab-2/releases/tag/1.0). 
+Note: You may want to download pre-traiend BERT models and translation-train pre-trained DST models provided by us [here](https://github.com/function2-llx/ConvLab-2/releases/tag/1.0). 
 
 Without modifying any code, you could:
 
-- for a bert model, extract it to `./pre-trained-models`
+- for a BERT model, extract it to `./pre-trained-models`.
 
-- for a pre-trained DST model, e.g. say the DST model is SUMBT, data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en` and name it with `pytorch_model.bin`. 
+- for a pre-trained DST model, e.g. say the DST model is SUMBT, data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en/pre-trained` and name it with `pytorch_model.bin`. 
 
 ### Policy
 
