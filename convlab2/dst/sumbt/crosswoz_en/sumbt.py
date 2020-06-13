@@ -19,11 +19,9 @@ from pytorch_pretrained_bert.optimization import BertAdam
 
 from convlab2.dst.dst import DST
 from convlab2.dst.sumbt.crosswoz_en.convert_to_glue_format import convert_to_glue_format
-from convlab2.util.crosswoz_en.state import default_state
 from convlab2.dst.sumbt.BeliefTrackerSlotQueryMultiSlot import BeliefTracker
 from convlab2.dst.sumbt.crosswoz_en.sumbt_utils import *
 from convlab2.dst.sumbt.crosswoz_en.sumbt_config import *
-from convlab2.util.crosswoz_en.multiwoz_slot_trans import REF_SYS_DA, REF_USR_DA
 
 from convlab2.dst.sumbt.crosswoz_en.convert_to_glue_format import null
 
@@ -137,7 +135,7 @@ class SUMBTTracker(DST):
             get_label_embedding(processor.target_slot, args.max_label_length, self.tokenizer, self.device)
 
         self.args = args
-        self.state = default_state()
+        # self.state = default_state()
         self.param_restored = False
         if USE_CUDA and N_GPU == 1:
             self.sumbt_model.initialize_slot_value_lookup(self.label_token_ids, self.slot_token_ids)
@@ -159,7 +157,7 @@ class SUMBTTracker(DST):
         self.dev_examples = processor.get_dev_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
         self.test_examples = processor.get_test_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
 
-        self.download_model()
+        # self.download_model()
 
     def download_model(self):
         if not os.path.isdir(DOWNLOAD_DIRECTORY):
@@ -648,12 +646,6 @@ class SUMBTTracker(DST):
 
         loss = None
 
-        
-        plot(model.num_labels, [val / nb_eval_examples for val in eval_loss_slot])
-        plt.savefig('loss.png')
-        plot(model.num_labels, [val.item() for val in eval_acc_slot])
-        plt.savefig('acc.png')
-
         if not USE_CUDA or N_GPU == 1:
             result = {
                 # 'num': '\t'.join([str(x) for x in model.num_labels]),
@@ -683,130 +675,23 @@ class SUMBTTracker(DST):
 
         out_file_name = 'eval_all_accuracies'
         with open(os.path.join(os.path.join(SUMBT_PATH, args.output_dir), "%s.txt" % out_file_name), 'w') as f:
-            f.write(
-                'joint acc (7 domain) : slot acc (7 domain) : joint acc (5 domain): slot acc (5 domain): joint '
-                'restaurant : slot acc restaurant \n')
-            f.write('%.5f : %.5f : %.5f : %.5f : %.5f : %.5f \n' % (
+            s = '{:^22s}:{:^22s}:{:^22s}:{:^22s}:{:^22s}:{:^22s}'.format(
+                'joint acc (7 domain)', 
+                'slot acc (7 domain)', 
+                'joint acc (5 domain)', 
+                'slot acc (5 domain)', 
+                'joint restaurant', 
+                'slot acc restaurant')
+            f.write(s + '\n')
+            print(s)
+            s = '{:^22.5f}:{:^22.5f}:{:^22.5f}:{:^22.5f}:{:^22.5f}:{:^22.5f}'.format(
                 (accuracies['joint7'] / accuracies['num_turn']).item(),
                 (accuracies['slot7'] / accuracies['num_slot7']).item(),
                 (accuracies['joint5'] / accuracies['num_turn']).item(),
                 (accuracies['slot5'] / accuracies['num_slot5']).item(),
                 (accuracies['joint_rest'] / accuracies['num_turn']).item(),
                 (accuracies['slot_rest'] / accuracies['num_slot_rest']).item()
-            ))
-
-    def construct_query(self, context):
-        '''Construct query from context'''
-        ids = []
-        lens = []
-        context_len = len(context)
-        for i in range(0, context_len, 2):
-            # utt_user = ''
-            # utt_sys = ''
-            assert context[i][0] == 'sys'
-            sys_ut = context[i][1]
-            assert context[i+1][0] == 'user'
-            user_ut = context[i+1][1]
-
-            utt_user = user_ut
-            utt_sys = sys_ut
-
-            tokens_user = [x if x != '#' else '[SEP]' for x in self.tokenizer.tokenize(utt_user)]
-            tokens_sys = [x if x != '#' else '[SEP]' for x in self.tokenizer.tokenize(utt_sys)]
-
-            _truncate_seq_pair(tokens_user, tokens_sys, self.args.max_seq_length - 3)
-            tokens = ["[CLS]"] + tokens_user + ["[SEP]"] + tokens_sys + ["[SEP]"]
-            input_len = [len(tokens_user) + 2, len(tokens_sys) + 1]
-
-            input_ids = self.tokenizer.convert_tokens_to_ids(tokens)
-            padding = [0] * (self.args.max_seq_length - len(input_ids))
-            input_ids += padding
-            assert len(input_ids) == self.args.max_seq_length
-            ids.append(input_ids)
-            lens.append(input_len)
-
-        return (ids, lens)
-
-    def detect_requestable_slots(self, observation):
-        result = {}
-        observation = observation.lower()
-        _observation = ' {} '.format(observation)
-        for value in self.det_dic.keys():
-            _value = ' {} '.format(value.strip())
-            if _value in _observation:
-                key, domain = self.det_dic[value].split('-')
-                if domain not in result:
-                    result[domain] = {}
-                result[domain][key] = 0
-        return result
-
-
-def test_update():
-    sumbt_tracker = SUMBTTracker()
-    sumbt_tracker.init_session()
-
-    sumbt_tracker.state['history'] = [
-        ['sys', ''],
-        ['user', 'Could you book a 4 stars hotel for one night, 1 person?'],
-        ['sys', 'If you\'d like something cheap, I recommend the Allenbell']
-    ]
-    sumbt_tracker.state['history'].append(['user', 'Friday and Can you book it for me and get a reference number ?'])
-    from timeit import default_timer as timer
-    start = timer()
-    pprint(sumbt_tracker.update('Friday and Can you book it for me and get a reference number ?'))
-    end = timer()
-    print(end - start)
-    #
-    start = timer()
-    sumbt_tracker.state['history'].append(['sys', 'what is the area'])
-    sumbt_tracker.state['history'].append(['user', 'in the east area of cambridge'])
-    pprint(sumbt_tracker.update('in the east area of cambridge'))
-    end = timer()
-    print(end - start)
-
-    start = timer()
-    # sumbt_tracker.state['history'].append(['what is the area'])
-    pprint(sumbt_tracker.update('in the east area of cambridge'))
-    end = timer()
-    print(end - start)
-
-
-def test_update_bak():
-
-    sumbt_tracker = SUMBTTracker()
-    sumbt_tracker.init_session()
-
-    sumbt_tracker.state['history'] = [
-        ['null', 'Could you book a 4 stars hotel for one night, 1 person?'],
-        ['If you\'d like something cheap, I recommend the Allenbell']
-    ]
-    from timeit import default_timer as timer
-    start = timer()
-    pprint(sumbt_tracker.update('Friday and Can you book it for me and get a reference number ?'))
-    sumbt_tracker.state['history'][-1].append('Friday and Can you book it for me and get a reference number ?')
-    end = timer()
-    print(end - start)
-    #
-    start = timer()
-    sumbt_tracker.state['history'].append(['what is the area'])
-    pprint(sumbt_tracker.update('in the east area of cambridge'))
-    end = timer()
-    print(end - start)
-
-    start = timer()
-    # sumbt_tracker.state['history'].append(['what is the area'])
-    pprint(sumbt_tracker.update('in the east area of cambridge'))
-    end = timer()
-    print(end - start)
-
-
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('--train', action='store_true')
-parser.add_argument('--dev', action='store_true')
-parser.add_argument('--test', action='store_true')
-
-
-if __name__ == '__main__':
-    test_update()
+            )
+            f.write(s + '\n')
+            print(s)
 

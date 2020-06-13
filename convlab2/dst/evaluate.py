@@ -1,4 +1,3 @@
-# -*- coding: gbk -*-
 """
 Evaluate NLU models on specified dataset
 Usage: python evaluate.py [MultiWOZ|CrossWOZ] [TRADE|mdbt|sumbt|rule]
@@ -12,7 +11,7 @@ import copy
 import jieba
 
 multiwoz_slot_list = ['attraction-area', 'attraction-name', 'attraction-type', 'hotel-day', 'hotel-people', 'hotel-stay', 'hotel-area', 'hotel-internet', 'hotel-name', 'hotel-parking', 'hotel-pricerange', 'hotel-stars', 'hotel-type', 'restaurant-day', 'restaurant-people', 'restaurant-time', 'restaurant-area', 'restaurant-food', 'restaurant-name', 'restaurant-pricerange', 'taxi-arriveby', 'taxi-departure', 'taxi-destination', 'taxi-leaveat', 'train-people', 'train-arriveby', 'train-day', 'train-departure', 'train-destination', 'train-leaveat']
-crosswoz_slot_list = ["����-��Ʊ", "����-����", "�͹�-����", "�Ƶ�-�۸�", "�Ƶ�-����", "����-����", "����-��ַ", "����-����ʱ��", "�͹�-Ӫҵʱ��", "�͹�-����", "�Ƶ�-����", "�Ƶ�-�ܱ߾���", "�Ƶ�-�Ƶ���ʩ-���ѷ���", "�Ƶ�-�Ƶ�����", "�͹�-�˾�����", "�͹�-�Ƽ���", "�Ƶ�-�Ƶ���ʩ", "�Ƶ�-�绰", "����-�绰", "�͹�-�ܱ߲͹�", "�͹�-�绰", "�͹�-none", "�͹�-��ַ", "�Ƶ�-�Ƶ���ʩ-���̷�", "�Ƶ�-��ַ", "����-�ܱ߾���", "����-�ܱ߾Ƶ�", "����-������", "����-Ŀ�ĵ�", "����-������", "����-Ŀ�ĵ�", "����-�ܱ߲͹�", "�Ƶ�-�ܱ߲͹�", "����-����", "�͹�-�ܱ߾���", "�͹�-�ܱ߾Ƶ�", "����-�����ظ�������վ", "����-Ŀ�ĵظ�������վ", "����-none", "�Ƶ�-�Ƶ���ʩ-��������", "�͹�-Դ����", "�Ƶ�-�Ƶ���ʩ-��ʽ����", "�Ƶ�-�Ƶ���ʩ-��վ����", "�Ƶ�-�Ƶ���ʩ-���ʳ�;�绰", "�Ƶ�-�Ƶ���ʩ-�����", "�Ƶ�-�Ƶ���ʩ-������", "�Ƶ�-Դ����", "�Ƶ�-none", "�Ƶ�-�Ƶ���ʩ-��������", "�Ƶ�-�Ƶ���ʩ-����С������", "�Ƶ�-�Ƶ���ʩ-�Ƶ�����ṩwifi", "�Ƶ�-�Ƶ���ʩ-ů��", "�Ƶ�-�Ƶ���ʩ-spa", "����-����", "����-Դ����", "�Ƶ�-�Ƶ���ʩ-����Ĵ�", "�Ƶ�-�Ƶ���ʩ-��ʽ����", "�Ƶ�-�Ƶ���ʩ-�ư�", "�Ƶ�-�Ƶ���ʩ-��ͷ���", "�Ƶ�-�Ƶ���ʩ-������", "�Ƶ�-�Ƶ���ʩ-�м�����ʩ", "�Ƶ�-�Ƶ���ʩ-������ڵ绰", "�Ƶ�-�Ƶ���ʩ-�Ӵ����", "�Ƶ�-�Ƶ���ʩ-���ַ����ṩwifi", "�Ƶ�-�Ƶ���ʩ-ϴ�·���", "�Ƶ�-�Ƶ���ʩ-�⳵", "�Ƶ�-�Ƶ���ʩ-��������Ͳ��ַ����ṩwifi", "�Ƶ�-�Ƶ���ʩ-24Сʱ��ˮ", "�Ƶ�-�Ƶ���ʩ-��Ȫ", "�Ƶ�-�Ƶ���ʩ-ɣ��", "�Ƶ�-�Ƶ���ʩ-�շ�ͣ��λ", "�Ƶ�-�ܱ߾Ƶ�", "�Ƶ�-�Ƶ���ʩ-�ӻ�����", "�Ƶ�-�Ƶ���ʩ-���з����ṩwifi", "�Ƶ�-�Ƶ���ʩ-������", "�Ƶ�-�Ƶ���ʩ-��ѹ��ڳ�;�绰", "�Ƶ�-�Ƶ���ʩ-������Ӿ��", "�Ƶ�-�Ƶ���ʩ-��ͷ������", "�Ƶ�-�Ƶ���ʩ-���������ṩwifi", "�Ƶ�-�Ƶ���ʩ-������Ӿ��"]
+crosswoz_slot_list = ["景点-门票", "景点-评分", "餐馆-名称", "酒店-价格", "酒店-评分", "景点-名称", "景点-地址", "景点-游玩时间", "餐馆-营业时间", "餐馆-评分", "酒店-名称", "酒店-周边景点", "酒店-酒店设施-叫醒服务", "酒店-酒店类型", "餐馆-人均消费", "餐馆-推荐菜", "酒店-酒店设施", "酒店-电话", "景点-电话", "餐馆-周边餐馆", "餐馆-电话", "餐馆-none", "餐馆-地址", "酒店-酒店设施-无烟房", "酒店-地址", "景点-周边景点", "景点-周边酒店", "出租-出发地", "出租-目的地", "地铁-出发地", "地铁-目的地", "景点-周边餐馆", "酒店-周边餐馆", "出租-车型", "餐馆-周边景点", "餐馆-周边酒店", "地铁-出发地附近地铁站", "地铁-目的地附近地铁站", "景点-none", "酒店-酒店设施-商务中心", "餐馆-源领域", "酒店-酒店设施-中式餐厅", "酒店-酒店设施-接站服务", "酒店-酒店设施-国际长途电话", "酒店-酒店设施-吹风机", "酒店-酒店设施-会议室", "酒店-源领域", "酒店-none", "酒店-酒店设施-宽带上网", "酒店-酒店设施-看护小孩服务", "酒店-酒店设施-酒店各处提供wifi", "酒店-酒店设施-暖气", "酒店-酒店设施-spa", "出租-车牌", "景点-源领域", "酒店-酒店设施-行李寄存", "酒店-酒店设施-西式餐厅", "酒店-酒店设施-酒吧", "酒店-酒店设施-早餐服务", "酒店-酒店设施-健身房", "酒店-酒店设施-残疾人设施", "酒店-酒店设施-免费市内电话", "酒店-酒店设施-接待外宾", "酒店-酒店设施-部分房间提供wifi", "酒店-酒店设施-洗衣服务", "酒店-酒店设施-租车", "酒店-酒店设施-公共区域和部分房间提供wifi", "酒店-酒店设施-24小时热水", "酒店-酒店设施-温泉", "酒店-酒店设施-桑拿", "酒店-酒店设施-收费停车位", "酒店-周边酒店", "酒店-酒店设施-接机服务", "酒店-酒店设施-所有房间提供wifi", "酒店-酒店设施-棋牌室", "酒店-酒店设施-免费国内长途电话", "酒店-酒店设施-室内游泳池", "酒店-酒店设施-早餐服务免费", "酒店-酒店设施-公共区域提供wifi", "酒店-酒店设施-室外游泳池"]
 
 
 def format_history(context):
@@ -127,7 +126,7 @@ if __name__ == '__main__':
     if len(sys.argv) != 3:
         print("usage:")
         print("\t python evaluate.py dataset model")
-        print("\t dataset=MultiWOZ, CrossWOZ")
+        print("\t dataset=MultiWOZ, MultiWOZ-zh, CrossWOZ, CrossWOZ-en")
         print("\t model=TRADE, mdbt, sumbt")
         sys.exit()
 
@@ -192,7 +191,13 @@ if __name__ == '__main__':
         evaluation_metrics = {"Joint Acc": joint_acc_score_ptr, "Turn Acc": turn_acc_score_ptr,
                               "Joint F1": F1_score_ptr}
         print(evaluation_metrics)
-
+    if dataset_name == 'MultiWOZ-zh':
+        if model_name == 'sumbt':
+            from convlab2.dst.sumbt.multiwoz_zh.sumbt import SUMBTTracker
+            model = SUMBTTracker()
+        else:
+            raise Exception("Available models: sumbt")
+        model.test()
     elif dataset_name == 'CrossWOZ':
         if model_name == 'TRADE':
             from convlab2.dst.trade.crosswoz.trade import CrossWOZTRADE
@@ -260,3 +265,10 @@ if __name__ == '__main__':
         evaluation_metrics = {"Joint Acc": joint_acc_score_ptr, "Turn Acc": turn_acc_score_ptr,
                               "Joint F1": F1_score_ptr}
         print(evaluation_metrics)
+    elif dataset_name == 'CrossWOZ-en':
+        if model_name == 'sumbt':
+            from convlab2.dst.sumbt.crosswoz_en.sumbt import SUMBTTracker
+            model = SUMBTTracker()
+        else:
+            raise Exception("Available models: sumbt")
+        model.test()

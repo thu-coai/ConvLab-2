@@ -17,7 +17,7 @@ from pytorch_pretrained_bert.optimization import BertAdam
 
 from convlab2.dst.dst import DST
 from convlab2.dst.sumbt.multiwoz_zh.convert_to_glue_format import convert_to_glue_format
-from convlab2.util.multiwoz.state import default_state
+
 from convlab2.dst.sumbt.BeliefTrackerSlotQueryMultiSlot import BeliefTracker
 from convlab2.dst.sumbt.multiwoz_zh.sumbt_utils import *
 from convlab2.dst.sumbt.multiwoz_zh.sumbt_config import *
@@ -25,11 +25,10 @@ from convlab2.dst.sumbt.multiwoz_zh.sumbt_config import *
 USE_CUDA = torch.cuda.is_available()
 N_GPU = torch.cuda.device_count() if USE_CUDA else 1
 DEVICE = "cuda" if USE_CUDA else "cpu"
-ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+ROOT_PATH = convlab2.get_root_path()
 SUMBT_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(ROOT_PATH, 'data/multiwoz_zh')
-DOWNLOAD_DIRECTORY = os.path.join(SUMBT_PATH, 'downloaded_model')
-multiwoz_slot_list = ['attraction-area', 'attraction-name', 'attraction-type', 'hotel-day', 'hotel-people', 'hotel-stay', 'hotel-area', 'hotel-internet', 'hotel-name', 'hotel-parking', 'hotel-pricerange', 'hotel-stars', 'hotel-type', 'restaurant-day', 'restaurant-people', 'restaurant-time', 'restaurant-area', 'restaurant-food', 'restaurant-name', 'restaurant-pricerange', 'taxi-arriveby', 'taxi-departure', 'taxi-destination', 'taxi-leaveat', 'train-people', 'train-arriveby', 'train-day', 'train-departure', 'train-destination', 'train-leaveat']
+DOWNLOAD_DIRECTORY = os.path.join(SUMBT_PATH, 'pre-trianed')
 
 
 def get_label_embedding(labels, max_seq_length, tokenizer, device):
@@ -74,8 +73,7 @@ class SUMBTTracker(DST):
     """
 
 
-    def __init__(self, data_dir=DATA_PATH, model_file='https://convlab.blob.core.windows.net/convlab-2/sumbt.tar.gz', eval_slots=multiwoz_slot_list):
-
+    def __init__(self, data_dir=DATA_PATH, model_file='https://github.com/function2-llx/ConvLab-2/releases/download/1.0/multiwoz_zh-pytorch_model.bin.zip'):
         DST.__init__(self)
 
         # if not os.path.exists(data_dir):
@@ -125,19 +123,11 @@ class SUMBTTracker(DST):
             get_label_embedding(processor.target_slot, args.max_label_length, self.tokenizer, self.device)
 
         self.args = args
-        self.state = default_state()
         self.param_restored = False
         if USE_CUDA and N_GPU == 1:
             self.sumbt_model.initialize_slot_value_lookup(self.label_token_ids, self.slot_token_ids)
         elif USE_CUDA and N_GPU > 1:
             self.sumbt_model.module.initialize_slot_value_lookup(self.label_token_ids, self.slot_token_ids)
-
-        self.det_dic = {}
-        for domain, dic in REF_USR_DA.items():
-            for key, value in dic.items():
-                assert '-' not in key
-                self.det_dic[key.lower()] = key + '-' + domain
-                self.det_dic[value.lower()] = key + '-' + domain
 
         self.cached_res = {}
         convert_to_glue_format(DATA_PATH, SUMBT_PATH)
@@ -146,23 +136,6 @@ class SUMBTTracker(DST):
         self.train_examples = processor.get_train_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
         self.dev_examples = processor.get_dev_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
         self.test_examples = processor.get_test_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
-        # self.download_model()
-
-    def download_model(self):
-        if not os.path.isdir(DOWNLOAD_DIRECTORY):
-            os.mkdir(DOWNLOAD_DIRECTORY)
-        # model_file = os.path.join(DOWNLOAD_DIRECTORY, 'pytorch_model.zip')
-
-        # if not os.path.isfile(model_file):
-        model_file = 'https://convlab.blob.core.windows.net/convlab-2/sumbt.tar.gz'
-
-        import tarfile
-        if not os.path.isfile(os.path.join(DOWNLOAD_DIRECTORY, 'pytorch_model.bin')):
-            archive_file = cached_path(model_file)
-            # archive = zipfile.ZipFile(archive_file, 'r')
-            t = tarfile.open(archive_file)
-            t.extractall(path=DOWNLOAD_DIRECTORY)
-            # archive.extractall(DOWNLOAD_DIRECTORY)
 
     def load_weights(self, model_path=None):
         if model_path is None:
@@ -574,118 +547,3 @@ class SUMBTTracker(DST):
             )
             f.write(s + '\n')
             print(s)
-
-    def construct_query(self, context):
-        '''Construct query from context'''
-        ids = []
-        lens = []
-        context_len = len(context)
-        if context[0][0] != 'sys':
-            context = [['sys', '']] + context
-        for i in range(0, context_len, 2):
-            # utt_user = ''
-            # utt_sys = ''
-            # for evaluation
-            utt_sys = context[i][1]
-            utt_user = context[i + 1][1]
-
-            tokens_user = [x if x != '#' else '[SEP]' for x in self.tokenizer.tokenize(utt_user)]
-            tokens_sys = [x if x != '#' else '[SEP]' for x in self.tokenizer.tokenize(utt_sys)]
-
-            _truncate_seq_pair(tokens_user, tokens_sys, self.args.max_seq_length - 3)
-            tokens = ["[CLS]"] + tokens_user + ["[SEP]"] + tokens_sys + ["[SEP]"]
-            input_len = [len(tokens_user) + 2, len(tokens_sys) + 1]
-
-            input_ids = self.tokenizer.convert_tokens_to_ids(tokens)
-            padding = [0] * (self.args.max_seq_length - len(input_ids))
-            input_ids += padding
-            assert len(input_ids) == self.args.max_seq_length
-            ids.append(input_ids)
-            lens.append(input_len)
-
-        return (ids, lens)
-
-    def detect_requestable_slots(self, observation):
-        result = {}
-        observation = observation.lower()
-        _observation = ' {} '.format(observation)
-        for value in self.det_dic.keys():
-            _value = ' {} '.format(value.strip())
-            if _value in _observation:
-                key, domain = self.det_dic[value].split('-')
-                if domain not in result:
-                    result[domain] = {}
-                result[domain][key] = 0
-        return result
-
-
-def test_update():
-    sumbt_tracker = SUMBTTracker()
-    sumbt_tracker.init_session()
-
-    sumbt_tracker.state['history'] = [
-        ['sys', ''],
-        ['user', 'Could you book a 4 stars hotel for one night, 1 person?'],
-        ['sys', 'If you\'d like something cheap, I recommend the Allenbell']
-    ]
-    sumbt_tracker.state['history'].append(['user', 'Friday and Can you book it for me and get a reference number ?'])
-    from timeit import default_timer as timer
-    start = timer()
-    pprint(sumbt_tracker.update('Friday and Can you book it for me and get a reference number ?'))
-    end = timer()
-    print(end - start)
-    #
-    start = timer()
-    sumbt_tracker.state['history'].append(['sys', 'what is the area'])
-    sumbt_tracker.state['history'].append(['user', "it doesn't matter. I don't care"])
-    pprint(sumbt_tracker.update('in the east area of cambridge'))
-    end = timer()
-    print(end - start)
-
-    start = timer()
-    # sumbt_tracker.state['history'].append(['what is the area'])
-    pprint(sumbt_tracker.update('in the east area of cambridge'))
-    end = timer()
-    print(end - start)
-
-
-def test_update_bak():
-
-    sumbt_tracker = SUMBTTracker()
-    sumbt_tracker.init_session()
-
-    sumbt_tracker.state['history'] = [
-        ['null', 'Could you book a 4 stars hotel for one night, 1 person?'],
-        ['If you\'d like something cheap, I recommend the Allenbell']
-    ]
-    from timeit import default_timer as timer
-    start = timer()
-    pprint(sumbt_tracker.update('Friday and Can you book it for me and get a reference number ?'))
-    sumbt_tracker.state['history'][-1].append('Friday and Can you book it for me and get a reference number ?')
-    end = timer()
-    print(end - start)
-    #
-    start = timer()
-    sumbt_tracker.state['history'].append(['what is the area'])
-    pprint(sumbt_tracker.update('i do not care'))
-    # pprint(sumbt_tracker.update('in the east area of cambridge'))
-    end = timer()
-    print(end - start)
-
-    start = timer()
-    # sumbt_tracker.state['history'].append(['what is the area'])
-    pprint(sumbt_tracker.update('in the east area of cambridge'))
-    end = timer()
-    print(end - start)
-
-
-import argparse
-parser = argparse.ArgumentParser()
-parser.add_argument('--train', action='store_true')
-parser.add_argument('--dev', action='store_true')
-parser.add_argument('--test', action='store_true')
-
-
-if __name__ == '__main__':
-    test_update()
-
