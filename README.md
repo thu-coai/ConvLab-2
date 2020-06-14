@@ -139,14 +139,6 @@ By running `convlab2/dst/evaluate.py MultiWOZ $model`:
 |  SUMBT      |    0.30         |       0.96       | 0.83    |
 |   TRADE     |    0.40         |       0.96       | 0.84    |
 
-Note: You may want to download pre-traiend BERT models and translation-train pre-trained DST models provided by us [here](https://github.com/function2-llx/ConvLab-2/releases/tag/1.0). 
-
-Without modifying any code, you could:
-
-- for a BERT model, extract it to `./pre-trained-models`.
-
-- for a pre-trained DST model, e.g. say the DST model is SUMBT, data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en/pre-trained` and name it with `pytorch_model.bin`. 
-
 ### Policy
 
 By running `convlab2/policy/evalutate.py --model_name $model`
@@ -166,6 +158,48 @@ By running `convlab2/nlg/evaluate.py MultiWOZ $model sys`
 | -------- | ------------- |
 | Template | 0.3309        |
 | SCLSTM   | 0.4884        |
+
+## translation train with SUMBT
+
+### train
+
+```python3
+import os
+from sys import argv
+
+if __name__ == "__main__":
+    if len(argv) != 2:
+        print('usage: python3 translation.py [dataset]')
+        exit(1)
+    assert argv[1] in ['multiwoz', 'crosswoz']
+
+    from convlab2.dst.sumbt.multiwoz_zh.sumbt import SUMBT_PATH
+    if argv[1] == 'multiwoz':
+        from convlab2.dst.sumbt.multiwoz_zh.sumbt import SUMBTTracker as SUMBT
+    elif argv[1] == 'crosswoz':
+        from convlab2.dst.sumbt.crosswoz_en.sumbt import SUMBTTracker as SUMBT
+
+    sumbt = SUMBT()
+    sumbt.train(True)
+```
+
+### evaluate
+
+Execute `evaluate.py` (under `convlab2/dst/`) with following command:
+
+```bash
+python3 evaluate.py [CorssWOZ-en|MultiWOZ-zh] [test|human]
+```
+
+`human` option will make the model evaluate on the validation set translated by human. 
+
+Note: You may want to download pre-traiend BERT models and translation-train pre-trained DST models provided by us [here](https://github.com/function2-llx/ConvLab-2/releases/tag/1.0). 
+
+Without modifying any code, you could:
+
+- for a BERT model, extract it to `./pre-trained-models`.
+
+- for a pre-trained DST model, e.g. say the DST model is SUMBT, data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en/pre-trained` and name it with `pytorch_model.bin`. 
 
 ## Issues
 
