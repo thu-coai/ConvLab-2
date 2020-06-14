@@ -126,7 +126,6 @@ class PG(Policy):
 
                 # backprop
                 surrogate.backward()
-                
                 for p in self.policy.parameters():
                     p.grad[p.grad != p.grad] = 0.0
                 # gradient clipping, for stability
