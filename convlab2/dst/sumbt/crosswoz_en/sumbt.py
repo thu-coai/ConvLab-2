@@ -164,7 +164,7 @@ class SUMBTTracker(DST):
 
     def load_weights(self, model_path=None):
         if model_path is None:
-            model_ckpt = os.path.join(os.path.join(SUMBT_PATH, args.output_dir), 'pytorch_model.bin')
+            model_ckpt = os.path.join(SUMBT_PATH, 'pre-trained/pytorch_model.bin')
         else:
             model_ckpt = model_path
         model = self.sumbt_model

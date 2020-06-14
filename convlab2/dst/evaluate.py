@@ -130,16 +130,19 @@ if __name__ == '__main__':
     numpy.random.seed(seed)
     torch.manual_seed(seed)
 
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print("usage:")
         print("\t python evaluate.py dataset model")
         print("\t dataset=MultiWOZ, MultiWOZ-zh, CrossWOZ, CrossWOZ-en")
         print("\t model=TRADE, mdbt, sumbt")
+        print("\t val=[test|human]")
         sys.exit()
 
     ## init phase
     dataset_name = sys.argv[1]
     model_name = sys.argv[2]
+    data_key = sys.argv[3]
+
     if dataset_name.startswith('MultiWOZ'):
         if dataset_name.endswith('zh'):
             if model_name == 'sumbt':
@@ -164,7 +167,7 @@ if __name__ == '__main__':
         from convlab2.util.dataloader.module_dataloader import AgentDSTDataloader
         from convlab2.util.dataloader.dataset_dataloader import MultiWOZDataloader
         dataloader = AgentDSTDataloader(dataset_dataloader=MultiWOZDataloader(dataset_name.endswith('zh')))
-        data = dataloader.load_data(data_key='test')['test']
+        data = dataloader.load_data(data_key=data_key)[data_key]
         context, golden_truth = data['context'], data['belief_state']
         all_predictions = {}
         test_set = []
@@ -229,7 +232,7 @@ if __name__ == '__main__':
         from convlab2.util.dataloader.dataset_dataloader import CrossWOZDataloader
 
         dataloader = CrossWOZAgentDSTDataloader(dataset_dataloader=CrossWOZDataloader(en))
-        data = dataloader.load_data(data_key='test')['test']
+        data = dataloader.load_data(data_key=data_key)[data_key]
         context, golden_truth = data['context'], data['sys_state_init']
         all_predictions = {}
         test_set = []
