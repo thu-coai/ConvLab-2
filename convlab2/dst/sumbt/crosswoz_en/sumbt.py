@@ -18,7 +18,9 @@ from pytorch_pretrained_bert.tokenization import BertTokenizer
 from pytorch_pretrained_bert.optimization import BertAdam
 
 from convlab2.dst.dst import DST
-from convlab2.dst.sumbt.crosswoz_en.convert_to_glue_format import convert_to_glue_format
+from convlab2.dst.sumbt.crosswoz_en.convert_to_glue_format import convert_to_glue_format, trans_value
+from convlab2.util.crosswoz_en.state import default_state
+
 from convlab2.dst.sumbt.BeliefTrackerSlotQueryMultiSlot import BeliefTracker
 from convlab2.dst.sumbt.crosswoz_en.sumbt_utils import *
 from convlab2.dst.sumbt.crosswoz_en.sumbt_config import *
@@ -32,6 +34,7 @@ ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.p
 SUMBT_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(ROOT_PATH, 'data/crosswoz_en')
 DOWNLOAD_DIRECTORY = os.path.join(SUMBT_PATH, "downloaded_model/")
+crosswoz_en_slot_list = ['Attraction-duration', 'Attraction-fee', 'Attraction-name', 'Attraction-nearby attract.', 'Attraction-nearby hotels', 'Attraction-nearby rest.', 'Attraction-rating', 'Hotel-Hotel Facilities - 24-hour Hot Water', 'Hotel-Hotel Facilities - Bar', 'Hotel-Hotel Facilities - Breakfast Service', 'Hotel-Hotel Facilities - Broadband Internet', 'Hotel-Hotel Facilities - Business Center', 'Hotel-Hotel Facilities - Car Rental', 'Hotel-Hotel Facilities - Chess-Poker Room', 'Hotel-Hotel Facilities - Childcare Services', 'Hotel-Hotel Facilities - Chinese Restaurant', 'Hotel-Hotel Facilities - Disabled Facilities', 'Hotel-Hotel Facilities - Foreign Guests Reception', 'Hotel-Hotel Facilities - Free Breakfast Service', 'Hotel-Hotel Facilities - Free Domestic Long Distance Call', 'Hotel-Hotel Facilities - Free Local Calls', 'Hotel-Hotel Facilities - Gym', 'Hotel-Hotel Facilities - Hair Dryer', 'Hotel-Hotel Facilities - Heating', 'Hotel-Hotel Facilities - Hot Spring', 'Hotel-Hotel Facilities - Indoor Swimming Pool', 'Hotel-Hotel Facilities - International Call', 'Hotel-Hotel Facilities - Laundry Service', 'Hotel-Hotel Facilities - Luggage Storage', 'Hotel-Hotel Facilities - Meeting Room', 'Hotel-Hotel Facilities - Non-smoking Room', 'Hotel-Hotel Facilities - Outdoor Swimming Pool', 'Hotel-Hotel Facilities - Pay Parking', 'Hotel-Hotel Facilities - Pick-up Service', 'Hotel-Hotel Facilities - SPA', 'Hotel-Hotel Facilities - Sauna', 'Hotel-Hotel Facilities - Wake Up Service', 'Hotel-Hotel Facilities - Western Restaurant', 'Hotel-Hotel Facilities - WiFi in All Rooms', 'Hotel-Hotel Facilities - WiFi in Public Areas', 'Hotel-Hotel Facilities - WiFi in Public Areas and Some Rooms', 'Hotel-Hotel Facilities - WiFi in Some Rooms', 'Hotel-Hotel Facilities - WiFi throughout the Hotel', 'Hotel-name', 'Hotel-nearby attract.', 'Hotel-nearby hotels', 'Hotel-nearby rest.', 'Hotel-price', 'Hotel-rating', 'Hotel-type', 'Metro-from', 'Metro-to', 'Restaurant-cost', 'Restaurant-dishes', 'Restaurant-name', 'Restaurant-nearby attract.', 'Restaurant-nearby hotels', 'Restaurant-nearby rest.', 'Restaurant-rating', 'Taxi-from', 'Taxi-to']
 
 def plot(x, y):
     a, b = [], []
@@ -81,8 +84,17 @@ class SUMBTTracker(DST):
     Transferable multi-domain dialogue state tracker, adopted from https://github.com/SKTBrain/SUMBT
     """
 
+    @staticmethod
+    def init_data():
+        if not os.path.exists(os.path.join(DATA_PATH, 'train.json.zip')):
+            with zipfile.ZipFile(os.path.join(DATA_PATH, 'mt.zip')) as f:
+                f.extractall(DATA_PATH)
 
-    def __init__(self, data_dir=DATA_PATH, model_file='https://convlab.blob.core.windows.net/convlab-2/sumbt.tar.gz'):
+        for split in ['train', 'test', 'val']:
+            with zipfile.ZipFile(os.path.join(DATA_PATH, f'{split}.json.zip'), 'w') as f:
+                f.write(os.path.join(DATA_PATH, f'{split}.json'), f'{split}.json')
+
+    def __init__(self, data_dir=DATA_PATH):
 
         DST.__init__(self)
 
@@ -142,13 +154,6 @@ class SUMBTTracker(DST):
         elif USE_CUDA and N_GPU > 1:
             self.sumbt_model.module.initialize_slot_value_lookup(self.label_token_ids, self.slot_token_ids)
 
-        # self.det_dic = {}
-        # for domain, dic in REF_USR_DA.items():
-        #     for key, value in dic.items():
-        #         assert '-' not in key
-        #         self.det_dic[key.lower()] = key + '-' + domain
-        #         self.det_dic[value.lower()] = key + '-' + domain
-
         self.cached_res = {}
         convert_to_glue_format(DATA_PATH, SUMBT_PATH)
         if not os.path.isdir(os.path.join(SUMBT_PATH, args.output_dir)):
@@ -156,24 +161,6 @@ class SUMBTTracker(DST):
         self.train_examples = processor.get_train_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
         self.dev_examples = processor.get_dev_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
         self.test_examples = processor.get_test_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
-
-        # self.download_model()
-
-    def download_model(self):
-        if not os.path.isdir(DOWNLOAD_DIRECTORY):
-            os.mkdir(DOWNLOAD_DIRECTORY)
-        # model_file = os.path.join(DOWNLOAD_DIRECTORY, 'pytorch_model.zip')
-
-        # if not os.path.isfile(model_file):
-        model_file = 'https://convlab.blob.core.windows.net/convlab-2/sumbt.tar.gz'
-
-        import tarfile
-        if not os.path.isfile(os.path.join(DOWNLOAD_DIRECTORY, 'pytorch_model.bin')):
-            archive_file = cached_path(model_file)
-            # archive = zipfile.ZipFile(archive_file, 'r')
-            t = tarfile.open(archive_file)
-            t.extractall(path=DOWNLOAD_DIRECTORY)
-            # archive.extractall(DOWNLOAD_DIRECTORY)
 
     def load_weights(self, model_path=None):
         if model_path is None:
@@ -212,71 +199,36 @@ class SUMBTTracker(DST):
                 raise ValueError('no availabel weights found.')
             self.param_restored = True
 
-    def update(self, user_act=None):
-        """Update the dialogue state with the generated tokens from TRADE"""
-        if not isinstance(user_act, str):
-            raise Exception(
-                'Expected user_act is str but found {}'.format(type(user_act))
-            )
-        prev_state = self.state
+    def construct_query(self, context):
+        '''Construct query from context'''
+        ids = []
+        lens = []
+        context_len = len(context)
+        if context[0][0] != 'sys':
+            context = [['sys', '']] + context
+        for i in range(0, context_len, 2):
+            # utt_user = ''
+            # utt_sys = ''
+            # for evaluation
+            utt_sys = context[i][1]
+            utt_user = context[i + 1][1]
 
-        actual_history = copy.deepcopy(prev_state['history'])
+            tokens_user = [x if x != '#' else '[SEP]' for x in self.tokenizer.tokenize(utt_user)]
+            tokens_sys = [x if x != '#' else '[SEP]' for x in self.tokenizer.tokenize(utt_sys)]
 
-        query = self.construct_query(actual_history)
-        pred_states = self.predict(query)
+            _truncate_seq_pair(tokens_user, tokens_sys, self.args.max_seq_length - 3)
+            tokens = ["[CLS]"] + tokens_user + ["[SEP]"] + tokens_sys + ["[SEP]"]
+            input_len = [len(tokens_user) + 2, len(tokens_sys) + 1]
 
-        new_belief_state = copy.deepcopy(prev_state['belief_state'])
-        for state in pred_states:
-            domain, slot, value = state.split('-', 2)
-            value = '' if value == null else value
-            if slot not in ['name', 'book']:
-                if domain not in new_belief_state:
-                    if domain == 'bus':
-                        continue
-                    else:
-                        raise Exception(
-                            'Error: domain <{}> not in belief state'.format(domain))
-            slot = REF_SYS_DA[domain.capitalize()].get(slot, slot)
-            assert 'semi' in new_belief_state[domain]
-            assert 'book' in new_belief_state[domain]
-            if 'book' in slot:
-                assert slot.startswith('book ')
-                slot = slot.strip().split()[1]
-            if slot == 'arrive by':
-                slot = 'arriveBy'
-            elif slot == 'leave at':
-                slot = 'leaveAt'
-            elif slot == 'price range':
-                slot = 'pricerange'
-            domain_dic = new_belief_state[domain]
-            if slot in domain_dic['semi']:
-                new_belief_state[domain]['semi'][slot] = value
-                # normalize_value(self.value_dict, domain, slot, value)
-            elif slot in domain_dic['book']:
-                new_belief_state[domain]['book'][slot] = value
-            elif slot.lower() in domain_dic['book']:
-                new_belief_state[domain]['book'][slot.lower()] = value
-            else:
-                with open('trade_tracker_unknown_slot.log', 'a+') as f:
-                    f.write(
-                        'unknown slot name <{}> with value <{}> of domain <{}>\nitem: {}\n\n'.format(slot, value, domain, state)
-                    )
-        new_request_state = copy.deepcopy(prev_state['request_state'])
-        # update request_state
-        user_request_slot = self.detect_requestable_slots(user_act)
-        for domain in user_request_slot:
-            for key in user_request_slot[domain]:
-                if domain not in new_request_state:
-                    new_request_state[domain] = {}
-                if key not in new_request_state[domain]:
-                    new_request_state[domain][key] = user_request_slot[domain][key]
+            input_ids = self.tokenizer.convert_tokens_to_ids(tokens)
+            padding = [0] * (self.args.max_seq_length - len(input_ids))
+            input_ids += padding
+            assert len(input_ids) == self.args.max_seq_length
+            ids.append(input_ids)
+            lens.append(input_len)
 
-        new_state = copy.deepcopy(dict(prev_state))
-        new_state['belief_state'] = new_belief_state
-        new_state['request_state'] = new_request_state
-        self.state = new_state
-        # print((pred_states, query))
-        return self.state
+        return (ids, lens)
+
 
     def update(self, user_act=None):
         if not isinstance(user_act, str):
@@ -286,6 +238,7 @@ class SUMBTTracker(DST):
         prev_state = self.state
 
         actual_history = copy.deepcopy(prev_state['history'])
+
         # if actual_history[-1][0] == 'user':
         #     actual_history[-1][1] += user_act
         # else:
@@ -294,58 +247,28 @@ class SUMBTTracker(DST):
         pred_states = self.predict(query)
 
         new_belief_state = copy.deepcopy(prev_state['belief_state'])
-        for state in pred_states:
-            domain, slot, value = state.split('-', 2)
-            value = '' if value == 'none' else value
-            value = 'dontcare' if value == 'do not care' else value
-            value = 'guesthouse' if value == 'guest house' else value
-            if slot not in ['name', 'book']:
-                if domain not in new_belief_state:
-                    if domain == 'bus':
-                        continue
-                    else:
-                        raise Exception(
-                            'Error: domain <{}> not in belief state'.format(domain))
-            slot = REF_SYS_DA[domain.capitalize()].get(slot, slot)
-            assert 'semi' in new_belief_state[domain]
-            assert 'book' in new_belief_state[domain]
-            if 'book' in slot:
-                assert slot.startswith('book ')
-                slot = slot.strip().split()[1]
-            if slot == 'arrive by':
-                slot = 'arriveBy'
-            elif slot == 'leave at':
-                slot = 'leaveAt'
-            elif slot == 'price range':
-                slot = 'pricerange'
+        for domain_slot, value in pred_states:
+            domain, slot = domain_slot.split('-', 1)
+            value = trans_value(value)
+
+            # print(domain, slot, value)
+
+            if domain not in new_belief_state:
+                raise Exception(
+                    'Error: domain <{}> not in belief state'.format(domain))
+
             domain_dic = new_belief_state[domain]
-            if slot in domain_dic['semi']:
-                new_belief_state[domain]['semi'][slot] = value
-                # normalize_value(self.value_dict, domain, slot, value)
-            elif slot in domain_dic['book']:
-                new_belief_state[domain]['book'][slot] = value
-            elif slot.lower() in domain_dic['book']:
-                new_belief_state[domain]['book'][slot.lower()] = value
+            if slot in domain_dic:
+                domain_dic[slot] = value
             else:
-                with open('trade_tracker_unknown_slot.log', 'a+') as f:
+                with open('sumbt_tracker_unknown_slot.log', 'a+') as f:
                     f.write(
                         'unknown slot name <{}> with value <{}> of domain <{}>\nitem: {}\n\n'.format(slot, value, domain, state)
                     )
-        new_request_state = copy.deepcopy(prev_state['request_state'])
-        # update request_state
-        user_request_slot = self.detect_requestable_slots(user_act)
-        for domain in user_request_slot:
-            for key in user_request_slot[domain]:
-                if domain not in new_request_state:
-                    new_request_state[domain] = {}
-                if key not in new_request_state[domain]:
-                    new_request_state[domain][key] = user_request_slot[domain][key]
 
         new_state = copy.deepcopy(dict(prev_state))
         new_state['belief_state'] = new_belief_state
-        new_state['request_state'] = new_request_state
         self.state = new_state
-        # print((pred_states, query))
         return self.state
 
     def train(self, load_model=False, model_path=None):
@@ -741,3 +664,22 @@ class SUMBTTracker(DST):
             f.write(s + '\n')
             print(s)
 
+
+    def predict(self, query):
+        cache_query_key = ''.join(str(list(chain.from_iterable(query[0]))))
+        if cache_query_key in self.cached_res.keys():
+            return self.cached_res[cache_query_key]
+
+        input_ids, input_len = query
+        input_ids = torch.tensor(input_ids).to(self.device).unsqueeze(0)
+        input_len = torch.tensor(input_len).to(self.device).unsqueeze(0)
+        labels = None
+        _, pred_slot = self.sumbt_model(input_ids, input_len, labels)
+        pred_slot_t = pred_slot[0][-1].tolist()
+        predict_belief = []
+        for idx, i in enumerate(pred_slot_t):
+            predict_belief.append((self.target_slot[idx], self.label_map_inv[idx][i]))
+            # predict_belief.append('{}-{}'.format(self.target_slot[idx], self.label_map_inv[idx][i]))
+        self.cached_res[cache_query_key] = predict_belief
+
+        return predict_belief

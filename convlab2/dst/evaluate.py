@@ -13,6 +13,7 @@ import jieba
 multiwoz_slot_list = ['attraction-area', 'attraction-name', 'attraction-type', 'hotel-day', 'hotel-people', 'hotel-stay', 'hotel-area', 'hotel-internet', 'hotel-name', 'hotel-parking', 'hotel-pricerange', 'hotel-stars', 'hotel-type', 'restaurant-day', 'restaurant-people', 'restaurant-time', 'restaurant-area', 'restaurant-food', 'restaurant-name', 'restaurant-pricerange', 'taxi-arriveby', 'taxi-departure', 'taxi-destination', 'taxi-leaveat', 'train-people', 'train-arriveby', 'train-day', 'train-departure', 'train-destination', 'train-leaveat']
 crosswoz_slot_list = ["景点-门票", "景点-评分", "餐馆-名称", "酒店-价格", "酒店-评分", "景点-名称", "景点-地址", "景点-游玩时间", "餐馆-营业时间", "餐馆-评分", "酒店-名称", "酒店-周边景点", "酒店-酒店设施-叫醒服务", "酒店-酒店类型", "餐馆-人均消费", "餐馆-推荐菜", "酒店-酒店设施", "酒店-电话", "景点-电话", "餐馆-周边餐馆", "餐馆-电话", "餐馆-none", "餐馆-地址", "酒店-酒店设施-无烟房", "酒店-地址", "景点-周边景点", "景点-周边酒店", "出租-出发地", "出租-目的地", "地铁-出发地", "地铁-目的地", "景点-周边餐馆", "酒店-周边餐馆", "出租-车型", "餐馆-周边景点", "餐馆-周边酒店", "地铁-出发地附近地铁站", "地铁-目的地附近地铁站", "景点-none", "酒店-酒店设施-商务中心", "餐馆-源领域", "酒店-酒店设施-中式餐厅", "酒店-酒店设施-接站服务", "酒店-酒店设施-国际长途电话", "酒店-酒店设施-吹风机", "酒店-酒店设施-会议室", "酒店-源领域", "酒店-none", "酒店-酒店设施-宽带上网", "酒店-酒店设施-看护小孩服务", "酒店-酒店设施-酒店各处提供wifi", "酒店-酒店设施-暖气", "酒店-酒店设施-spa", "出租-车牌", "景点-源领域", "酒店-酒店设施-行李寄存", "酒店-酒店设施-西式餐厅", "酒店-酒店设施-酒吧", "酒店-酒店设施-早餐服务", "酒店-酒店设施-健身房", "酒店-酒店设施-残疾人设施", "酒店-酒店设施-免费市内电话", "酒店-酒店设施-接待外宾", "酒店-酒店设施-部分房间提供wifi", "酒店-酒店设施-洗衣服务", "酒店-酒店设施-租车", "酒店-酒店设施-公共区域和部分房间提供wifi", "酒店-酒店设施-24小时热水", "酒店-酒店设施-温泉", "酒店-酒店设施-桑拿", "酒店-酒店设施-收费停车位", "酒店-周边酒店", "酒店-酒店设施-接机服务", "酒店-酒店设施-所有房间提供wifi", "酒店-酒店设施-棋牌室", "酒店-酒店设施-免费国内长途电话", "酒店-酒店设施-室内游泳池", "酒店-酒店设施-早餐服务免费", "酒店-酒店设施-公共区域提供wifi", "酒店-酒店设施-室外游泳池"]
 from convlab2.dst.sumbt.multiwoz_zh.sumbt import multiwoz_zh_slot_list
+from convlab2.dst.sumbt.crosswoz_en.sumbt import crosswoz_en_slot_list
 
 def format_history(context):
     history = []
@@ -51,14 +52,20 @@ def reformat_state_crosswoz(state):
         for slot in domain_data.keys():
             if slot == 'selectedResults': continue
             val = domain_data[slot]
-            if val is not None and val != '':
-                new_state.append(domain + '-' + slot + '-' + val)
+            if slot == 'Hotel Facilities' and val.strip():
+                for facility in val.split(','):
+                    new_state.append(domain + '-' + f'Hotel Facilities - {facility}' + 'yes')
+            else:
+                if val is not None and val not in ['', 'none']:
+                    new_state.append(domain + '-' + slot + '-' + val)
+
     return new_state
 
 def compute_acc(gold, pred, slot_temp):
     # TODO: not mentioned in gold
     miss_gold = 0
     miss_slot = []
+    # print(gold, pred)
     for g in gold:
         if g not in pred:
             miss_gold += 1
@@ -198,24 +205,30 @@ if __name__ == '__main__':
         evaluation_metrics = {"Joint Acc": joint_acc_score_ptr, "Turn Acc": turn_acc_score_ptr,
                               "Joint F1": F1_score_ptr}
         print(evaluation_metrics)
-    elif dataset_name == 'CrossWOZ':
-        if model_name == 'TRADE':
-            from convlab2.dst.trade.crosswoz.trade import CrossWOZTRADE
-            model = CrossWOZTRADE()
-        elif model_name == 'mdbt':
-            pass
-        elif model_name == 'sumbt':
-            pass
-        elif model_name == 'rule':
-            pass
+    elif dataset_name.startswith('CrossWOZ'):
+        en = dataset_name.endswith('en')
+        if en:
+            if model_name == 'sumbt':
+                from convlab2.dst.sumbt.crosswoz_en.sumbt import SUMBTTracker
+                model = SUMBTTracker()
         else:
-            raise Exception("Available models: TRADE")
+            if model_name == 'TRADE':
+                from convlab2.dst.trade.crosswoz.trade import CrossWOZTRADE
+                model = CrossWOZTRADE()
+            elif model_name == 'mdbt':
+                pass
+            elif model_name == 'sumbt':
+                pass
+            elif model_name == 'rule':
+                pass
+            else:
+                raise Exception("Available models: TRADE")
 
         ## load data
         from convlab2.util.dataloader.module_dataloader import CrossWOZAgentDSTDataloader
         from convlab2.util.dataloader.dataset_dataloader import CrossWOZDataloader
 
-        dataloader = CrossWOZAgentDSTDataloader(dataset_dataloader=CrossWOZDataloader())
+        dataloader = CrossWOZAgentDSTDataloader(dataset_dataloader=CrossWOZDataloader(en))
         data = dataloader.load_data(data_key='test')['test']
         context, golden_truth = data['context'], data['sys_state_init']
         all_predictions = {}
@@ -234,11 +247,15 @@ if __name__ == '__main__':
                     all_predictions[session_count] = copy.deepcopy(curr_sess)
                     session_count += 1
                     curr_sess = {}
-            if len(context[i]) % 2 == 0:
-                continue
+            # what's this?
+            # if len(context[i]) % 2 == 0:
+            #     continue
+
             # add turn
             x = context[i]
             y = golden_truth[i]
+            if y == {}:
+                continue
             # process y
             for domain in y.keys():
                 domain_data = y[domain]
@@ -260,15 +277,9 @@ if __name__ == '__main__':
         if len(curr_sess) > 0:
             all_predictions[session_count] = copy.deepcopy(curr_sess)
 
+        slot_list = crosswoz_en_slot_list if en else crosswoz_slot_list
         joint_acc_score_ptr, F1_score_ptr, turn_acc_score_ptr = evaluate_metrics(all_predictions, "pred_bs_ptr",
-                                                                                 crosswoz_slot_list)
+                                                                                 slot_list)
         evaluation_metrics = {"Joint Acc": joint_acc_score_ptr, "Turn Acc": turn_acc_score_ptr,
                               "Joint F1": F1_score_ptr}
         print(evaluation_metrics)
-    elif dataset_name == 'CrossWOZ-en':
-        if model_name == 'sumbt':
-            from convlab2.dst.sumbt.crosswoz_en.sumbt import SUMBTTracker
-            model = SUMBTTracker()
-        else:
-            raise Exception("Available models: sumbt")
-        model.test()
