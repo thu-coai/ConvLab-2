@@ -221,10 +221,7 @@ class SUMBTTracker(DST):
         prev_state = self.state
 
         actual_history = copy.deepcopy(prev_state['history'])
-        # if actual_history[-1][0] == 'user':
-        #     actual_history[-1][1] += user_act
-        # else:
-        #     actual_history.append(['user', user_act])
+
         query = self.construct_query(actual_history)
         pred_states = self.predict(query)
 
@@ -281,22 +278,75 @@ class SUMBTTracker(DST):
         # print((pred_states, query))
         return self.state
 
-    def predict(self, query):
-        cache_query_key = ''.join(str(list(chain.from_iterable(query[0]))))
-        if cache_query_key in self.cached_res.keys():
-            return self.cached_res[cache_query_key]
+    def update(self, user_act=None):
+        if not isinstance(user_act, str):
+            raise Exception(
+                'Expected user_act is str but found {}'.format(type(user_act))
+            )
+        prev_state = self.state
 
-        input_ids, input_len = query
-        input_ids = torch.tensor(input_ids).to(self.device).unsqueeze(0)
-        input_len = torch.tensor(input_len).to(self.device).unsqueeze(0)
-        labels = None
-        _, pred_slot = self.sumbt_model(input_ids, input_len, labels)
-        pred_slot_t = pred_slot[0][-1].tolist()
-        predict_belief = []
-        for idx, i in enumerate(pred_slot_t):
-            predict_belief.append('{}-{}'.format(self.target_slot[idx], self.label_map_inv[idx][i]))
-        self.cached_res[cache_query_key] = predict_belief
-        return predict_belief
+        actual_history = copy.deepcopy(prev_state['history'])
+        # if actual_history[-1][0] == 'user':
+        #     actual_history[-1][1] += user_act
+        # else:
+        #     actual_history.append(['user', user_act])
+        query = self.construct_query(actual_history)
+        pred_states = self.predict(query)
+
+        new_belief_state = copy.deepcopy(prev_state['belief_state'])
+        for state in pred_states:
+            domain, slot, value = state.split('-', 2)
+            value = '' if value == 'none' else value
+            value = 'dontcare' if value == 'do not care' else value
+            value = 'guesthouse' if value == 'guest house' else value
+            if slot not in ['name', 'book']:
+                if domain not in new_belief_state:
+                    if domain == 'bus':
+                        continue
+                    else:
+                        raise Exception(
+                            'Error: domain <{}> not in belief state'.format(domain))
+            slot = REF_SYS_DA[domain.capitalize()].get(slot, slot)
+            assert 'semi' in new_belief_state[domain]
+            assert 'book' in new_belief_state[domain]
+            if 'book' in slot:
+                assert slot.startswith('book ')
+                slot = slot.strip().split()[1]
+            if slot == 'arrive by':
+                slot = 'arriveBy'
+            elif slot == 'leave at':
+                slot = 'leaveAt'
+            elif slot == 'price range':
+                slot = 'pricerange'
+            domain_dic = new_belief_state[domain]
+            if slot in domain_dic['semi']:
+                new_belief_state[domain]['semi'][slot] = value
+                # normalize_value(self.value_dict, domain, slot, value)
+            elif slot in domain_dic['book']:
+                new_belief_state[domain]['book'][slot] = value
+            elif slot.lower() in domain_dic['book']:
+                new_belief_state[domain]['book'][slot.lower()] = value
+            else:
+                with open('trade_tracker_unknown_slot.log', 'a+') as f:
+                    f.write(
+                        'unknown slot name <{}> with value <{}> of domain <{}>\nitem: {}\n\n'.format(slot, value, domain, state)
+                    )
+        new_request_state = copy.deepcopy(prev_state['request_state'])
+        # update request_state
+        user_request_slot = self.detect_requestable_slots(user_act)
+        for domain in user_request_slot:
+            for key in user_request_slot[domain]:
+                if domain not in new_request_state:
+                    new_request_state[domain] = {}
+                if key not in new_request_state[domain]:
+                    new_request_state[domain][key] = user_request_slot[domain][key]
+
+        new_state = copy.deepcopy(dict(prev_state))
+        new_state['belief_state'] = new_belief_state
+        new_state['request_state'] = new_request_state
+        self.state = new_state
+        # print((pred_states, query))
+        return self.state
 
     def train(self, load_model=False, model_path=None):
         if load_model:
@@ -544,18 +594,16 @@ class SUMBTTracker(DST):
 
             dev_loss = round(dev_loss, 6)
 
-            output_model_file = os.path.join(os.path.join(SUMBT_PATH, args.output_dir), "acc{:.2f}-pytorch_model.bin".format(dev_acc * 100))
-            if not USE_CUDA or N_GPU == 1:
-                torch.save(model.state_dict(), output_model_file)
-            else:
-                torch.save(model.module.state_dict(), output_model_file)
+            output_model_file = os.path.join(os.path.join(SUMBT_PATH, args.output_dir), "pytorch_model.bin")
 
             if last_update is None or dev_loss < best_loss:
-
-
                 last_update = epoch
                 best_loss = dev_loss
                 best_acc = dev_acc
+                if not USE_CUDA or N_GPU == 1:
+                    torch.save(model.state_dict(), output_model_file)
+                else:
+                    torch.save(model.module.state_dict(), output_model_file)
 
                 logger.info(
                     "*** Model Updated: Epoch=%d, Validation Loss=%.6f, Validation Acc=%.6f, global_step=%d ***" % (
@@ -567,8 +615,6 @@ class SUMBTTracker(DST):
 
             if last_update + args.patience <= epoch:
                 break
-
-
 
     def test(self, mode='dev', model_path=os.path.join(os.path.join(SUMBT_PATH, args.output_dir), "pytorch_model.bin")):
         '''Testing funciton of TRADE (to be added)'''

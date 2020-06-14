@@ -52,10 +52,7 @@ class Processor(DataProcessor):
         with open(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))), config.data_dir, "ontology.json"), "r") as fp_ontology:
             ontology = json.load(fp_ontology)
             for slot in ontology.keys():
-                # TODO: change this to '未提及', retrain the model
-                ontology[slot].append("none")
-                # if '未提及' not in ontology[slot]:
-                #     ontology[slot].append("未提及")
+                ontology[slot].append("未提及")
 
         if config.target_slot != 'all':
             raise Exception('unsupported')

@@ -4,6 +4,16 @@ from convlab2.dst.sumbt.crosswoz_en.sumbt_config import *
 
 null = 'none'
 
+def trans_value(value):
+    trans = {
+        '': 'none',
+    }
+    value = value.strip()
+    value = trans.get(value, value)
+    value = value.replace('’', "'")
+    value = value.replace('‘', "'")
+    return value
+
 def convert_to_glue_format(data_dir, sumbt_dir):
 
     if not os.path.isdir(os.path.join(sumbt_dir, args.tmp_data_dir)):
@@ -84,16 +94,13 @@ def convert_to_glue_format(data_dir, sumbt_dir):
                         split_fp.write('\t' + str(system_response))    # 3: system response
 
                         # hardcode the value of facilities as 'yes' and 'no'
-                        belief = {f'Hotel-Hotel Facilities - {str(facility)}': 'none' for facility in facilities}
+                        belief = {f'Hotel-Hotel Facilities - {str(facility)}': null for facility in facilities}
                         sys_state_init = turn['sys_state_init']
                         for domain, slots in sys_state_init.items():
                             for slot, value in slots.items():
                                 # skip selected results
                                 if isinstance(value, list):
                                     continue
-                                value = value.lower()
-                                if value == '' or value == 'not mentioned' or value == 'not given':
-                                    value = null
                                 if domain not in ontology:
                                     print("domain (%s) is not defined" % domain)
                                     continue
@@ -105,6 +112,8 @@ def convert_to_glue_format(data_dir, sumbt_dir):
                                     if slot not in ontology[domain]:
                                         print("slot (%s) in domain (%s) is not defined" % (slot, domain))   # bus-arriveBy not defined
                                         continue
+
+                                    value = trans_value(value).lower()
 
                                     if value not in ontology[domain][slot] and value != null:
                                         print("%s: value (%s) in domain (%s) slot (%s) is not defined in ontology" %
@@ -127,3 +136,4 @@ def convert_to_glue_format(data_dir, sumbt_dir):
 
                         system_response = turn['content']
                         turn_idx += 1
+    print('data has been processed!')

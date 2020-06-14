@@ -2,6 +2,22 @@ import json
 import zipfile
 from convlab2.dst.sumbt.multiwoz_zh.sumbt_config import *
 
+def trans_value(value):
+    trans = {
+        '': '未提及',
+        '没有提到': '未提及',
+        '没有': '未提及',
+        '未提到': '未提及',
+        '一个也没有': '未提及',
+        '无': '未提及',
+        '是的': '有',
+        '不是': '没有',
+        '不关心': '不在意',
+        '不在乎': '不在意',
+    }
+
+    return trans.get(value, value)
+
 
 def convert_to_glue_format(data_dir, sumbt_dir):
 
@@ -78,18 +94,12 @@ def convert_to_glue_format(data_dir, sumbt_dir):
                     split_fp.write('\t' + str(system_response))    # 3: system response
 
                     belief = {}
-                    value_trans = {
-                        '': '未提及',
-                        '没有提到': '未提及',
-                        '是的': '有',
-                        '不是': '无',
-                        '不关心': '不在意',
-                        '不在乎': '不在意',
-                    }
+
                     for domain in data[file_id]['log'][idx]['metadata'].keys():
                         for slot in data[file_id]['log'][idx]['metadata'][domain]['semi'].keys():
                             value = data[file_id]['log'][idx]['metadata'][domain]['semi'][slot].strip()
-                            value = value_trans.get(value, value)
+                            # value = value_trans.get(value, value)
+                            value = trans_value(value)
 
                             if domain not in ontology:
                                 print("domain (%s) is not defined" % domain)
@@ -119,7 +129,7 @@ def convert_to_glue_format(data_dir, sumbt_dir):
                                 print("预订%s is not defined in domain %s" % (slot, domain))
                                 continue
 
-                            if value not in ontology[domain]['预订' + slot] and value != 'none':
+                            if value not in ontology[domain]['预订' + slot] and value != '未提及':
                                 print("%s: value (%s) in domain (%s) slot (预订%s) is not defined in ontology" %
                                       (file_id, value, domain, slot))
                                 value = '未提及'
@@ -132,7 +142,7 @@ def convert_to_glue_format(data_dir, sumbt_dir):
                             if key in belief:
                                 split_fp.write('\t' + belief[key])
                             else:
-                                split_fp.write('\tnone')
+                                split_fp.write('\t未提及')
 
                     split_fp.write('\n')
                     split_fp.flush()

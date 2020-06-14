@@ -1,3 +1,4 @@
+import os
 import copy
 from pprint import pprint
 import random
@@ -16,7 +17,8 @@ from pytorch_pretrained_bert.tokenization import BertTokenizer
 from pytorch_pretrained_bert.optimization import BertAdam
 
 from convlab2.dst.dst import DST
-from convlab2.dst.sumbt.multiwoz_zh.convert_to_glue_format import convert_to_glue_format
+from convlab2.dst.sumbt.multiwoz_zh.convert_to_glue_format import convert_to_glue_format, trans_value
+from convlab2.util.multiwoz_zh.state import default_state
 
 from convlab2.dst.sumbt.BeliefTrackerSlotQueryMultiSlot import BeliefTracker
 from convlab2.dst.sumbt.multiwoz_zh.sumbt_utils import *
@@ -29,6 +31,7 @@ ROOT_PATH = convlab2.get_root_path()
 SUMBT_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(ROOT_PATH, 'data/multiwoz_zh')
 DOWNLOAD_DIRECTORY = os.path.join(SUMBT_PATH, 'pre-trianed')
+multiwoz_zh_slot_list = ['公共汽车-出发地', '公共汽车-出发时间', '公共汽车-到达时间', '公共汽车-日期', '公共汽车-目的地', '出租车-出发地', '出租车-出发时间', '出租车-到达时间', '出租车-目的地', '列车-出发地', '列车-出发时间', '列车-到达时间', '列车-日期', '列车-目的地', '列车-预订人数', '医院-科室', '旅馆-互联网', '旅馆-价格范围', '旅馆-停车处', '旅馆-区域', '旅馆-名称', '旅馆-星级', '旅馆-类型', '旅馆-预订人数', '旅馆-预订停留天数', '旅馆-预订日期', '景点-区域', '景点-名称', '景点-类型', '餐厅-价格范围', '餐厅-区域', '餐厅-名称', '餐厅-预订人数', '餐厅-预订日期', '餐厅-预订时间', '餐厅-食物']
 
 
 def get_label_embedding(labels, max_seq_length, tokenizer, device):
@@ -72,18 +75,22 @@ class SUMBTTracker(DST):
     Transferable multi-domain dialogue state tracker, adopted from https://github.com/SKTBrain/SUMBT
     """
 
+    # adapt data provider
+    # unzip mt.zip, and zip each [train|val|test].json
+    @staticmethod
+    def init_data():
+        if not os.path.exists(os.path.join(DATA_PATH, 'train.json.zip')):
+            with zipfile.ZipFile(os.path.join(DATA_PATH, 'mt.zip')) as f:
+                f.extractall(DATA_PATH)
 
-    def __init__(self, data_dir=DATA_PATH, model_file='https://github.com/function2-llx/ConvLab-2/releases/download/1.0/multiwoz_zh-pytorch_model.bin.zip'):
+        for split in ['train', 'test', 'val']:
+            with zipfile.ZipFile(os.path.join(DATA_PATH, f'{split}.json.zip'), 'w') as f:
+                f.write(os.path.join(DATA_PATH, f'{split}.json'), f'{split}.json')
+
+    def __init__(self, data_dir=DATA_PATH, eval_slots=multiwoz_zh_slot_list):
         DST.__init__(self)
 
-        # if not os.path.exists(data_dir):
-        #     if model_file == '':
-        #         raise Exception(
-        #             'Please provide remote model file path in config')
-        #     resp = urllib.request.urlretrieve(model_file)[0]
-        #     temp_file = tarfile.open(resp)
-        #     temp_file.extractall('data')
-        #     assert os.path.exists(data_dir)
+        self.init_data()
 
         processor = Processor(args)
         self.processor = processor
@@ -123,6 +130,7 @@ class SUMBTTracker(DST):
             get_label_embedding(processor.target_slot, args.max_label_length, self.tokenizer, self.device)
 
         self.args = args
+        self.state = default_state()
         self.param_restored = False
         if USE_CUDA and N_GPU == 1:
             self.sumbt_model.initialize_slot_value_lookup(self.label_token_ids, self.slot_token_ids)
@@ -136,6 +144,7 @@ class SUMBTTracker(DST):
         self.train_examples = processor.get_train_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
         self.dev_examples = processor.get_dev_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
         self.test_examples = processor.get_test_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
+        self.eval_slots = eval_slots
 
     def load_weights(self, model_path=None):
         if model_path is None:
@@ -547,3 +556,139 @@ class SUMBTTracker(DST):
             )
             f.write(s + '\n')
             print(s)
+
+    def init_session(self):
+        self.state = default_state()
+        if not self.param_restored:
+            if os.path.isfile(os.path.join(DOWNLOAD_DIRECTORY, 'pytorch_model.bin')):
+                print('loading weights from downloaded model')
+                self.load_weights(model_path=os.path.join(DOWNLOAD_DIRECTORY, 'pytorch_model.bin'))
+            elif os.path.isfile(os.path.join(SUMBT_PATH, args.output_dir, 'pytorch_model.bin')):
+                print('loading weights from trained model')
+                self.load_weights(model_path=os.path.join(SUMBT_PATH, args.output_dir, 'pytorch_model.bin'))
+            else:
+                raise ValueError('no availabel weights found.')
+            self.param_restored = True
+
+    def update(self, user_act=None):
+        """Update the dialogue state with the generated tokens from TRADE"""
+        if not isinstance(user_act, str):
+            raise Exception(
+                'Expected user_act is str but found {}'.format(type(user_act))
+            )
+        prev_state = self.state
+
+        actual_history = copy.deepcopy(prev_state['history'])
+
+        query = self.construct_query(actual_history)
+        pred_states = self.predict(query)
+
+        new_belief_state = copy.deepcopy(prev_state['belief_state'])
+        for state in pred_states:
+            domain, slot, value = state.split('-', 2)
+            
+            if slot not in ['name', 'book']:
+                if domain not in new_belief_state:
+                    if domain == 'bus':
+                        continue
+                    else:
+                        raise Exception(
+                            'Error: domain <{}> not in belief state'.format(domain))
+            # slot = REF_SYS_DA[domain.capitalize()].get(slot, slot)
+            assert 'semi' in new_belief_state[domain]
+            assert 'book' in new_belief_state[domain]
+            if '预订' in slot:
+                assert slot.startswith('预订')
+
+            domain_dic = new_belief_state[domain]
+            if slot in domain_dic['semi']:
+                new_belief_state[domain]['semi'][slot] = value
+                # normalize_value(self.value_dict, domain, slot, value)
+            elif slot in domain_dic['book']:
+                new_belief_state[domain]['book'][slot] = value
+            elif slot.lower() in domain_dic['book']:
+                new_belief_state[domain]['book'][slot.lower()] = value
+            else:
+                with open('trade_tracker_unknown_slot.log', 'a+') as f:
+                    f.write(
+                        'unknown slot name <{}> with value <{}> of domain <{}>\nitem: {}\n\n'.format(slot, value, domain, state)
+                    )
+
+        # new_request_state = copy.deepcopy(prev_state['request_state'])
+        # # update request_state
+        # user_request_slot = self.detect_requestable_slots(user_act)
+        # for domain in user_request_slot:
+        #     for key in user_request_slot[domain]:
+        #         if domain not in new_request_state:
+        #             new_request_state[domain] = {}
+        #         if key not in new_request_state[domain]:
+        #             new_request_state[domain][key] = user_request_slot[domain][key]
+
+        new_state = copy.deepcopy(dict(prev_state))
+        new_state['belief_state'] = new_belief_state
+        # new_state['request_state'] = new_request_state
+        self.state = new_state
+        # print((pred_states, query))
+        return self.state
+
+    def predict(self, query):
+        cache_query_key = ''.join(str(list(chain.from_iterable(query[0]))))
+        if cache_query_key in self.cached_res.keys():
+            return self.cached_res[cache_query_key]
+
+        input_ids, input_len = query
+        input_ids = torch.tensor(input_ids).to(self.device).unsqueeze(0)
+        input_len = torch.tensor(input_len).to(self.device).unsqueeze(0)
+        labels = None
+        _, pred_slot = self.sumbt_model(input_ids, input_len, labels)
+        pred_slot_t = pred_slot[0][-1].tolist()
+        predict_belief = []
+        for idx, i in enumerate(pred_slot_t):
+            predict_belief.append('{}-{}'.format(self.target_slot[idx], self.label_map_inv[idx][i]))
+        self.cached_res[cache_query_key] = predict_belief
+
+        return predict_belief
+
+
+    def construct_query(self, context):
+        '''Construct query from context'''
+        ids = []
+        lens = []
+        context_len = len(context)
+        if context[0][0] != 'sys':
+            context = [['sys', '']] + context
+        for i in range(0, context_len, 2):
+            # utt_user = ''
+            # utt_sys = ''
+            # for evaluation
+            utt_sys = context[i][1]
+            utt_user = context[i + 1][1]
+
+            tokens_user = [x if x != '#' else '[SEP]' for x in self.tokenizer.tokenize(utt_user)]
+            tokens_sys = [x if x != '#' else '[SEP]' for x in self.tokenizer.tokenize(utt_sys)]
+
+            _truncate_seq_pair(tokens_user, tokens_sys, self.args.max_seq_length - 3)
+            tokens = ["[CLS]"] + tokens_user + ["[SEP]"] + tokens_sys + ["[SEP]"]
+            input_len = [len(tokens_user) + 2, len(tokens_sys) + 1]
+
+            input_ids = self.tokenizer.convert_tokens_to_ids(tokens)
+            padding = [0] * (self.args.max_seq_length - len(input_ids))
+            input_ids += padding
+            assert len(input_ids) == self.args.max_seq_length
+            ids.append(input_ids)
+            lens.append(input_len)
+
+        return (ids, lens)
+
+    def detect_requestable_slots(self, observation):
+        result = {}
+        observation = observation.lower()
+        _observation = ' {} '.format(observation)
+        for value in self.det_dic.keys():
+            _value = ' {} '.format(value.strip())
+            if _value in _observation:
+                key, domain = self.det_dic[value].split('-')
+                if domain not in result:
+                    result[domain] = {}
+                result[domain][key] = 0
+        return result

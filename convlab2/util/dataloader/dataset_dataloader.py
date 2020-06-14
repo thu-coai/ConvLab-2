@@ -24,13 +24,15 @@ class DatasetDataloader(ABC):
         """
         pass
 
+from convlab2 import DATA_ROOT
 
 class MultiWOZDataloader(DatasetDataloader):
-    def __init__(self):
+    def __init__(self, zh=False):
         super(MultiWOZDataloader, self).__init__()
+        self.zh = zh
 
     def load_data(self,
-                  data_dir=os.path.abspath(os.path.join(os.path.abspath(__file__), '../../../../data/multiwoz')),
+                  data_dir=None,
                   data_key='all',
                   role='all',
                   utterance=False,
@@ -47,6 +49,8 @@ class MultiWOZDataloader(DatasetDataloader):
                   terminated=False,
                   goal=False
                   ):
+        if data_dir is None:
+            data_dir = os.path.join(DATA_ROOT, 'multiwoz' + ('_zh' if self.zh else ''))
 
         def da2tuples(dialog_act):
             tuples = []

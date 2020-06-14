@@ -272,6 +272,8 @@ class BeliefTracker(nn.Module):
 
         # calculate joint accuracy
         pred_slot = torch.cat(pred_slot, 2)
+        # print('pred slot:', pred_slot[0][0])
+        # print('labels:', labels[0][0])
         accuracy = (pred_slot == labels).view(-1, slot_dim)
         acc_slot = torch.sum(accuracy, 0).float() \
                    / torch.sum(labels.view(-1, slot_dim) > -1, 0).float()
