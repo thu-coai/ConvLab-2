@@ -135,7 +135,7 @@ if __name__ == '__main__':
         print("\t python evaluate.py dataset model")
         print("\t dataset=MultiWOZ, MultiWOZ-zh, CrossWOZ, CrossWOZ-en")
         print("\t model=TRADE, mdbt, sumbt")
-        print("\t val=[test|human]")
+        print("\t val=[val|test|human]")
         sys.exit()
 
     ## init phase
