@@ -47,16 +47,18 @@ def reformat_state_crosswoz(state):
     if 'belief_state' in state:
         state = state['belief_state']
     new_state = []
+    # print(state)
     for domain in state.keys():
         domain_data = state[domain]
         for slot in domain_data.keys():
             if slot == 'selectedResults': continue
             val = domain_data[slot]
-            if slot == 'Hotel Facilities' and val.strip():
+            if slot == 'Hotel Facilities' and val not in ['', 'none']:
                 for facility in val.split(','):
                     new_state.append(domain + '-' + f'Hotel Facilities - {facility}' + 'yes')
             else:
                 if val is not None and val not in ['', 'none']:
+                    # print(domain, slot, val)
                     new_state.append(domain + '-' + slot + '-' + val)
 
     return new_state
@@ -196,8 +198,6 @@ if __name__ == '__main__':
                 'turn_belief': reformat_state(y),
                 'pred_bs_ptr': reformat_state(pred)
             }
-            # print('golden: ', reformat_state(y))
-            # print('pred :', reformat_state(pred))
             turn_count += 1
         # add last session
         if len(curr_sess) > 0:
@@ -241,7 +241,6 @@ if __name__ == '__main__':
         turn_count = 0
         is_start = True
         for i in tqdm(range(len(context))):
-        # for i in tqdm(range(10)):  # for test
             if len(context[i]) == 0:
                 turn_count = 0
                 if is_start:
@@ -250,26 +249,27 @@ if __name__ == '__main__':
                     all_predictions[session_count] = copy.deepcopy(curr_sess)
                     session_count += 1
                     curr_sess = {}
-            # what's this?
-            # if len(context[i]) % 2 == 0:
-            #     continue
+
+            # skip usr turn
+            if len(context[i]) % 2 == 0:
+                continue
 
             # add turn
             x = context[i]
             y = golden_truth[i]
-            if y == {}:
-                continue
+
             # process y
-            for domain in y.keys():
-                domain_data = y[domain]
-                for slot in domain_data.keys():
-                    if slot == 'selectedResults': continue
-                    val = domain_data[slot]
-                    if val is not None and val != '':
-                        val = sentseg(val)
-                        y[domain][slot] = val
+            if not en:
+                for domain in y.keys():
+                    domain_data = y[domain]
+                    for slot in domain_data.keys():
+                        if slot == 'selectedResults': continue
+                        val = domain_data[slot]
+                        if val is not None and val != '':
+                            val = sentseg(val)
+                            domain_data[slot] = val
             model.init_session()
-            model.state['history'] = format_history([sentseg(item) for item in context[i]])
+            model.state['history'] = format_history([item if en else sentseg(item) for item in context[i]])
             pred = model.update(x[-1] if len(x) > 0 else '')
             curr_sess[turn_count] = {
                 'turn_belief': reformat_state_crosswoz(y),

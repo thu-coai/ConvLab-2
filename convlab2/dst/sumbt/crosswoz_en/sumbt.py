@@ -147,7 +147,7 @@ class SUMBTTracker(DST):
             get_label_embedding(processor.target_slot, args.max_label_length, self.tokenizer, self.device)
 
         self.args = args
-        # self.state = default_state()
+        self.state = default_state()
         self.param_restored = False
         if USE_CUDA and N_GPU == 1:
             self.sumbt_model.initialize_slot_value_lookup(self.label_token_ids, self.slot_token_ids)
@@ -270,6 +270,25 @@ class SUMBTTracker(DST):
         new_state['belief_state'] = new_belief_state
         self.state = new_state
         return self.state
+
+    def predict(self, query):
+        cache_query_key = ''.join(str(list(chain.from_iterable(query[0]))))
+        if cache_query_key in self.cached_res.keys():
+            return self.cached_res[cache_query_key]
+
+        input_ids, input_len = query
+        input_ids = torch.tensor(input_ids).to(self.device).unsqueeze(0)
+        input_len = torch.tensor(input_len).to(self.device).unsqueeze(0)
+        labels = None
+        _, pred_slot = self.sumbt_model(input_ids, input_len, labels)
+        pred_slot_t = pred_slot[0][-1].tolist()
+        predict_belief = []
+        for idx, i in enumerate(pred_slot_t):
+            predict_belief.append((self.target_slot[idx], self.label_map_inv[idx][i]))
+            # predict_belief.append('{}-{}'.format(self.target_slot[idx], self.label_map_inv[idx][i]))
+        self.cached_res[cache_query_key] = predict_belief
+
+        return predict_belief
 
     def train(self, load_model=False, model_path=None):
         if load_model:
@@ -663,23 +682,3 @@ class SUMBTTracker(DST):
             )
             f.write(s + '\n')
             print(s)
-
-
-    def predict(self, query):
-        cache_query_key = ''.join(str(list(chain.from_iterable(query[0]))))
-        if cache_query_key in self.cached_res.keys():
-            return self.cached_res[cache_query_key]
-
-        input_ids, input_len = query
-        input_ids = torch.tensor(input_ids).to(self.device).unsqueeze(0)
-        input_len = torch.tensor(input_len).to(self.device).unsqueeze(0)
-        labels = None
-        _, pred_slot = self.sumbt_model(input_ids, input_len, labels)
-        pred_slot_t = pred_slot[0][-1].tolist()
-        predict_belief = []
-        for idx, i in enumerate(pred_slot_t):
-            predict_belief.append((self.target_slot[idx], self.label_map_inv[idx][i]))
-            # predict_belief.append('{}-{}'.format(self.target_slot[idx], self.label_map_inv[idx][i]))
-        self.cached_res[cache_query_key] = predict_belief
-
-        return predict_belief
