@@ -41,4 +41,4 @@ class MLE(MLEAbstract):
         if not os.path.exists(os.path.join(model_dir, 'best_mle.pol.mdl')):
             archive = zipfile.ZipFile(archive_file, 'r')
             archive.extractall(model_dir)
-        self.load(archive_file, model_file, cfg['load'])
+        self.load_from_pretrained(archive_file, model_file, cfg['load'])
