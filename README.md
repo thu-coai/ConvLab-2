@@ -163,13 +163,16 @@ By running `convlab2/nlg/evaluate.py MultiWOZ $model sys`
 
 ### train
 
-```python3
+With Convlab-2, you can train SUMBT on a translated dataset like this:
+
+```python
+# train.py
 import os
 from sys import argv
 
 if __name__ == "__main__":
     if len(argv) != 2:
-        print('usage: python3 translation.py [dataset]')
+        print('usage: python3 train.py [dataset]')
         exit(1)
     assert argv[1] in ['multiwoz', 'crosswoz']
 
@@ -188,16 +191,29 @@ if __name__ == "__main__":
 Execute `evaluate.py` (under `convlab2/dst/`) with following command:
 
 ```bash
-python3 evaluate.py [CorssWOZ-en|MultiWOZ-zh] [test|human]
+python3 evaluate.py [CorssWOZ-en|MultiWOZ-zh] [test|human|val]
 ```
 
 `human` option will make the model evaluate on the validation set translated by human. 
 
-Note: You may want to download pre-traiend BERT models and translation-train pre-trained DST models provided by us [here](https://github.com/function2-llx/ConvLab-2/releases/tag/1.0). 
+evaluation of our pre-trained models are:
+
+| type  | CrossWOZ-en | MultiWOZ-zh |
+| ----- | ----------- | ----------- |
+| test  | 12.4%       | 42.3%       |
+| human | 10.9%       | 48.2%       |
+| val   | 12.2%       | 44.8%       |
+
+Note: You may want to download pre-traiend BERT models and translation-train pre-trained DST models provided by us.
 
 Without modifying any code, you could:
 
-- for a BERT model, extract it to `./pre-trained-models`.
+- download pre-trained BERT model from:
+
+  - [CorssWOZ-en](https://huggingface.co/bert-base-uncased)
+  - [MultiWOZ-zh](https://huggingface.co/hfl/chinese-bert-wwm-ext)
+
+  extract it to `./pre-trained-models`.
 
 - for a pre-trained DST model, e.g. say the DST model is SUMBT, data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en/pre-trained` and name it with `pytorch_model.bin`. 
 
