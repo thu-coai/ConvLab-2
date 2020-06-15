@@ -17,7 +17,8 @@ class BERTNLU(NLU):
         assert mode == 'usr' or mode == 'sys' or mode == 'all'
         config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'configs/{}'.format(config_file))
         config = json.load(open(config_file))
-        DEVICE = config['DEVICE']
+        # DEVICE = config['DEVICE']
+        DEVICE = 'cpu' if not torch.cuda.is_available() else config['DEVICE']
         root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
         data_dir = os.path.join(root_dir, config['data_dir'])
         output_dir = os.path.join(root_dir, config['output_dir'])
