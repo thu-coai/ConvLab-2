@@ -29,13 +29,15 @@ annotation translation are categorized by slot:
 
 #### Machine translation for dialogue data
 
-- **mt_data.zip**: machine translated dialogue data using the translated ontology and google translator.
+Machine translated dialogue data using the translated ontology and google translator.
+
+- `[train|val|test].json.zip`
 
 
 
 #### Human translation for dialogue data
 
-- **human_val_data.zip**: we sample 250 dialogues from machine translated validation set and ask professional human translators to correct the utterance translation.
+- `human_val.json.zip`: we sample 250 dialogues from machine translated validation set and ask professional human translators to correct the utterance translation.
 
 
 
