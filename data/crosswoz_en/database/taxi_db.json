@@ -1,0 +1,10 @@
+[
+    [
+        "For Rent ($ Departure-$ Destination)",
+        {
+            "field": "Taxi",
+            "model": "#CX",
+            "license plate": "#CP"
+        }
+    ]
+]

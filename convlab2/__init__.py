@@ -10,3 +10,7 @@ from os.path import abspath, dirname
 
 def get_root_path():
     return dirname(dirname(abspath(__file__)))
+
+import os
+
+DATA_ROOT = os.path.join(get_root_path(), 'data')
