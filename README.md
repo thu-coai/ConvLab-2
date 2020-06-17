@@ -4,7 +4,7 @@
 - [Installation](#installation)
 - [Tutorials](#tutorials)
 - [Models](#models)
-- [Supported Dataset](#Supported-Datasets)
+- [Supported Datasets](#Supported-Datasets)
 - [End-to-end Performance on MultiWOZ](#End-to-end-Performance-on-MultiWOZ)
 - [Module Performance on MultiWOZ](#Module-Performance-on-MultiWOZ)
 - [Issues](#issues)
