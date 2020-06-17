@@ -64,16 +64,13 @@ class MultiWOZDataloader(DatasetDataloader):
         info_list = list(filter(eval, ['utterance', 'dialog_act', 'context', 'context_dialog_act', 'belief_state',
                                        'last_opponent_utterance', 'last_self_utterance', 'session_id', 'span_info',
                                        'terminated', 'goal']))
-        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human': {}}
+        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human_val': {}}
         if data_key == 'all':
             data_key_list = ['train', 'val', 'test']
         else:
             data_key_list = [data_key]
         for data_key in data_key_list:
-            if data_key in ['train', 'val', 'test']:
-                data = read_zipped_json(os.path.join(data_dir, '{}.json.zip'.format(data_key)), '{}.json'.format(data_key))
-            elif data_key == 'human':
-                data = read_zipped_json(os.path.join(data_dir, 'human_val_data.zip'), 'human_val.json')
+            data = read_zipped_json(os.path.join(data_dir, '{}.json.zip'.format(data_key)), '{}.json'.format(data_key))
             print('loaded {}, size {}'.format(data_key, len(data)))
             for x in info_list:
                 self.data[data_key][x] = []
@@ -246,16 +243,13 @@ class CrossWOZDataloader(DatasetDataloader):
                                        'user_state', 'sys_state', 'sys_state_init',
                                        'last_opponent_utterance', 'last_self_utterance', 'session_id',
                                        'terminated', 'goal', 'final_goal', 'task_description']))
-        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human': {}}
+        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human_val': {}}
         if data_key == 'all':
             data_key_list = ['train', 'val', 'test']
         else:
             data_key_list = [data_key]
         for data_key in data_key_list:
-            if data_key in ['train', 'val', 'test']:
-                data = read_zipped_json(os.path.join(data_dir, '{}.json.zip'.format(data_key)), '{}.json'.format(data_key))
-            elif data_key == 'human':
-                data = read_zipped_json(os.path.join(data_dir, 'human_val_data.zip'), 'human_val.json')           
+            data = read_zipped_json(os.path.join(data_dir, '{}.json.zip'.format(data_key)), '{}.json'.format(data_key))
             print('loaded {}, size {}'.format(data_key, len(data)))
             for x in info_list:
                 self.data[data_key][x] = []

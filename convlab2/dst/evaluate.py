@@ -1,6 +1,6 @@
 """
-Evaluate NLU models on specified dataset
-Usage: python evaluate.py [MultiWOZ|CrossWOZ] [TRADE|mdbt|sumbt|rule]
+Evaluate DST models on specified dataset
+Usage: python evaluate.py [MultiWOZ|CrossWOZ|MultiWOZ-zh|CrossWOZ-en] [TRADE|mdbt|sumbt] [val|test|human_val]
 """
 import random
 import numpy
@@ -137,7 +137,7 @@ if __name__ == '__main__':
         print("\t python evaluate.py dataset model")
         print("\t dataset=MultiWOZ, MultiWOZ-zh, CrossWOZ, CrossWOZ-en")
         print("\t model=TRADE, mdbt, sumbt")
-        print("\t val=[val|test|human]")
+        print("\t val=[val|test|human_val]")
         sys.exit()
 
     ## init phase
