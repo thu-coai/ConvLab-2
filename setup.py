@@ -46,7 +46,7 @@ setup(
         'tensorflow==1.14',
         'tensorboard>=1.14.0',
         'tensorboardX==1.7',
-        'allennlp',
+        'allennlp==0.9.0',
         'requests',
         'simplejson',
         'spacy',
