@@ -191,10 +191,8 @@ if __name__ == "__main__":
 Execute `evaluate.py` (under `convlab2/dst/`) with following command:
 
 ```bash
-python3 evaluate.py [CorssWOZ-en|MultiWOZ-zh] [val|test|human_val]
+python3 evaluate.py [CrossWOZ-en|MultiWOZ-zh] [val|test|human_val]
 ```
-
-`human_val` option will make the model evaluate on the validation set translated by human. 
 
 evaluation of our pre-trained models are: (joint acc.)
 
@@ -204,6 +202,7 @@ evaluation of our pre-trained models are: (joint acc.)
 | test  | 12.4%       | 42.3%       |
 | human_val | 10.9%       | 48.2%       |
 
+`human_val` option will make the model evaluate on the validation set translated by human. 
 
 Note: You may want to download pre-traiend BERT models and translation-train SUMBT models provided by us.
 
@@ -211,14 +210,14 @@ Without modifying any code, you could:
 
 - download pre-trained BERT models from:
 
-  - [bert-base-uncased](https://huggingface.co/bert-base-uncased)  for CorssWOZ-en
+  - [bert-base-uncased](https://huggingface.co/bert-base-uncased)  for CrossWOZ-en
   - [chinese-bert-wwm-ext](https://huggingface.co/hfl/chinese-bert-wwm-ext)  for MultiWOZ-zh
 
   extract it to `./pre-trained-models`.
 
 - for translation-train SUMBT model:
 
-  - [trained on CorssWOZ-en](https://convlab.blob.core.windows.net/convlab-2/crosswoz_en-pytorch_model.bin.zip)
+  - [trained on CrossWOZ-en](https://convlab.blob.core.windows.net/convlab-2/crosswoz_en-pytorch_model.bin.zip)
   - [trained on MultiWOZ-zh](https://convlab.blob.core.windows.net/convlab-2/multiwoz_zh-pytorch_model.bin.zip)
   - Say the data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en/pre-trained` and name it with `pytorch_model.bin`. 
 
