@@ -494,6 +494,8 @@ class GoalGenerator:
 
     def build_message(self, user_goal, boldify=null_boldify):
         message = []
+        message_by_domain = []
+        mess_ptr4domain = 0
         state = deepcopy(user_goal)
 
         for dom in user_goal['domain_ordering']:
@@ -641,11 +643,15 @@ class GoalGenerator:
                     message.append(templates[dom]['fail_book ' + adjusted_slot].format(
                         self.boldify(user_goal[dom]['book'][adjusted_slot])))
 
+            dm = message[mess_ptr4domain:]
+            mess_ptr4domain = len(message)
+            message_by_domain.append(' '.join(dm))
+
         if boldify == do_boldify:
             for i, m in enumerate(message):
                 message[i] = message[i].replace('wifi', "<b>wifi</b>")
                 message[i] = message[i].replace('internet', "<b>internet</b>")
                 message[i] = message[i].replace('parking', "<b>parking</b>")
 
-        return message
+        return message, message_by_domain
 
