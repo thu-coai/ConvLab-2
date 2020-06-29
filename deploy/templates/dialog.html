@@ -279,7 +279,7 @@
         data: {
             dataset: 'MultiWoz',
             dataset_short: 'mul',
-            dataset_list: ['MultiWoz'],
+            dataset_list: ['MultiWoz', 'CrossWoz'],
             nlu: 'BERTNLU',
             nlu_list: [],
             nlu_output: {},
@@ -317,6 +317,8 @@
             dataset: function() {
                 if (this.dataset === 'MultiWoz') {
                     this.dataset_short = 'mul'
+                } else if (this.dataset == 'CrossWoz') {
+                    this.dataset_short = 'cro'
                 } else {
                     this.dataset_short = 'cam'
                 }

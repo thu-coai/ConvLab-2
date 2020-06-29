@@ -24,13 +24,15 @@ class DatasetDataloader(ABC):
         """
         pass
 
+from convlab2 import DATA_ROOT
 
 class MultiWOZDataloader(DatasetDataloader):
-    def __init__(self):
+    def __init__(self, zh=False):
         super(MultiWOZDataloader, self).__init__()
+        self.zh = zh
 
     def load_data(self,
-                  data_dir=os.path.abspath(os.path.join(os.path.abspath(__file__), '../../../../data/multiwoz')),
+                  data_dir=None,
                   data_key='all',
                   role='all',
                   utterance=False,
@@ -47,6 +49,8 @@ class MultiWOZDataloader(DatasetDataloader):
                   terminated=False,
                   goal=False
                   ):
+        if data_dir is None:
+            data_dir = os.path.join(DATA_ROOT, 'multiwoz' + ('_zh' if self.zh else ''))
 
         def da2tuples(dialog_act):
             tuples = []
@@ -60,7 +64,7 @@ class MultiWOZDataloader(DatasetDataloader):
         info_list = list(filter(eval, ['utterance', 'dialog_act', 'context', 'context_dialog_act', 'belief_state',
                                        'last_opponent_utterance', 'last_self_utterance', 'session_id', 'span_info',
                                        'terminated', 'goal']))
-        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role}
+        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human_val': {}}
         if data_key == 'all':
             data_key_list = ['train', 'val', 'test']
         else:
@@ -201,11 +205,12 @@ class CamrestDataloader(DatasetDataloader):
 
 
 class CrossWOZDataloader(DatasetDataloader):
-    def __init__(self):
+    def __init__(self, en=False):
         super(CrossWOZDataloader, self).__init__()
+        self.en = en
 
     def load_data(self,
-                  data_dir=os.path.abspath(os.path.join(os.path.abspath(__file__), '../../../../data/crosswoz')),
+                  data_dir=None,
                   data_key='all',
                   role='all',
                   utterance=False,
@@ -224,6 +229,8 @@ class CrossWOZDataloader(DatasetDataloader):
                   final_goal=False,
                   task_description=False
                   ):
+        if data_dir is None:
+            data_dir = os.path.join(DATA_ROOT, 'crosswoz' + ('_en' if self.en else ''))
 
         def da2tuples(dialog_act):
             tuples = []
@@ -236,7 +243,7 @@ class CrossWOZDataloader(DatasetDataloader):
                                        'user_state', 'sys_state', 'sys_state_init',
                                        'last_opponent_utterance', 'last_self_utterance', 'session_id',
                                        'terminated', 'goal', 'final_goal', 'task_description']))
-        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role}
+        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human_val': {}}
         if data_key == 'all':
             data_key_list = ['train', 'val', 'test']
         else:
@@ -268,9 +275,11 @@ class CrossWOZDataloader(DatasetDataloader):
                         self.data[data_key]['user_state'].append(turn['user_state'])
                     if role in ['sys', 'all'] and sys_state and turn['role'] == 'sys':
                         self.data[data_key]['sys_state'].append(turn['sys_state'])
-                    if role in ['sys', 'all'] and sys_state_init and turn['role'] == 'sys':
-                        self.data[data_key]['sys_state_init'].append(turn['sys_state_init'])
-
+                    if role in ['sys', 'all'] and sys_state_init:
+                        if turn['role'] == 'sys':
+                            self.data[data_key]['sys_state_init'].append(turn['sys_state_init'])
+                        else:
+                            self.data[data_key]['sys_state_init'].append({})
                     if last_opponent_utterance:
                         self.data[data_key]['last_opponent_utterance'].append(
                             cur_context[-1] if len(cur_context) >= 1 else '')

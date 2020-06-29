@@ -43,3 +43,4 @@ def generate(total_num=1000, seed=42, output_file='goal.json'):
 
 if __name__ == '__main__':
     generate(output_file='goal20200629.json')
+    

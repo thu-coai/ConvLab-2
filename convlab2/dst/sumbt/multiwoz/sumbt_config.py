@@ -1,4 +1,6 @@
 import os
+
+import convlab2
 class DotMap():
     def __init__(self):
         self.max_label_length = 32
@@ -28,7 +30,7 @@ class DotMap():
         self.num_train_epochs = 300
 
 
-        self.bert_model = 'bert-base-uncased'
+        self.bert_model = os.path.join(convlab2.get_root_path(), "pre-trained-models/bert-base-uncased")
         self.do_lower_case = True
         self.task_name = 'bert-gru-sumbt'
         self.nbt = 'rnn'
