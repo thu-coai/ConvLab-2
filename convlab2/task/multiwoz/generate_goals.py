@@ -37,9 +37,10 @@ def generate(total_num=1000, seed=42, output_file='goal.json'):
             "timestamp": str(datetime.datetime.now()),
             "ID": len(goals)
         })
-    print('avg domains:', np.mean(avg_domains)) # avg domains: 1.827
+    print('avg domains:', np.mean(avg_domains)) # avg domains: 1.846
     json.dump(goals, open(output_file, 'w'), indent=4)
 
 
 if __name__ == '__main__':
-    generate(output_file='goal20200623.json')
+    generate(output_file='goal20200629.json')
+    
