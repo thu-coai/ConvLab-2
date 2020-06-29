@@ -17,7 +17,7 @@ class Database(object):
                     'data/multiwoz/db/{}_db.json'.format(domain))) as f:
                 self.dbs[domain] = json.load(f)
 
-    def query(self, domain, constraints, ignore_open=True):
+    def query(self, domain, constraints, ignore_open=False):
         """Returns the list of entities for a given domain
         based on the annotation of the belief state"""
         # query the db
@@ -29,6 +29,9 @@ class Database(object):
             return self.dbs['police']
         if domain == 'hospital':
             return self.dbs['hospital']
+        for ele in constraints:
+            if ele[0] == 'area' and ele[1] == 'center':
+                ele[1] = 'centre'
 
         found = []
         for i, record in enumerate(self.dbs[domain]):
@@ -54,7 +57,7 @@ class Database(object):
                         elif ignore_open and key in ['destination', 'departure']:
                             continue
                         else:
-                            if val.strip() != record[key].strip():
+                            if val.strip().lower() != record[key].strip().lower():
                                 break
                     except:
                         continue
@@ -63,3 +66,6 @@ class Database(object):
                 found.append(record)
 
         return found
+if __name__ == '__main__':
+    db = Database()
+    print(db.query("train", [['departure', 'cambridge'], ['destination','peterborough'], ['day', 'tuesday'], ['arriveBy', '11:15']]))
