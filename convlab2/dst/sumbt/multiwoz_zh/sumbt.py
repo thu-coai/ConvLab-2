@@ -30,7 +30,7 @@ DEVICE = "cuda" if USE_CUDA else "cpu"
 ROOT_PATH = convlab2.get_root_path()
 SUMBT_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(ROOT_PATH, 'data/multiwoz_zh')
-DOWNLOAD_DIRECTORY = os.path.join(SUMBT_PATH, 'pre-trianed')
+DOWNLOAD_DIRECTORY = os.path.join(SUMBT_PATH, 'pre-trained')
 multiwoz_zh_slot_list = ['公共汽车-出发地', '公共汽车-出发时间', '公共汽车-到达时间', '公共汽车-日期', '公共汽车-目的地', '出租车-出发地', '出租车-出发时间', '出租车-到达时间', '出租车-目的地', '列车-出发地', '列车-出发时间', '列车-到达时间', '列车-日期', '列车-目的地', '列车-预订人数', '医院-科室', '旅馆-互联网', '旅馆-价格范围', '旅馆-停车处', '旅馆-区域', '旅馆-名称', '旅馆-星级', '旅馆-类型', '旅馆-预订人数', '旅馆-预订停留天数', '旅馆-预订日期', '景点-区域', '景点-名称', '景点-类型', '餐厅-价格范围', '餐厅-区域', '餐厅-名称', '餐厅-预订人数', '餐厅-预订日期', '餐厅-预订时间', '餐厅-食物']
 
 
