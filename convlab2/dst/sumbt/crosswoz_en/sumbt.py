@@ -30,7 +30,7 @@ from convlab2.dst.sumbt.crosswoz_en.convert_to_glue_format import null
 USE_CUDA = torch.cuda.is_available()
 N_GPU = torch.cuda.device_count() if USE_CUDA else 1
 DEVICE = "cuda" if USE_CUDA else "cpu"
-ROOT_PATH = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))))
+ROOT_PATH = convlab2.get_root_path()
 SUMBT_PATH = os.path.dirname(os.path.abspath(__file__))
 DATA_PATH = os.path.join(ROOT_PATH, 'data/crosswoz_en')
 DOWNLOAD_DIRECTORY = os.path.join(SUMBT_PATH, "pre-trained/")

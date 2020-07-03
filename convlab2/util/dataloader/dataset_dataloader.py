@@ -64,7 +64,7 @@ class MultiWOZDataloader(DatasetDataloader):
         info_list = list(filter(eval, ['utterance', 'dialog_act', 'context', 'context_dialog_act', 'belief_state',
                                        'last_opponent_utterance', 'last_self_utterance', 'session_id', 'span_info',
                                        'terminated', 'goal']))
-        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human': {}}
+        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human_val': {}}
         if data_key == 'all':
             data_key_list = ['train', 'val', 'test']
         else:
@@ -246,7 +246,7 @@ class CrossWOZDataloader(DatasetDataloader):
                                        'user_state', 'sys_state', 'sys_state_init',
                                        'last_opponent_utterance', 'last_self_utterance', 'session_id',
                                        'terminated', 'goal', 'final_goal', 'task_description']))
-        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human': {}}
+        self.data = {'train': {}, 'val': {}, 'test': {}, 'role': role, 'human_val': {}}
         if data_key == 'all':
             data_key_list = ['train', 'val', 'test']
         else:

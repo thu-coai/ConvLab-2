@@ -4,7 +4,7 @@
 - [Installation](#installation)
 - [Tutorials](#tutorials)
 - [Models](#models)
-- [Supported Dataset](#Supported-Dataset)
+- [Supported Datasets](#Supported-Datasets)
 - [End-to-end Performance on MultiWOZ](#End-to-end-Performance-on-MultiWOZ)
 - [Module Performance on MultiWOZ](#Module-Performance-on-MultiWOZ)
 - [Issues](#issues)
@@ -159,11 +159,11 @@ By running `convlab2/nlg/evaluate.py MultiWOZ $model sys`
 | Template | 0.3309        |
 | SCLSTM   | 0.4884        |
 
-## translation train with SUMBT
+## Translation-train SUMBT for cross-lingual DST
 
-### train
+### Train
 
-With Convlab-2, you can train SUMBT on a translated dataset like this:
+With Convlab-2, you can train SUMBT on a machine-translated dataset like this:
 
 ```python
 # train.py
@@ -186,36 +186,40 @@ if __name__ == "__main__":
     sumbt.train(True)
 ```
 
-### evaluate
+### Evaluate
 
 Execute `evaluate.py` (under `convlab2/dst/`) with following command:
 
 ```bash
-python3 evaluate.py [CorssWOZ-en|MultiWOZ-zh] [test|human|val]
+python3 evaluate.py [CrossWOZ-en|MultiWOZ-zh] [val|test|human_val]
 ```
 
-`human` option will make the model evaluate on the validation set translated by human. 
-
-evaluation of our pre-trained models are:
+evaluation of our pre-trained models are: (joint acc.)
 
 | type  | CrossWOZ-en | MultiWOZ-zh |
 | ----- | ----------- | ----------- |
-| test  | 12.4%       | 42.3%       |
-| human | 10.9%       | 48.2%       |
 | val   | 12.2%       | 44.8%       |
+| test  | 12.4%       | 42.3%       |
+| human_val | 10.9%       | 48.2%       |
 
-Note: You may want to download pre-traiend BERT models and translation-train pre-trained DST models provided by us.
+`human_val` option will make the model evaluate on the validation set translated by human. 
+
+Note: You may want to download pre-traiend BERT models and translation-train SUMBT models provided by us.
 
 Without modifying any code, you could:
 
-- download pre-trained BERT model from:
+- download pre-trained BERT models from:
 
-  - [CorssWOZ-en](https://huggingface.co/bert-base-uncased)
-  - [MultiWOZ-zh](https://huggingface.co/hfl/chinese-bert-wwm-ext)
+  - [bert-base-uncased](https://huggingface.co/bert-base-uncased)  for CrossWOZ-en
+  - [chinese-bert-wwm-ext](https://huggingface.co/hfl/chinese-bert-wwm-ext)  for MultiWOZ-zh
 
   extract it to `./pre-trained-models`.
 
-- for a pre-trained DST model, e.g. say the DST model is SUMBT, data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en/pre-trained` and name it with `pytorch_model.bin`. 
+- for translation-train SUMBT model:
+
+  - [trained on CrossWOZ-en](https://convlab.blob.core.windows.net/convlab-2/crosswoz_en-pytorch_model.bin.zip)
+  - [trained on MultiWOZ-zh](https://convlab.blob.core.windows.net/convlab-2/multiwoz_zh-pytorch_model.bin.zip)
+  - Say the data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en/pre-trained` and name it with `pytorch_model.bin`. 
 
 ## Issues
 
@@ -235,7 +239,7 @@ We welcome contributions from community.
 
 We would like to thank:
 
-Yan Fang, Zhuoer Feng, Jianfeng Gao, Qihan Guo, Kaili Huang, Minlie Huang, Sungjin Lee, Bing Li, Jinchao Li, Xiang Li, Xiujun Li, Wenchang Ma, Baolin Peng, Runze Liang, Ryuichi Takanobu, Jiaxin Wen, Yaoqin Zhang, Zheng Zhang, Qi Zhu, Xiaoyan Zhu.
+Yan Fang, Zhuoer Feng, Jianfeng Gao, Qihan Guo, Kaili Huang, Minlie Huang, Sungjin Lee, Bing Li, Jinchao Li, Xiang Li, Xiujun Li, Wenchang Ma, Baolin Peng, Runze Liang, Ryuichi Takanobu, Hongru Wang, Jiaxin Wen, Yaoqin Zhang, Zheng Zhang, Qi Zhu, Xiaoyan Zhu.
 
 
 ## Citing
