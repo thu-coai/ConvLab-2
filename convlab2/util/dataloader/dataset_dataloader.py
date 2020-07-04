@@ -70,10 +70,7 @@ class MultiWOZDataloader(DatasetDataloader):
         else:
             data_key_list = [data_key]
         for data_key in data_key_list:
-            if data_key in ['train', 'val', 'test']:
-                data = read_zipped_json(os.path.join(data_dir, '{}.json.zip'.format(data_key)), '{}.json'.format(data_key))
-            elif data_key == 'human':
-                data = read_zipped_json(os.path.join(data_dir, 'human_val_data.zip'), 'human_val.json')
+            data = read_zipped_json(os.path.join(data_dir, '{}.json.zip'.format(data_key)), '{}.json'.format(data_key))
             print('loaded {}, size {}'.format(data_key, len(data)))
             for x in info_list:
                 self.data[data_key][x] = []
@@ -252,10 +249,7 @@ class CrossWOZDataloader(DatasetDataloader):
         else:
             data_key_list = [data_key]
         for data_key in data_key_list:
-            if data_key in ['train', 'val', 'test']:
-                data = read_zipped_json(os.path.join(data_dir, '{}.json.zip'.format(data_key)), '{}.json'.format(data_key))
-            elif data_key == 'human':
-                data = read_zipped_json(os.path.join(data_dir, 'human_val_data.zip'), 'human_val.json')           
+            data = read_zipped_json(os.path.join(data_dir, '{}.json.zip'.format(data_key)), '{}.json'.format(data_key))
             print('loaded {}, size {}'.format(data_key, len(data)))
             for x in info_list:
                 self.data[data_key][x] = []

@@ -138,8 +138,8 @@ if __name__ == '__main__':
         print("\t dataset=MultiWOZ, MultiWOZ-zh, CrossWOZ, CrossWOZ-en")
         print("\t model=TRADE, mdbt, sumbt")
         print("\t val=[val|test|human_val]")
-
         sys.exit()
+
     ## init phase
     dataset_name = sys.argv[1]
     model_name = sys.argv[2]
