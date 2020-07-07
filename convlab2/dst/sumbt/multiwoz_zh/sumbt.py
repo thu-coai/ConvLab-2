@@ -1,23 +1,19 @@
-import os
 import copy
-from pprint import pprint
 import random
 from itertools import chain
 import numpy as np
 import zipfile
 
-# from tensorboardX.writer import SummaryWriter
-from tqdm._tqdm import trange, tqdm
-
-from convlab2.util.file_util import cached_path
+from tensorboardX.writer import SummaryWriter
+from tqdm import trange, tqdm
 
 from torch.utils.data import TensorDataset, DataLoader, RandomSampler, SequentialSampler
 
-from pytorch_pretrained_bert.tokenization import BertTokenizer
-from pytorch_pretrained_bert.optimization import BertAdam
+from transformers import BertTokenizer
+from transformers import get_linear_schedule_with_warmup, AdamW
 
 from convlab2.dst.dst import DST
-from convlab2.dst.sumbt.multiwoz_zh.convert_to_glue_format import convert_to_glue_format, trans_value
+from convlab2.dst.sumbt.multiwoz_zh.convert_to_glue_format import convert_to_glue_format
 from convlab2.util.multiwoz_zh.state import default_state
 
 from convlab2.dst.sumbt.BeliefTrackerSlotQueryMultiSlot import BeliefTracker
@@ -98,10 +94,7 @@ class SUMBTTracker(DST):
         num_labels = [len(labels) for labels in label_list]  # number of slot-values in each slot-type
 
         # tokenizer
-        # vocab_dir = os.path.join(data_dir, 'model', '%s-vocab.txt' % args.bert_model)
-        # if not os.path.exists(vocab_dir):
-        #     raise ValueError("Can't find %s " % vocab_dir)
-        self.tokenizer = BertTokenizer.from_pretrained(args.bert_model)
+        self.tokenizer = BertTokenizer.from_pretrained(args.bert_model_name, cache_dir=args.bert_model_cache_dir)
         random.seed(args.seed)
         np.random.seed(args.seed)
         torch.manual_seed(args.seed)
@@ -256,6 +249,7 @@ class SUMBTTracker(DST):
 
         t_total = num_train_steps
 
+        scheduler = None
         if args.fp16:
             try:
                 from apex.optimizers import FP16_Optimizer
@@ -274,10 +268,8 @@ class SUMBTTracker(DST):
                 optimizer = FP16_Optimizer(optimizer, static_loss_scale=args.fp16_loss_scale)
 
         else:
-            optimizer = BertAdam(optimizer_grouped_parameters,
-                                 lr=args.learning_rate,
-                                 warmup=args.warmup_proportion,
-                                 t_total=t_total)
+            optimizer = AdamW(optimizer_grouped_parameters, lr=args.learning_rate, correct_bias=False)
+            scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps=args.warmup_proportion*t_total, num_training_steps=t_total)
         logger.info(optimizer)
 
         # Training code
@@ -346,7 +338,11 @@ class SUMBTTracker(DST):
                         summary_writer.add_scalar("Train/LearningRate", lr_this_step, global_step)
                     for param_group in optimizer.param_groups:
                         param_group['lr'] = lr_this_step
+                    if scheduler is not None:
+                        torch.nn.utils.clip_grad_norm_(optimizer_grouped_parameters, 1.0)
                     optimizer.step()
+                    if scheduler is not None:
+                        scheduler.step()
                     optimizer.zero_grad()
                     global_step += 1
 
@@ -567,7 +563,7 @@ class SUMBTTracker(DST):
                 print('loading weights from trained model')
                 self.load_weights(model_path=os.path.join(SUMBT_PATH, args.output_dir, 'pytorch_model.bin'))
             else:
-            raise ValueError('no available weights found.')
+                raise ValueError('no available weights found.')
             self.param_restored = True
 
     def update(self, user_act=None):

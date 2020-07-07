@@ -1,3 +1,7 @@
+# extras
+Pipfile*
+results*
+
 *.pyc
 __pycache__
 
@@ -13,6 +17,7 @@ __pycache__
 data/**/train.json
 data/**/val.json
 data/**/test.json
+data/**/human_val.json
 data/camrest/CamRest676_v2.json
 data/multiwoz/annotated_user_da_with_span_full.json
 data/schema/dstc8-schema-guided-dialogue-master
@@ -34,6 +39,7 @@ convlab2/nlg/sclstm/**/generated_sens_sys.json
 convlab2/nlg/template/**/generated_sens_sys.json
 convlab2/nlu/jointBERT/crosswoz/**/data
 convlab2/nlu/jointBERT/multiwoz/**/data
+
 # test script
 *_test.py
 
