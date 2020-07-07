@@ -567,7 +567,7 @@ class SUMBTTracker(DST):
                 print('loading weights from trained model')
                 self.load_weights(model_path=os.path.join(SUMBT_PATH, args.output_dir, 'pytorch_model.bin'))
             else:
-                raise ValueError('no availabel weights found.')
+            raise ValueError('no available weights found.')
             self.param_restored = True
 
     def update(self, user_act=None):

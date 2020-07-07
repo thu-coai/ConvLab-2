@@ -123,7 +123,7 @@ def convert_to_glue_format(data_dir, sumbt_dir):
                                 continue    # not defined in ontology
 
                             value = data[file_id]['log'][idx]['metadata'][domain]['book'][slot].strip()
-                            value = trans_value(value, value)
+                            value = trans_value(value)
 
                             if str('预订' + slot) not in ontology[domain]:
                                 print("预订%s is not defined in domain %s" % (slot, domain))
