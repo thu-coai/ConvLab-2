@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Evaluate DST models on specified dataset
 Usage: python evaluate.py [MultiWOZ|CrossWOZ|MultiWOZ-zh|CrossWOZ-en] [TRADE|mdbt|sumbt] [val|test|human_val]
