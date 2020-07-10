@@ -69,6 +69,8 @@ For  more details about these models, You can refer to `README.md` under `convla
 
 ## End-to-end Performance on MultiWOZ
 
+*Notice*: The results are for commits before [`bdc9dba`](https://github.com/thu-coai/ConvLab-2/commit/bdc9dba72c957d97788e533f9458ed03a4b0137b) (inclusive). We will update the results after improving user policy.
+
 We perform end-to-end evaluation (1000 dialogues) on MultiWOZ using the user simulator below (a full example on `tests/test_end2end.py`) :
 
 ```python
@@ -140,6 +142,8 @@ By running `convlab2/dst/evaluate.py MultiWOZ $model`:
 |   TRADE     |    0.40         |       0.96       | 0.84    |
 
 ### Policy
+
+*Notice*: The results are for commits before [`bdc9dba`](https://github.com/thu-coai/ConvLab-2/commit/bdc9dba72c957d97788e533f9458ed03a4b0137b) (inclusive). We will update the results after improving user policy.
 
 By running `convlab2/policy/evalutate.py --model_name $model`
 
