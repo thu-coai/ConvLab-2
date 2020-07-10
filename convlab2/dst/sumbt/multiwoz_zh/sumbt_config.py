@@ -27,8 +27,9 @@ class DotMap():
         self.do_eval = True
         self.num_train_epochs = 300
 
-
-        self.bert_model = os.path.join(convlab2.get_root_path(), "pre-trained-models/bert-chinese-wwm-ext")
+        self.bert_model = os.path.join(convlab2.get_root_path(), "pre-trained-models/chinese-bert-wwm-ext")
+        self.bert_model_cache_dir = os.path.join(convlab2.get_root_path(), "pre-trained-models/")
+        self.bert_model_name = "hfl/chinese-bert-wwm-ext"
         self.do_lower_case = True
         self.task_name = 'bert-gru-sumbt'
         self.nbt = 'rnn'
