@@ -28,7 +28,7 @@ deploy:
       branch: master
   - provider: script
     skip-cleanup: true
-    script: coveralls
+    # script: coveralls
     on:
       all_branches: true
       condition: true
