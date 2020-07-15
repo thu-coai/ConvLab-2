@@ -5,6 +5,7 @@
 
 - [Installation](#installation)
 - [Tutorials](#tutorials)
+- [Documents](#documents)
 - [Models](#models)
 - [Supported Datasets](#Supported-Datasets)
 - [End-to-end Performance on MultiWOZ](#End-to-end-Performance-on-MultiWOZ)
@@ -36,6 +37,9 @@ pip install -e .
 - [Add New Model](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Add_New_Model.md)
 - [Train RL Policies](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Train_RL_Policies)
 - [Interactive Tool](https://github.com/thu-coai/ConvLab-2/blob/master/deploy) [[demo video]](https://youtu.be/00VWzbcx26E)
+
+## Documents
+Our documents are on https://thu-coai.github.io/ConvLab-2_docs/convlab2.html#module-convlab2.
 
 ## Models
 
