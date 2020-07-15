@@ -29,7 +29,7 @@ sys_dst = RuleDST()
 sys_policy = RulePolicy(character='sys')
 sys_nlg = TemplateNLG(is_user=False)
 
-agent = PipelineAgent(sys_nlu,sys_dst,sys_policy, sys_nlg,'amt')
+agent = PipelineAgent(sys_nlu,sys_dst,sys_policy, sys_nlg,'sys')
 
 print(agent.response('I am looking for a hotel'))
 
