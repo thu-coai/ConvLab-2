@@ -15,6 +15,7 @@ script:
   - cd docs
   - make html && mv ./build/html ./build/docs && rm -r ./build/doctrees
   - cd ..
+  - gem install travis --no-document
 
 deploy:
   - provider: pages
