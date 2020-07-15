@@ -26,9 +26,9 @@ deploy:
     local-dir: ./docs/build
     on:
       branch: master
-  - provider: script
-    skip-cleanup: true
+  # - provider: script
+    # skip-cleanup: true
     # script: coveralls
-    on:
-      all_branches: true
-      condition: true
+    # on:
+      # all_branches: true
+      # condition: true
