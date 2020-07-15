@@ -1,8 +1,11 @@
 # ConvLab-2
+[![Build Status](https://travis-ci.com/thu-coai/ConvLab-2.svg?branch=master)](https://travis-ci.com/thu-coai/ConvLab-2)
+
 **ConvLab-2** is an open-source toolkit that enables researchers to build task-oriented dialogue systems with state-of-the-art models, perform an end-to-end evaluation, and diagnose the weakness of systems. As the successor of [ConvLab](https://github.com/ConvLab/ConvLab), ConvLab-2 inherits ConvLab's framework but integrates more powerful dialogue models and supports more datasets. Besides, we have developed an analysis tool and an interactive tool to assist researchers in diagnosing dialogue systems. [[paper]](https://arxiv.org/abs/2002.04793)
 
 - [Installation](#installation)
 - [Tutorials](#tutorials)
+- [Documents](#documents)
 - [Models](#models)
 - [Supported Datasets](#Supported-Datasets)
 - [End-to-end Performance on MultiWOZ](#End-to-end-Performance-on-MultiWOZ)
@@ -34,6 +37,9 @@ pip install -e .
 - [Add New Model](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Add_New_Model.md)
 - [Train RL Policies](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Train_RL_Policies)
 - [Interactive Tool](https://github.com/thu-coai/ConvLab-2/blob/master/deploy) [[demo video]](https://youtu.be/00VWzbcx26E)
+
+## Documents
+Our documents are on https://thu-coai.github.io/ConvLab-2_docs/convlab2.html#module-convlab2.
 
 ## Models
 
