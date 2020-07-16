@@ -39,7 +39,7 @@ pip install -e .
 - [Interactive Tool](https://github.com/thu-coai/ConvLab-2/blob/master/deploy) [[demo video]](https://youtu.be/00VWzbcx26E)
 
 ## Documents
-Our documents are on https://thu-coai.github.io/ConvLab-2_docs/convlab2.html#module-convlab2.
+Our documents are on https://thu-coai.github.io/ConvLab-2_docs/convlab2.html.
 
 ## Models
 
