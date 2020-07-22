@@ -438,7 +438,7 @@ class Agenda(object):
                 for slot, val in sys_action[diaact]:
                     if slot == 'name':
                         self._remove_item(diaact.split('-')[0]+'-inform', 'choice')
-            if 'booking' in diaact:
+            if 'booking' in diaact and self.cur_domain:
                 g_book = self._get_goal_infos(self.cur_domain, goal)[-2]
                 if len(g_book) == 0:
                     self._push_item(self.cur_domain + '-inform', "NotBook", "none")
