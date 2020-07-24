@@ -254,7 +254,7 @@ class MultiWozEvalWorld(MTurkTaskWorld):
             except Exception as e:
                 print(e)
                 num_goal_trials += 1
-        self.goal_message = goal_generator.build_message(self.goal)
+        self.goal_message, _ = goal_generator.build_message(self.goal)
         self.goal_text = '<ul>'
         for m in self.goal_message:
             self.goal_text += '<li>' + m + '</li>'

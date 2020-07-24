@@ -1,10 +1,13 @@
 # ConvLab-2
+[![Build Status](https://travis-ci.com/thu-coai/ConvLab-2.svg?branch=master)](https://travis-ci.com/thu-coai/ConvLab-2)
+
 **ConvLab-2** is an open-source toolkit that enables researchers to build task-oriented dialogue systems with state-of-the-art models, perform an end-to-end evaluation, and diagnose the weakness of systems. As the successor of [ConvLab](https://github.com/ConvLab/ConvLab), ConvLab-2 inherits ConvLab's framework but integrates more powerful dialogue models and supports more datasets. Besides, we have developed an analysis tool and an interactive tool to assist researchers in diagnosing dialogue systems. [[paper]](https://arxiv.org/abs/2002.04793)
 
 - [Installation](#installation)
 - [Tutorials](#tutorials)
+- [Documents](#documents)
 - [Models](#models)
-- [Supported Dataset](#Supported-Dataset)
+- [Supported Datasets](#Supported-Datasets)
 - [End-to-end Performance on MultiWOZ](#End-to-end-Performance-on-MultiWOZ)
 - [Module Performance on MultiWOZ](#Module-Performance-on-MultiWOZ)
 - [Issues](#issues)
@@ -33,7 +36,10 @@ pip install -e .
 - [Getting Started](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Getting_Started.ipynb) (Have a try on [Colab](https://colab.research.google.com/github/thu-coai/ConvLab-2/blob/master/tutorials/Getting_Started.ipynb)!)
 - [Add New Model](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Add_New_Model.md)
 - [Train RL Policies](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Train_RL_Policies)
-- [Interactive Tool](https://github.com/thu-coai/ConvLab-2/blob/master/deploy) [[demo video]](https://drive.google.com/file/d/1HR3mjhgLL0g9IbqU443NsH2G0-PpAsog/view?usp=sharing)
+- [Interactive Tool](https://github.com/thu-coai/ConvLab-2/blob/master/deploy) [[demo video]](https://youtu.be/00VWzbcx26E)
+
+## Documents
+Our documents are on https://thu-coai.github.io/ConvLab-2_docs/convlab2.html.
 
 ## Models
 
@@ -68,6 +74,8 @@ For  more details about these models, You can refer to `README.md` under `convla
   - LICENSE: Attribution-NonCommercial 4.0 International, url: https://creativecommons.org/licenses/by-nc/4.0/
 
 ## End-to-end Performance on MultiWOZ
+
+*Notice*: The results are for commits before [`bdc9dba`](https://github.com/thu-coai/ConvLab-2/commit/bdc9dba72c957d97788e533f9458ed03a4b0137b) (inclusive). We will update the results after improving user policy.
 
 We perform end-to-end evaluation (1000 dialogues) on MultiWOZ using the user simulator below (a full example on `tests/test_end2end.py`) :
 
@@ -141,6 +149,8 @@ By running `convlab2/dst/evaluate.py MultiWOZ $model`:
 
 ### Policy
 
+*Notice*: The results are for commits before [`bdc9dba`](https://github.com/thu-coai/ConvLab-2/commit/bdc9dba72c957d97788e533f9458ed03a4b0137b) (inclusive). We will update the results after improving user policy.
+
 By running `convlab2/policy/evalutate.py --model_name $model`
 
 |           | Task Success Rate |
@@ -158,6 +168,68 @@ By running `convlab2/nlg/evaluate.py MultiWOZ $model sys`
 | -------- | ------------- |
 | Template | 0.3309        |
 | SCLSTM   | 0.4884        |
+
+## Translation-train SUMBT for cross-lingual DST
+
+### Train
+
+With Convlab-2, you can train SUMBT on a machine-translated dataset like this:
+
+```python
+# train.py
+import os
+from sys import argv
+
+if __name__ == "__main__":
+    if len(argv) != 2:
+        print('usage: python3 train.py [dataset]')
+        exit(1)
+    assert argv[1] in ['multiwoz', 'crosswoz']
+
+    from convlab2.dst.sumbt.multiwoz_zh.sumbt import SUMBT_PATH
+    if argv[1] == 'multiwoz':
+        from convlab2.dst.sumbt.multiwoz_zh.sumbt import SUMBTTracker as SUMBT
+    elif argv[1] == 'crosswoz':
+        from convlab2.dst.sumbt.crosswoz_en.sumbt import SUMBTTracker as SUMBT
+
+    sumbt = SUMBT()
+    sumbt.train(True)
+```
+
+### Evaluate
+
+Execute `evaluate.py` (under `convlab2/dst/`) with following command:
+
+```bash
+python3 evaluate.py [CrossWOZ-en|MultiWOZ-zh] [val|test|human_val]
+```
+
+evaluation of our pre-trained models are: (joint acc.)
+
+| type  | CrossWOZ-en | MultiWOZ-zh |
+| ----- | ----------- | ----------- |
+| val   | 12.2%       | 44.8%       |
+| test  | 12.4%       | 42.3%       |
+| human_val | 10.9%       | 48.2%       |
+
+`human_val` option will make the model evaluate on the validation set translated by human. 
+
+Note: You may want to download pre-traiend BERT models and translation-train SUMBT models provided by us.
+
+Without modifying any code, you could:
+
+- download pre-trained BERT models from:
+
+  - [bert-base-uncased](https://huggingface.co/bert-base-uncased)  for CrossWOZ-en
+  - [chinese-bert-wwm-ext](https://huggingface.co/hfl/chinese-bert-wwm-ext)  for MultiWOZ-zh
+
+  extract it to `./pre-trained-models`.
+
+- for translation-train SUMBT model:
+
+  - [trained on CrossWOZ-en](https://convlab.blob.core.windows.net/convlab-2/crosswoz_en-pytorch_model.bin.zip)
+  - [trained on MultiWOZ-zh](https://convlab.blob.core.windows.net/convlab-2/multiwoz_zh-pytorch_model.bin.zip)
+  - Say the data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en/pre-trained` and name it with `pytorch_model.bin`. 
 
 ## Issues
 
@@ -177,7 +249,7 @@ We welcome contributions from community.
 
 We would like to thank:
 
-Yan Fang, Zhuoer Feng, Jianfeng Gao, Qihan Guo, Kaili Huang, Minlie Huang, Sungjin Lee, Bing Li, Jinchao Li, Xiang Li, Xiujun Li, Wenchang Ma, Baolin Peng, Runze Liang, Ryuichi Takanobu, Jiaxin Wen, Yaoqin Zhang, Zheng Zhang, Qi Zhu, Xiaoyan Zhu.
+Yan Fang, Zhuoer Feng, Jianfeng Gao, Qihan Guo, Kaili Huang, Minlie Huang, Sungjin Lee, Bing Li, Jinchao Li, Xiang Li, Xiujun Li, Lingxiao Luo, Wenchang Ma, Mehrad Moradshahi, Baolin Peng, Runze Liang, Ryuichi Takanobu, Hongru Wang, Jiaxin Wen, Yaoqin Zhang, Zheng Zhang, Qi Zhu, Xiaoyan Zhu.
 
 
 ## Citing
