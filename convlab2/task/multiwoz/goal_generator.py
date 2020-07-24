@@ -7,10 +7,11 @@ import pickle
 import random
 from collections import Counter
 from copy import deepcopy
-
+from pprint import pprint
 import numpy as np
 
 from convlab2.util.multiwoz.dbquery import Database
+from convlab2 import get_root_path
 
 domains = {'attraction', 'hotel', 'restaurant', 'train', 'taxi', 'hospital', 'police'}
 days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
@@ -35,7 +36,7 @@ templates = {
     'intro': 'You are looking for information in Cambridge.',
     'restaurant': {
         'intro': 'You are looking forward to trying local restaurants.',
-        'request': 'Once you find a restaurnat, make sure you get {}.',
+        'request': 'Once you find a restaurant, make sure you get {}.',
         'area': 'The restaurant should be in the {}.',
         'food': 'The restaurant should serve {} food.',
         'name': 'You are looking for a particular restaurant. Its name is called {}.',
@@ -134,22 +135,28 @@ class GoalGenerator:
     """User goal generator."""
 
     def __init__(self,
-                 goal_model_path=os.path.join(
-                     os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
-                     'data/multiwoz/goal/goal_model.pkl'),
+                 goal_model_path=os.path.join(get_root_path(), 'data/multiwoz/goal/new_goal_model.pkl'),
                  corpus_path=None,
-                 boldify=False):
+                 boldify=False,
+                 sample_info_from_trainset=True,
+                 sample_reqt_from_trainset=False):
         """
         Args:
             goal_model_path: path to a goal model 
-            corpus_path: path to a dialog corpus to build a goal model 
+            corpus_path: path to a dialog corpus to build a goal model
+            boldify: highlight some information in the goal message
+            sample_info_from_trainset: if True, sample info slots combination from train set, else sample each slot independently
+            sample_reqt_from_trainset: if True, sample reqt slots combination from train set, else sample each slot independently
         """
         self.goal_model_path = goal_model_path
         self.corpus_path = corpus_path
         self.db = Database()
         self.boldify = do_boldify if boldify else null_boldify
+        self.sample_info_from_trainset = sample_info_from_trainset
+        self.sample_reqt_from_trainset = sample_reqt_from_trainset
+        self.train_database = self.db.query('train',[])
         if os.path.exists(self.goal_model_path):
-            self.ind_slot_dist, self.ind_slot_value_dist, self.domain_ordering_dist, self.book_dist = pickle.load(
+            self.ind_slot_dist, self.ind_slot_value_dist, self.domain_ordering_dist, self.book_dist, self.slots_num_dist, self.slots_combination_dist = pickle.load(
                 open(self.goal_model_path, 'rb'))
             print('Loading goal model is done')
         else:
@@ -163,6 +170,12 @@ class GoalGenerator:
         del self.ind_slot_value_dist['hospital']['reqt']['postcode']
         del self.ind_slot_dist['hospital']['reqt']['address']
         del self.ind_slot_value_dist['hospital']['reqt']['address']
+
+        # print(self.slots_combination_dist['police'])
+        # print(self.slots_combination_dist['hospital'])
+        # pprint(self.ind_slot_dist)
+        # pprint(self.slots_num_dist)
+        # pprint(self.slots_combination_dist)
 
     def _build_goal_model(self):
         dialogs = json.load(open(self.corpus_path))
@@ -192,12 +205,24 @@ class GoalGenerator:
         ind_slot_value_cnt = dict([(domain, {}) for domain in domains])
         domain_cnt = Counter()
         book_cnt = Counter()
+        self.slots_combination_dist = {domain: {} for domain in domains}
+        self.slots_num_dist = {domain: {} for domain in domains}
 
         for d in dialogs:
             for domain in domains:
                 if dialogs[d]['goal'][domain] != {}:
                     domain_cnt[domain] += 1
                 if 'info' in dialogs[d]['goal'][domain]:
+                    if 'info' not in self.slots_combination_dist[domain]:
+                        self.slots_combination_dist[domain]['info'] = {}
+                        self.slots_num_dist[domain]['info'] = {}
+
+                    slots = sorted(list(dialogs[d]['goal'][domain]['info'].keys()))
+                    self.slots_combination_dist[domain]['info'].setdefault(tuple(slots), 0)
+                    self.slots_combination_dist[domain]['info'][tuple(slots)] += 1
+                    self.slots_num_dist[domain]['info'].setdefault(len(slots), 0)
+                    self.slots_num_dist[domain]['info'][len(slots)] += 1
+
                     for slot in dialogs[d]['goal'][domain]['info']:
                         if 'invalid' in slot:
                             continue
@@ -209,6 +234,20 @@ class GoalGenerator:
                             continue
                         ind_slot_value_cnt[domain]['info'][slot][dialogs[d]['goal'][domain]['info'][slot]] += 1
                 if 'reqt' in dialogs[d]['goal'][domain]:
+                    if 'reqt' not in self.slots_combination_dist[domain]:
+                        self.slots_combination_dist[domain]['reqt'] = {}
+                        self.slots_num_dist[domain]['reqt'] = {}
+                    slots = sorted(dialogs[d]['goal'][domain]['reqt'])
+                    if domain in ['police', 'hospital'] and 'postcode' in slots:
+                        slots.remove('postcode')
+                    else:
+                        assert len(slots) > 0, print(sorted(dialogs[d]['goal'][domain]['reqt']),[slots])
+                    if len(slots) > 0:
+                        self.slots_combination_dist[domain]['reqt'].setdefault(tuple(slots), 0)
+                        self.slots_combination_dist[domain]['reqt'][tuple(slots)] += 1
+                        self.slots_num_dist[domain]['reqt'].setdefault(len(slots), 0)
+                        self.slots_num_dist[domain]['reqt'][len(slots)] += 1
+
                     for slot in dialogs[d]['goal'][domain]['reqt']:
                         if 'reqt' not in ind_slot_value_cnt[domain]:
                             ind_slot_value_cnt[domain]['reqt'] = Counter()
@@ -226,6 +265,10 @@ class GoalGenerator:
                             continue
                         ind_slot_value_cnt[domain]['book'][slot][dialogs[d]['goal'][domain]['book'][slot]] += 1
 
+        # pprint(self.slots_num_dist)
+        # pprint(self.slots_combination_dist)
+        # for domain in domains:
+        #     print(domain, len(self.slots_combination_dist[domain]['info']))
         self.ind_slot_value_dist = deepcopy(ind_slot_value_cnt)
         self.ind_slot_dist = dict([(domain, {}) for domain in domains])
         self.book_dist = {}
@@ -264,7 +307,8 @@ class GoalGenerator:
                                                                                   val] / slot_total
             self.book_dist[domain] = book_cnt[domain] / len(dialogs)
 
-        pickle.dump((self.ind_slot_dist, self.ind_slot_value_dist, self.domain_ordering_dist, self.book_dist),
+        pickle.dump((self.ind_slot_dist, self.ind_slot_value_dist, self.domain_ordering_dist, self.book_dist,
+                     self.slots_num_dist, self.slots_combination_dist),
                     open(self.goal_model_path, 'wb'))
 
     def _get_domain_goal(self, domain):
@@ -278,9 +322,15 @@ class GoalGenerator:
             domain_goal = {'info': {}}
             # inform
             if 'info' in cnt_slot:
-                for slot in cnt_slot['info']:
-                    if random.random() < cnt_slot['info'][slot] + pro_correction['info']:
+                if self.sample_info_from_trainset:
+                    slots = random.choices(list(self.slots_combination_dist[domain]['info'].keys()),
+                                           list(self.slots_combination_dist[domain]['info'].values()))[0]
+                    for slot in slots:
                         domain_goal['info'][slot] = nomial_sample(cnt_slot_value['info'][slot])
+                else:
+                    for slot in cnt_slot['info']:
+                        if random.random() < cnt_slot['info'][slot] + pro_correction['info']:
+                            domain_goal['info'][slot] = nomial_sample(cnt_slot_value['info'][slot])
 
                 if domain in ['hotel', 'restaurant', 'attraction'] and 'name' in domain_goal['info'] and len(
                         domain_goal['info']) > 1:
@@ -305,13 +355,18 @@ class GoalGenerator:
                     else:
                         domain_goal['info']['leaveAt'] = nomial_sample(cnt_slot_value['info']['leaveAt'])
 
-                if domain in ['taxi', 'train'] and 'departure' not in domain_goal['info']:
+                if domain in ['train']:
+                    random_train = random.choice(self.train_database)
+                    domain_goal['info']['departure'] = random_train['departure']
+                    domain_goal['info']['destination'] = random_train['destination']
+
+                if domain in ['taxi'] and 'departure' not in domain_goal['info']:
                     domain_goal['info']['departure'] = nomial_sample(cnt_slot_value['info']['departure'])
 
-                if domain in ['taxi', 'train'] and 'destination' not in domain_goal['info']:
+                if domain in ['taxi'] and 'destination' not in domain_goal['info']:
                     domain_goal['info']['destination'] = nomial_sample(cnt_slot_value['info']['destination'])
 
-                if domain in ['taxi', 'train'] and \
+                if domain in ['taxi'] and \
                         'departure' in domain_goal['info'] and \
                         'destination' in domain_goal['info'] and \
                         domain_goal['info']['departure'] == domain_goal['info']['destination']:
@@ -324,9 +379,21 @@ class GoalGenerator:
                     continue
             # request
             if 'reqt' in cnt_slot:
-                reqt = [slot for slot in cnt_slot['reqt']
-                        if random.random() < cnt_slot['reqt'][slot] + pro_correction['reqt'] and slot not in
-                        domain_goal['info']]
+                if self.sample_reqt_from_trainset:
+                    not_in_info_slots = {}
+                    for slots in self.slots_combination_dist[domain]['reqt']:
+                        for slot in slots:
+                            if slot in domain_goal['info']:
+                                break
+                        else:
+                            not_in_info_slots[slots] = self.slots_combination_dist[domain]['reqt'][slots]
+                    pprint(not_in_info_slots)
+                    reqt = list(random.choices(list(not_in_info_slots.keys()),
+                                               list(not_in_info_slots.values()))[0])
+                else:
+                    reqt = [slot for slot in cnt_slot['reqt']
+                            if random.random() < cnt_slot['reqt'][slot] + pro_correction['reqt'] and slot not in
+                            domain_goal['info']]
                 if len(reqt) > 0:
                     domain_goal['reqt'] = reqt
 
@@ -494,6 +561,8 @@ class GoalGenerator:
 
     def build_message(self, user_goal, boldify=null_boldify):
         message = []
+        message_by_domain = []
+        mess_ptr4domain = 0
         state = deepcopy(user_goal)
 
         for dom in user_goal['domain_ordering']:
@@ -508,12 +577,13 @@ class GoalGenerator:
             # info
             def fill_info_template(user_goal, domain, slot, info):
                 if slot != 'area' or not ('restaurant' in user_goal and
-                                          'attraction' in user_goal and
-                                          info in user_goal['restaurant'].keys() and
-                                          info in user_goal['attraction'].keys() and
-                                          'area' in user_goal['restaurant'][info] and
-                                          'area' in user_goal['attraction'][info] and
-                                          user_goal['restaurant'][info]['area'] == user_goal['attraction'][info]['area']):
+                                                  'attraction' in user_goal and
+                                                  info in user_goal['restaurant'].keys() and
+                                                  info in user_goal['attraction'].keys() and
+                                                  'area' in user_goal['restaurant'][info] and
+                                                  'area' in user_goal['attraction'][info] and
+                                                  user_goal['restaurant'][info]['area'] ==
+                                                  user_goal['attraction'][info]['area']):
                     return templates[domain][slot].format(self.boldify(user_goal[domain][info][slot]))
                 else:
                     restaurant_index = user_goal['domain_ordering'].index('restaurant')
@@ -537,17 +607,21 @@ class GoalGenerator:
                     if 'arriveBy' in state[info]:
                         m.append('The taxi should arrive at the {} from the {} by {}.'.format(self.boldify(places[0]),
                                                                                               self.boldify(places[1]),
-                                                                                              self.boldify(state[info]['arriveBy'])))
+                                                                                              self.boldify(state[info][
+                                                                                                               'arriveBy'])))
                     elif 'leaveAt' in state[info]:
                         m.append('The taxi should leave from the {} to the {} after {}.'.format(self.boldify(places[0]),
                                                                                                 self.boldify(places[1]),
-                                                                                                self.boldify(state[info]['leaveAt'])))
+                                                                                                self.boldify(
+                                                                                                    state[info][
+                                                                                                        'leaveAt'])))
                     message.append(' '.join(m))
             else:
                 while len(state[info]) > 0:
                     num_acts = random.randint(1, min(len(state[info]), 3))
                     slots = random.sample(list(state[info].keys()), num_acts)
-                    sents = [fill_info_template(user_goal, dom, slot, info) for slot in slots if slot not in ['parking', 'internet']]
+                    sents = [fill_info_template(user_goal, dom, slot, info) for slot in slots if
+                             slot not in ['parking', 'internet']]
                     if 'parking' in slots:
                         sents.append(templates[dom]['parking ' + state[info]['parking']])
                     if 'internet' in slots:
@@ -560,13 +634,16 @@ class GoalGenerator:
 
             # fail_info
             if 'fail_info' in user_goal[dom]:
-            # if 'fail_info' in user_goal[dom]:
+                # if 'fail_info' in user_goal[dom]:
                 adjusted_slot = list(filter(lambda x: x[0][1] != x[1][1],
-                                            zip(user_goal[dom]['info'].items(), user_goal[dom]['fail_info'].items())))[0][0][0]
+                                            zip(user_goal[dom]['info'].items(), user_goal[dom]['fail_info'].items())))[
+                    0][0][0]
                 if adjusted_slot in ['internet', 'parking']:
-                    message.append(templates[dom]['fail_info ' + adjusted_slot + ' ' + user_goal[dom]['info'][adjusted_slot]])
+                    message.append(
+                        templates[dom]['fail_info ' + adjusted_slot + ' ' + user_goal[dom]['info'][adjusted_slot]])
                 else:
-                    message.append(templates[dom]['fail_info ' + adjusted_slot].format(self.boldify(user_goal[dom]['info'][adjusted_slot])))
+                    message.append(templates[dom]['fail_info ' + adjusted_slot].format(
+                        self.boldify(user_goal[dom]['info'][adjusted_slot])))
 
             # reqt
             if 'reqt' in state:
@@ -591,7 +668,7 @@ class GoalGenerator:
                 previous_domains = user_goal['domain_ordering'][:domain_index]
                 for prev in previous_domains:
                     if prev in ['restaurant', 'hotel', 'train'] and 'book' in user_goal[prev] and \
-                            slot in user_goal[prev]['book'] and user_goal[prev]['book'][slot] == \
+                                    slot in user_goal[prev]['book'] and user_goal[prev]['book'][slot] == \
                             user_goal[domain]['book'][slot]:
                         return prev
                 return None
@@ -632,7 +709,8 @@ class GoalGenerator:
             # fail_book
             if 'fail_book' in user_goal[dom]:
                 adjusted_slot = list(filter(lambda x: x[0][1] != x[1][1], zip(user_goal[dom]['book'].items(),
-                                                                              user_goal[dom]['fail_book'].items())))[0][0][0]
+                                                                              user_goal[dom]['fail_book'].items())))[0][
+                    0][0]
 
                 if adjusted_slot in ['internet', 'parking']:
                     message.append(
@@ -641,11 +719,18 @@ class GoalGenerator:
                     message.append(templates[dom]['fail_book ' + adjusted_slot].format(
                         self.boldify(user_goal[dom]['book'][adjusted_slot])))
 
+            dm = message[mess_ptr4domain:]
+            mess_ptr4domain = len(message)
+            message_by_domain.append(' '.join(dm))
+
         if boldify == do_boldify:
             for i, m in enumerate(message):
                 message[i] = message[i].replace('wifi', "<b>wifi</b>")
                 message[i] = message[i].replace('internet', "<b>internet</b>")
                 message[i] = message[i].replace('parking', "<b>parking</b>")
 
-        return message
+        return message, message_by_domain
 
+if __name__ == '__main__':
+    goal_generator = GoalGenerator(corpus_path=os.path.join(get_root_path(), 'data/multiwoz/train.json'), sample_reqt_from_trainset=True)
+    pprint(goal_generator.get_user_goal())

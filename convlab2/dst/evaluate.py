@@ -1,7 +1,7 @@
-# -*- coding: gbk -*-
+# -*- coding: utf-8 -*-
 """
-Evaluate NLU models on specified dataset
-Usage: python evaluate.py [MultiWOZ|CrossWOZ] [TRADE|mdbt|sumbt|rule]
+Evaluate DST models on specified dataset
+Usage: python evaluate.py [MultiWOZ|CrossWOZ|MultiWOZ-zh|CrossWOZ-en] [TRADE|mdbt|sumbt] [val|test|human_val]
 """
 import random
 import numpy
@@ -12,8 +12,9 @@ import copy
 import jieba
 
 multiwoz_slot_list = ['attraction-area', 'attraction-name', 'attraction-type', 'hotel-day', 'hotel-people', 'hotel-stay', 'hotel-area', 'hotel-internet', 'hotel-name', 'hotel-parking', 'hotel-pricerange', 'hotel-stars', 'hotel-type', 'restaurant-day', 'restaurant-people', 'restaurant-time', 'restaurant-area', 'restaurant-food', 'restaurant-name', 'restaurant-pricerange', 'taxi-arriveby', 'taxi-departure', 'taxi-destination', 'taxi-leaveat', 'train-people', 'train-arriveby', 'train-day', 'train-departure', 'train-destination', 'train-leaveat']
-crosswoz_slot_list = ["¾°µã-ÃÅÆ±", "¾°µã-ÆÀ·Ö", "²Í¹Ý-Ãû³Æ", "¾Æµê-¼Û¸ñ", "¾Æµê-ÆÀ·Ö", "¾°µã-Ãû³Æ", "¾°µã-µØÖ·", "¾°µã-ÓÎÍæÊ±¼ä", "²Í¹Ý-ÓªÒµÊ±¼ä", "²Í¹Ý-ÆÀ·Ö", "¾Æµê-Ãû³Æ", "¾Æµê-ÖÜ±ß¾°µã", "¾Æµê-¾ÆµêÉèÊ©-½ÐÐÑ·þÎñ", "¾Æµê-¾ÆµêÀàÐÍ", "²Í¹Ý-ÈË¾ùÏû·Ñ", "²Í¹Ý-ÍÆ¼ö²Ë", "¾Æµê-¾ÆµêÉèÊ©", "¾Æµê-µç»°", "¾°µã-µç»°", "²Í¹Ý-ÖÜ±ß²Í¹Ý", "²Í¹Ý-µç»°", "²Í¹Ý-none", "²Í¹Ý-µØÖ·", "¾Æµê-¾ÆµêÉèÊ©-ÎÞÑÌ·¿", "¾Æµê-µØÖ·", "¾°µã-ÖÜ±ß¾°µã", "¾°µã-ÖÜ±ß¾Æµê", "³ö×â-³ö·¢µØ", "³ö×â-Ä¿µÄµØ", "µØÌú-³ö·¢µØ", "µØÌú-Ä¿µÄµØ", "¾°µã-ÖÜ±ß²Í¹Ý", "¾Æµê-ÖÜ±ß²Í¹Ý", "³ö×â-³µÐÍ", "²Í¹Ý-ÖÜ±ß¾°µã", "²Í¹Ý-ÖÜ±ß¾Æµê", "µØÌú-³ö·¢µØ¸½½üµØÌúÕ¾", "µØÌú-Ä¿µÄµØ¸½½üµØÌúÕ¾", "¾°µã-none", "¾Æµê-¾ÆµêÉèÊ©-ÉÌÎñÖÐÐÄ", "²Í¹Ý-Ô´ÁìÓò", "¾Æµê-¾ÆµêÉèÊ©-ÖÐÊ½²ÍÌü", "¾Æµê-¾ÆµêÉèÊ©-½ÓÕ¾·þÎñ", "¾Æµê-¾ÆµêÉèÊ©-¹ú¼Ê³¤Í¾µç»°", "¾Æµê-¾ÆµêÉèÊ©-´µ·ç»ú", "¾Æµê-¾ÆµêÉèÊ©-»áÒéÊÒ", "¾Æµê-Ô´ÁìÓò", "¾Æµê-none", "¾Æµê-¾ÆµêÉèÊ©-¿í´øÉÏÍø", "¾Æµê-¾ÆµêÉèÊ©-¿´»¤Ð¡º¢·þÎñ", "¾Æµê-¾ÆµêÉèÊ©-¾Æµê¸÷´¦Ìá¹©wifi", "¾Æµê-¾ÆµêÉèÊ©-Å¯Æø", "¾Æµê-¾ÆµêÉèÊ©-spa", "³ö×â-³µÅÆ", "¾°µã-Ô´ÁìÓò", "¾Æµê-¾ÆµêÉèÊ©-ÐÐÀî¼Ä´æ", "¾Æµê-¾ÆµêÉèÊ©-Î÷Ê½²ÍÌü", "¾Æµê-¾ÆµêÉèÊ©-¾Æ°É", "¾Æµê-¾ÆµêÉèÊ©-Ôç²Í·þÎñ", "¾Æµê-¾ÆµêÉèÊ©-½¡Éí·¿", "¾Æµê-¾ÆµêÉèÊ©-²Ð¼²ÈËÉèÊ©", "¾Æµê-¾ÆµêÉèÊ©-Ãâ·ÑÊÐÄÚµç»°", "¾Æµê-¾ÆµêÉèÊ©-½Ó´ýÍâ±ö", "¾Æµê-¾ÆµêÉèÊ©-²¿·Ö·¿¼äÌá¹©wifi", "¾Æµê-¾ÆµêÉèÊ©-Ï´ÒÂ·þÎñ", "¾Æµê-¾ÆµêÉèÊ©-×â³µ", "¾Æµê-¾ÆµêÉèÊ©-¹«¹²ÇøÓòºÍ²¿·Ö·¿¼äÌá¹©wifi", "¾Æµê-¾ÆµêÉèÊ©-24Ð¡Ê±ÈÈË®", "¾Æµê-¾ÆµêÉèÊ©-ÎÂÈª", "¾Æµê-¾ÆµêÉèÊ©-É£ÄÃ", "¾Æµê-¾ÆµêÉèÊ©-ÊÕ·ÑÍ£³µÎ»", "¾Æµê-ÖÜ±ß¾Æµê", "¾Æµê-¾ÆµêÉèÊ©-½Ó»ú·þÎñ", "¾Æµê-¾ÆµêÉèÊ©-ËùÓÐ·¿¼äÌá¹©wifi", "¾Æµê-¾ÆµêÉèÊ©-ÆåÅÆÊÒ", "¾Æµê-¾ÆµêÉèÊ©-Ãâ·Ñ¹úÄÚ³¤Í¾µç»°", "¾Æµê-¾ÆµêÉèÊ©-ÊÒÄÚÓÎÓ¾³Ø", "¾Æµê-¾ÆµêÉèÊ©-Ôç²Í·þÎñÃâ·Ñ", "¾Æµê-¾ÆµêÉèÊ©-¹«¹²ÇøÓòÌá¹©wifi", "¾Æµê-¾ÆµêÉèÊ©-ÊÒÍâÓÎÓ¾³Ø"]
-
+crosswoz_slot_list = ["æ™¯ç‚¹-é—¨ç¥¨", "æ™¯ç‚¹-è¯„åˆ†", "é¤é¦†-åç§°", "é…’åº—-ä»·æ ¼", "é…’åº—-è¯„åˆ†", "æ™¯ç‚¹-åç§°", "æ™¯ç‚¹-åœ°å€", "æ™¯ç‚¹-æ¸¸çŽ©æ—¶é—´", "é¤é¦†-è¥ä¸šæ—¶é—´", "é¤é¦†-è¯„åˆ†", "é…’åº—-åç§°", "é…’åº—-å‘¨è¾¹æ™¯ç‚¹", "é…’åº—-é…’åº—è®¾æ–½-å«é†’æœåŠ¡", "é…’åº—-é…’åº—ç±»åž‹", "é¤é¦†-äººå‡æ¶ˆè´¹", "é¤é¦†-æŽ¨èèœ", "é…’åº—-é…’åº—è®¾æ–½", "é…’åº—-ç”µè¯", "æ™¯ç‚¹-ç”µè¯", "é¤é¦†-å‘¨è¾¹é¤é¦†", "é¤é¦†-ç”µè¯", "é¤é¦†-none", "é¤é¦†-åœ°å€", "é…’åº—-é…’åº—è®¾æ–½-æ— çƒŸæˆ¿", "é…’åº—-åœ°å€", "æ™¯ç‚¹-å‘¨è¾¹æ™¯ç‚¹", "æ™¯ç‚¹-å‘¨è¾¹é…’åº—", "å‡ºç§Ÿ-å‡ºå‘åœ°", "å‡ºç§Ÿ-ç›®çš„åœ°", "åœ°é“-å‡ºå‘åœ°", "åœ°é“-ç›®çš„åœ°", "æ™¯ç‚¹-å‘¨è¾¹é¤é¦†", "é…’åº—-å‘¨è¾¹é¤é¦†", "å‡ºç§Ÿ-è½¦åž‹", "é¤é¦†-å‘¨è¾¹æ™¯ç‚¹", "é¤é¦†-å‘¨è¾¹é…’åº—", "åœ°é“-å‡ºå‘åœ°é™„è¿‘åœ°é“ç«™", "åœ°é“-ç›®çš„åœ°é™„è¿‘åœ°é“ç«™", "æ™¯ç‚¹-none", "é…’åº—-é…’åº—è®¾æ–½-å•†åŠ¡ä¸­å¿ƒ", "é¤é¦†-æºé¢†åŸŸ", "é…’åº—-é…’åº—è®¾æ–½-ä¸­å¼é¤åŽ…", "é…’åº—-é…’åº—è®¾æ–½-æŽ¥ç«™æœåŠ¡", "é…’åº—-é…’åº—è®¾æ–½-å›½é™…é•¿é€”ç”µè¯", "é…’åº—-é…’åº—è®¾æ–½-å¹é£Žæœº", "é…’åº—-é…’åº—è®¾æ–½-ä¼šè®®å®¤", "é…’åº—-æºé¢†åŸŸ", "é…’åº—-none", "é…’åº—-é…’åº—è®¾æ–½-å®½å¸¦ä¸Šç½‘", "é…’åº—-é…’åº—è®¾æ–½-çœ‹æŠ¤å°å­©æœåŠ¡", "é…’åº—-é…’åº—è®¾æ–½-é…’åº—å„å¤„æä¾›wifi", "é…’åº—-é…’åº—è®¾æ–½-æš–æ°”", "é…’åº—-é…’åº—è®¾æ–½-spa", "å‡ºç§Ÿ-è½¦ç‰Œ", "æ™¯ç‚¹-æºé¢†åŸŸ", "é…’åº—-é…’åº—è®¾æ–½-è¡ŒæŽå¯„å­˜", "é…’åº—-é…’åº—è®¾æ–½-è¥¿å¼é¤åŽ…", "é…’åº—-é…’åº—è®¾æ–½-é…’å§", "é…’åº—-é…’åº—è®¾æ–½-æ—©é¤æœåŠ¡", "é…’åº—-é…’åº—è®¾æ–½-å¥èº«æˆ¿", "é…’åº—-é…’åº—è®¾æ–½-æ®‹ç–¾äººè®¾æ–½", "é…’åº—-é…’åº—è®¾æ–½-å…è´¹å¸‚å†…ç”µè¯", "é…’åº—-é…’åº—è®¾æ–½-æŽ¥å¾…å¤–å®¾", "é…’åº—-é…’åº—è®¾æ–½-éƒ¨åˆ†æˆ¿é—´æä¾›wifi", "é…’åº—-é…’åº—è®¾æ–½-æ´—è¡£æœåŠ¡", "é…’åº—-é…’åº—è®¾æ–½-ç§Ÿè½¦", "é…’åº—-é…’åº—è®¾æ–½-å…¬å…±åŒºåŸŸå’Œéƒ¨åˆ†æˆ¿é—´æä¾›wifi", "é…’åº—-é…’åº—è®¾æ–½-24å°æ—¶çƒ­æ°´", "é…’åº—-é…’åº—è®¾æ–½-æ¸©æ³‰", "é…’åº—-é…’åº—è®¾æ–½-æ¡‘æ‹¿", "é…’åº—-é…’åº—è®¾æ–½-æ”¶è´¹åœè½¦ä½", "é…’åº—-å‘¨è¾¹é…’åº—", "é…’åº—-é…’åº—è®¾æ–½-æŽ¥æœºæœåŠ¡", "é…’åº—-é…’åº—è®¾æ–½-æ‰€æœ‰æˆ¿é—´æä¾›wifi", "é…’åº—-é…’åº—è®¾æ–½-æ£‹ç‰Œå®¤", "é…’åº—-é…’åº—è®¾æ–½-å…è´¹å›½å†…é•¿é€”ç”µè¯", "é…’åº—-é…’åº—è®¾æ–½-å®¤å†…æ¸¸æ³³æ± ", "é…’åº—-é…’åº—è®¾æ–½-æ—©é¤æœåŠ¡å…è´¹", "é…’åº—-é…’åº—è®¾æ–½-å…¬å…±åŒºåŸŸæä¾›wifi", "é…’åº—-é…’åº—è®¾æ–½-å®¤å¤–æ¸¸æ³³æ± "]
+from convlab2.dst.sumbt.multiwoz_zh.sumbt import multiwoz_zh_slot_list
+from convlab2.dst.sumbt.crosswoz_en.sumbt import crosswoz_en_slot_list
 
 def format_history(context):
     history = []
@@ -37,7 +38,7 @@ def reformat_state(state):
             domain_data = domain_data['semi']
             for slot in domain_data.keys():
                 val = domain_data[slot]
-                if val is not None and val != '' and val != 'not mentioned':
+                if val is not None and val not in ['', 'not mentioned', 'æœªæåŠ', 'æœªæåˆ°', 'æ²¡æœ‰æåˆ°']:
                     new_state.append(domain + '-' + slot + '-' + val)
     # lower
     new_state = [item.lower() for item in new_state]
@@ -47,19 +48,27 @@ def reformat_state_crosswoz(state):
     if 'belief_state' in state:
         state = state['belief_state']
     new_state = []
+    # print(state)
     for domain in state.keys():
         domain_data = state[domain]
         for slot in domain_data.keys():
             if slot == 'selectedResults': continue
             val = domain_data[slot]
-            if val is not None and val != '':
-                new_state.append(domain + '-' + slot + '-' + val)
+            if slot == 'Hotel Facilities' and val not in ['', 'none']:
+                for facility in val.split(','):
+                    new_state.append(domain + '-' + f'Hotel Facilities - {facility}' + 'yes')
+            else:
+                if val is not None and val not in ['', 'none']:
+                    # print(domain, slot, val)
+                    new_state.append(domain + '-' + slot + '-' + val)
+
     return new_state
 
 def compute_acc(gold, pred, slot_temp):
     # TODO: not mentioned in gold
     miss_gold = 0
     miss_slot = []
+    # print(gold, pred)
     for g in gold:
         if g not in pred:
             miss_gold += 1
@@ -124,34 +133,44 @@ if __name__ == '__main__':
     numpy.random.seed(seed)
     torch.manual_seed(seed)
 
-    if len(sys.argv) != 3:
+    if len(sys.argv) != 4:
         print("usage:")
         print("\t python evaluate.py dataset model")
-        print("\t dataset=MultiWOZ, CrossWOZ")
+        print("\t dataset=MultiWOZ, MultiWOZ-zh, CrossWOZ, CrossWOZ-en")
         print("\t model=TRADE, mdbt, sumbt")
+        print("\t val=[val|test|human_val]")
         sys.exit()
 
     ## init phase
     dataset_name = sys.argv[1]
     model_name = sys.argv[2]
-    if dataset_name == 'MultiWOZ':
-        if model_name == 'TRADE':
-            from convlab2.dst.trade.multiwoz.trade import MultiWOZTRADE
-            model = MultiWOZTRADE()
-        elif model_name == 'mdbt':
-            from convlab2.dst.mdbt.multiwoz.dst import MultiWozMDBT
-            model = MultiWozMDBT()
-        elif model_name == 'sumbt':
-            from convlab2.dst.sumbt.multiwoz.sumbt import SUMBTTracker
-            model = SUMBTTracker()
+    data_key = sys.argv[3]
+
+    if dataset_name.startswith('MultiWOZ'):
+        if dataset_name.endswith('zh'):
+            if model_name == 'sumbt':
+                from convlab2.dst.sumbt.multiwoz_zh.sumbt import SUMBTTracker
+                model = SUMBTTracker()
+            else:
+                raise Exception("Available models: sumbt")
         else:
-            raise Exception("Available models: TRADE/mdbt/sumbt")
+            if model_name == 'sumbt':
+                from convlab2.dst.sumbt.multiwoz.sumbt import SUMBTTracker
+                model = SUMBTTracker()
+            elif model_name == 'TRADE':
+                from convlab2.dst.trade.multiwoz.trade import MultiWOZTRADE
+                model = MultiWOZTRADE()
+            elif model_name == 'mdbt':
+                from convlab2.dst.mdbt.multiwoz.dst import MultiWozMDBT
+                model = MultiWozMDBT()
+            else:
+                raise Exception("Available models: TRADE/mdbt/sumbt")
 
         ## load data
         from convlab2.util.dataloader.module_dataloader import AgentDSTDataloader
         from convlab2.util.dataloader.dataset_dataloader import MultiWOZDataloader
-        dataloader = AgentDSTDataloader(dataset_dataloader=MultiWOZDataloader())
-        data = dataloader.load_data(data_key='test')['test']
+        dataloader = AgentDSTDataloader(dataset_dataloader=MultiWOZDataloader(dataset_name.endswith('zh')))
+        data = dataloader.load_data(data_key=data_key)[data_key]
         context, golden_truth = data['context'], data['belief_state']
         all_predictions = {}
         test_set = []
@@ -160,7 +179,6 @@ if __name__ == '__main__':
         turn_count = 0
         is_start = True
         for i in tqdm(range(len(context))):
-        # for i in tqdm(range(200)):  # for test
             if len(context[i]) == 0:
                 turn_count = 0
                 if is_start:
@@ -181,37 +199,41 @@ if __name__ == '__main__':
                 'turn_belief': reformat_state(y),
                 'pred_bs_ptr': reformat_state(pred)
             }
-            # print('golden: ', reformat_state(y))
-            # print('pred :', reformat_state(pred))
             turn_count += 1
         # add last session
         if len(curr_sess) > 0:
             all_predictions[session_count] = copy.deepcopy(curr_sess)
 
-        joint_acc_score_ptr, F1_score_ptr, turn_acc_score_ptr = evaluate_metrics(all_predictions, "pred_bs_ptr", multiwoz_slot_list)
+        slot_list = multiwoz_zh_slot_list if dataset_name.endswith('zh') else multiwoz_slot_list
+        joint_acc_score_ptr, F1_score_ptr, turn_acc_score_ptr = evaluate_metrics(all_predictions, "pred_bs_ptr", slot_list)
         evaluation_metrics = {"Joint Acc": joint_acc_score_ptr, "Turn Acc": turn_acc_score_ptr,
                               "Joint F1": F1_score_ptr}
         print(evaluation_metrics)
-
-    elif dataset_name == 'CrossWOZ':
-        if model_name == 'TRADE':
-            from convlab2.dst.trade.crosswoz.trade import CrossWOZTRADE
-            model = CrossWOZTRADE()
-        elif model_name == 'mdbt':
-            pass
-        elif model_name == 'sumbt':
-            pass
-        elif model_name == 'rule':
-            pass
+    elif dataset_name.startswith('CrossWOZ'):
+        en = dataset_name.endswith('en')
+        if en:
+            if model_name == 'sumbt':
+                from convlab2.dst.sumbt.crosswoz_en.sumbt import SUMBTTracker
+                model = SUMBTTracker()
         else:
-            raise Exception("Available models: TRADE")
+            if model_name == 'TRADE':
+                from convlab2.dst.trade.crosswoz.trade import CrossWOZTRADE
+                model = CrossWOZTRADE()
+            elif model_name == 'mdbt':
+                pass
+            elif model_name == 'sumbt':
+                pass
+            elif model_name == 'rule':
+                pass
+            else:
+                raise Exception("Available models: TRADE")
 
         ## load data
         from convlab2.util.dataloader.module_dataloader import CrossWOZAgentDSTDataloader
         from convlab2.util.dataloader.dataset_dataloader import CrossWOZDataloader
 
-        dataloader = CrossWOZAgentDSTDataloader(dataset_dataloader=CrossWOZDataloader())
-        data = dataloader.load_data(data_key='test')['test']
+        dataloader = CrossWOZAgentDSTDataloader(dataset_dataloader=CrossWOZDataloader(en))
+        data = dataloader.load_data(data_key=data_key)[data_key]
         context, golden_truth = data['context'], data['sys_state_init']
         all_predictions = {}
         test_set = []
@@ -220,7 +242,6 @@ if __name__ == '__main__':
         turn_count = 0
         is_start = True
         for i in tqdm(range(len(context))):
-        # for i in tqdm(range(10)):  # for test
             if len(context[i]) == 0:
                 turn_count = 0
                 if is_start:
@@ -229,22 +250,27 @@ if __name__ == '__main__':
                     all_predictions[session_count] = copy.deepcopy(curr_sess)
                     session_count += 1
                     curr_sess = {}
+
+            # skip usr turn
             if len(context[i]) % 2 == 0:
                 continue
+
             # add turn
             x = context[i]
             y = golden_truth[i]
+
             # process y
-            for domain in y.keys():
-                domain_data = y[domain]
-                for slot in domain_data.keys():
-                    if slot == 'selectedResults': continue
-                    val = domain_data[slot]
-                    if val is not None and val != '':
-                        val = sentseg(val)
-                        y[domain][slot] = val
+            if not en:
+                for domain in y.keys():
+                    domain_data = y[domain]
+                    for slot in domain_data.keys():
+                        if slot == 'selectedResults': continue
+                        val = domain_data[slot]
+                        if val is not None and val != '':
+                            val = sentseg(val)
+                            domain_data[slot] = val
             model.init_session()
-            model.state['history'] = format_history([sentseg(item) for item in context[i]])
+            model.state['history'] = format_history([item if en else sentseg(item) for item in context[i]])
             pred = model.update(x[-1] if len(x) > 0 else '')
             curr_sess[turn_count] = {
                 'turn_belief': reformat_state_crosswoz(y),
@@ -255,8 +281,9 @@ if __name__ == '__main__':
         if len(curr_sess) > 0:
             all_predictions[session_count] = copy.deepcopy(curr_sess)
 
+        slot_list = crosswoz_en_slot_list if en else crosswoz_slot_list
         joint_acc_score_ptr, F1_score_ptr, turn_acc_score_ptr = evaluate_metrics(all_predictions, "pred_bs_ptr",
-                                                                                 crosswoz_slot_list)
+                                                                                 slot_list)
         evaluation_metrics = {"Joint Acc": joint_acc_score_ptr, "Turn Acc": turn_acc_score_ptr,
                               "Joint F1": F1_score_ptr}
         print(evaluation_metrics)
