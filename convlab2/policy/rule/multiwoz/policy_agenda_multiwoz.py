@@ -34,7 +34,7 @@ for dom, ref_slots in REF_SYS_DA.items():
         if slot_a == 'Ref':
             slot_b = 'ref'
         REF_SYS_DA_M[dom][slot_a.lower()] = slot_b
-    REF_SYS_DA_M[dom]['none'] = None
+    REF_SYS_DA_M[dom]['none'] = 'none'
 REF_SYS_DA_M['taxi']['phone'] = 'phone'
 REF_SYS_DA_M['taxi']['car'] = 'car type'
 
@@ -90,9 +90,14 @@ class UserPolicyAgendaMultiWoz(Policy):
 
         sys_action = {}
         for intent, domain, slot, value in sys_dialog_act:
-            k = '-'.join([domain, intent])
-            sys_action.setdefault(k,[])
-            sys_action[k].append([slot, value])
+            if slot == 'Choice' and value.strip().lower() in ['0', 'zero']:
+                nooffer_key = '-'.join([domain, 'NoOffer'])
+                sys_action.setdefault(nooffer_key, [])
+                sys_action[nooffer_key].append(['none', 'none'])
+            else:
+                k = '-'.join([domain, intent])
+                sys_action.setdefault(k, [])
+                sys_action[k].append([slot, value])
 
         if self.__turn > self.max_turn:
             self.agenda.close_session()
@@ -591,7 +596,7 @@ class Agenda(object):
                     continue
 
             # For multiple choices, add new intent to select one:
-            if slot == 'choice':
+            if slot == 'choice' and value.strip().lower() not in ['0', 'zero']:
                 self._push_item(domain + '-inform', "choice", "any")
 
             if slot in g_reqt:
@@ -882,6 +887,7 @@ if __name__ == '__main__':
     state['user_action'] = user_act
     sys_act = sys_policy.predict(state)
     sys_act.append(["Request", "Restaurant", "Price", "?"])
+    sys_act = [['Inform', 'Hotel', 'Choice', '0']]
     print(sys_act)
 
 
