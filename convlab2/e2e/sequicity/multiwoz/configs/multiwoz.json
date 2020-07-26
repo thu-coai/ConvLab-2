@@ -19,7 +19,8 @@
       "multiwoz/data/hotel_db.json",
       "multiwoz/data/restaurant_db.json",
       "multiwoz/data/hospital_db.json",
-      "multiwoz/data/train_db.json"
+      "multiwoz/data/train_db.json",
+      "multiwoz/data/police_db.json"
     ],
     "glove_path": "multiwoz/data/glove.6B.50d.txt",
     "batch_size": 32,

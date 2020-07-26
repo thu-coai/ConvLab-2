@@ -96,7 +96,7 @@ class Sequicity(Agent):
                                                                                  in constraint_request else constraint_request
         for j, ent in enumerate(constraints):
             constraints[j] = ent.replace('_', ' ')
-        degree = self.m.reader.db_search(constraints)
+        degree = self.m.reader.db_search(constraints[1:], constraints[0] if constraints else 'restaurant')
         degree_input_list = self.m.reader._degree_vec_mapping(len(degree))
         degree_input = cuda_(Variable(torch.Tensor(degree_input_list).unsqueeze(0)))
         return degree, degree_input

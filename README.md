@@ -120,7 +120,7 @@ Performance (the first row is the default config for each module. Empty entries 
 | BERTNLU | RuleDST | **HDSA**       | None        | 35.6 | 27.5 | 5.4 | 47.8/57.2/48.8 | 13.0/31.5 |
 | BERTNLU | RuleDST | **LaRL**       | None        | 40.6 | 34.0 | 45.6 | 47.8/54.1/47.6 | 15.0/28.6 |
 | None | **SUMBT** | **LaRL** | None |    39.4|   33.1| 39.5  | 48.5/56.0/48.8| 15.5/28.7|
-| None | None | **Sequicity*** | None | 13.1 | 10.5 | 5.1 | 41.4/30.8/31.3 | 12.9/38.3 |
+| None | None | **Sequicity*** | None | 21.7 | 14.0 | 4.9 | 36.3/35.1/32.0 | 18.2/35.2 |
 | None | None | **DAMD***      | None | 38.5 | 33.6 | 50.9 | 62.1/60.7/57.4 | 10.4/28.2 |
 
 *: end-to-end models used as sys_agent directly.
