@@ -1,3 +1,4 @@
+import os
 import argparse
 import csv
 import functools
@@ -124,6 +125,8 @@ class GenericEvaluator:
         self.metric_dict = {}
         self.entity_dict = {}
         filename = result_path.split('/')[-1]
+        if not os.path.exists('./sheets/'):
+            os.makedirs('./sheets/')
         dump_dir = './sheets/' + filename.replace('.csv','.report.txt')
         self.dump_file = open(dump_dir,'w')
 
