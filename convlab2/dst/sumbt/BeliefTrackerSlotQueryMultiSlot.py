@@ -150,6 +150,9 @@ class BeliefTracker(nn.Module):
         ### Etc.
         self.dropout = nn.Dropout(self.hidden_dropout_prob)
 
+        # default evaluation mode
+        self.eval()
+
     def initialize_slot_value_lookup(self, label_ids, slot_ids):
 
         self.sv_encoder.eval()
