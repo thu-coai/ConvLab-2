@@ -33,7 +33,7 @@ def extract_ontology(data):
                         assert isinstance(value, str)
                         value_set.add(value)
             else:
-                for domain, svd in turn['sys_state'].items():
+                for domain, svd in turn['sys_state_init'].items():
                     domain_set.add(domain)
                     for slot, value in svd.items():
                         slot_set.add(slot)
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     domain_set = set()
     slot_set = set()
     value_set = set()
-    for s in ['train', 'val', 'test']:
+    for s in ['train', 'val', 'test', 'dstc9_data']:
         data = read_zipped_json(s+'.json.zip', s+'.json')
         output = extract_ontology(data)
         intent_set |= output[0]
