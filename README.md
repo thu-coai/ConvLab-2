@@ -105,23 +105,20 @@ Performance (the first row is the default config for each module. Empty entries 
 
 | NLU         | DST       | Policy         | NLG         | Complete rate | Success rate | Book rate | Inform P/R/F1 | Turn(succ/all) |
 | ----------- | --------- | -------------- | ----------- | ------------- | ------------ | --------- | --------- | -------------- |
-| **BERTNLU** | RuleDST   | RulePolicy     | TemplateNLG | 92.1          | 85.5         | 91.5      | 79.8/92.8/83.8 | 12.7/13.8      |
-| **MILU**    | RuleDST | RulePolicy | TemplateNLG | 89.9          | 83.1         | 90.9      | 78.3/91.7/82.5 | 12.1/13.9      |
-| **SVMNLU**  | RuleDST | RulePolicy | TemplateNLG | 84.2          | 70.4         | 76.1      | 79.1/88.8/81.5 | 14.8/17.7      |
-| BERTNLU | RuleDST | RulePolicy | **SCLSTM**  | 40.1       | 41.0  | 51.5    | 68.5/56.5/59.1 |      11.6/29.2      |
-| BERTNLU     | RuleDST | **MLEPolicy**  | TemplateNLG | 52.6              | 48.4         | 35.5      |  66.3/72.7/66.0 | 12.5/26.3      |
-| BERTNLU | RuleDST | **PGPolicy**   | TemplateNLG | 42.9              | 43.3         | 31.0      |  61.9/66.8/60.4 | 14.7/29.1      |
-| BERTNLU | RuleDST | **PPOPolicy**  | TemplateNLG | 69.7              | 56.6         | 56.6      |  64.8/79.0/68.1 | 12.9/22.1      |
-| BERTNLU | RuleDST | **GDPLPolicy** | TemplateNLG | 57.9              | 49.5         | 33.5      |  67.0/76.4/68.2 | 11.5/24.3      |
-| None        | **MDBT**  | RulePolicy | TemplateNLG |     27.7      |       21.2     |   45.4    |  52.2/41.0/42.4 |   11.8/32.1       |
-| None        | **TRADE** | RulePolicy | TemplateNLG |      29.9      |    25.3       |     36.9     | 49.3/48.1/44.4 |     12.7/24.7     |
-| None        | **SUMBT** | RulePolicy | TemplateNLG |       34.7    |    33.8     |    57.8   |  52.3/50.6/47.3   | 12.1/26.6         |
-| BERTNLU | RuleDST | **MDRG**       | None        | 27.0 | 25.2 | 49.0 | 46.6/43.1/42.0 | 13.6/33.6 |
-| BERTNLU | RuleDST | **HDSA**       | None        | 35.6 | 27.5 | 5.4 | 47.8/57.2/48.8 | 13.0/31.5 |
-| BERTNLU | RuleDST | **LaRL**       | None        | 40.6 | 34.0 | 45.6 | 47.8/54.1/47.6 | 15.0/28.6 |
-| None | **SUMBT** | **LaRL** | None |    39.4|   33.1| 39.5  | 48.5/56.0/48.8| 15.5/28.7|
-| None | None | **Sequicity*** | None | 21.7 | 14.0 | 4.9 | 36.3/35.1/32.0 | 18.2/35.2 |
-| None | None | **DAMD***      | None | 38.5 | 33.6 | 50.9 | 62.1/60.7/57.4 | 10.4/28.2 |
+| BERTNLU | RuleDST | **GDPLPolicy** | TemplateNLG | 50.1              | 45.1         | 21.1      |  61.1/72.9/63.3 | 12.1/22.1      |
+| BERTNLU | RuleDST | **LaRL**       | None        | 35 | 32 | 30.3 | 47.7/53.7/46.9 | 15.3/26.0 |
+| BERTNLU | RuleDST | **MDRG**       | None        | 21.3 | 19.2 | 32.9 | 39.8/36.2/34.6 | 17.3/31.5 |
+| BERTNLU | RuleDST | **MLEPolicy**  | TemplateNLG | 45            | 41.6        | 22.5      |  61.1/69.1/61.6 | 12.9/24.6      |
+| BERTNLU | RuleDST | **PGPolicy**   | TemplateNLG | 38.2              | 38.2         | 26.2      |  56.4/65.8/57.2 | 15.3/26.9      |
+| BERTNLU | RuleDST | **PPOPolicy**  | TemplateNLG | 63.9              | 52.3         | 51.8      |  61.8/77.0/65.7 | 13.4/21.7      |
+| **BERTNLU** | RuleDST   | RulePolicy     | TemplateNLG | 88.3          | 81.8         | 87.7      | 75.1/89.4/79.5 | 12.4/13.6      |
+| **SVMNLU**  | RuleDST | RulePolicy | TemplateNLG | 54.1          | 44.5         | 54.2      | 58.3/64.2/58.2 | 12.6/14.5      |
+| **MILU**    | RuleDST | RulePolicy | TemplateNLG | 90          | 81.9        | 89.2      | 75.0/90.0/79.5 | 12.0/12.8      |
+| None        | **COMER** | RulePolicy | TemplateNLG |       6.2    |    5.7     |    13.1   |  8.9/6.4/6.7   | 6.4/28.4         |
+| None | None | **DAMD***      | None | 36.1 | 33.8 | 51.9 | 53.9/57.1/51.2 | 16.6/30.4 |
+| None        | **MDBT**  | RulePolicy | TemplateNLG |     12.1      |       8.6     |   26.3    |  33.4/21.9/23.9 |   8.7/25.6       |
+| None | None | **Sequicity*** | None | 21.8 | 11.7 | 3.6 | 30.9/30.3/27.8 | 13.1/32.5 |
+| None        | **TRADE** | RulePolicy | TemplateNLG |      27.5      |    20.5       |     33.0     | 45.3/44.1/40.7 |     13.0/24.5     |
 
 *: end-to-end models used as sys_agent directly.
 
