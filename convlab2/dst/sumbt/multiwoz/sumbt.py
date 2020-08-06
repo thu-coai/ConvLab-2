@@ -145,7 +145,7 @@ class SUMBTTracker(DST):
         self.dev_examples = processor.get_dev_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
         self.test_examples = processor.get_test_examples(os.path.join(SUMBT_PATH, args.tmp_data_dir), accumulation=False)
         self.eval_slots = eval_slots
-        # self.download_model()
+        self.download_model()
 
     def download_model(self):
         if not os.path.isdir(DOWNLOAD_DIRECTORY):
