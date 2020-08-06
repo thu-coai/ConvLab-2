@@ -17,7 +17,6 @@
             "Are there anything fun to do in city #ATTRACTION-INFORM-AREA# ?",
             "I ' m looking for some attractions in the #ATTRACTION-INFORM-AREA# .",
             "I am also looking for suggestions on places to go in the #ATTRACTION-INFORM-AREA# of town . Can you help me with that ?",
-            "I 'd like a sports place in the #ATTRACTION-INFORM-AREA# please .",
             "I am also looking for places to go in town . Maybe something in the #ATTRACTION-INFORM-AREA# .",
             "I also need a place to go in the #ATTRACTION-INFORM-AREA# .",
             "Can you recommend some fun entertainment in the #ATTRACTION-INFORM-AREA# ?"
@@ -675,7 +674,6 @@
         ],
         "Depart": [
             "I am departing from #TRAIN-INFORM-DEPART# .",
-            "Is it going to #TRAIN-INFORM-DEPART# ?",
             "I need it to depart from #TRAIN-INFORM-DEPART# .",
             "I will departing from #TRAIN-INFORM-DEPART# .",
             "Thanks ! I also need a train departing from #TRAIN-INFORM-DEPART# .",
