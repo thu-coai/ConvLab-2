@@ -51,7 +51,7 @@ if __name__ == '__main__':
     domain_set = set()
     slot_set = set()
     value_set = set()
-    for s in ['train', 'val', 'test', 'dstc9_data']:
+    for s in ['train', 'val', 'test']:
         data = read_zipped_json(s+'.json.zip', s+'.json')
         output = extract_ontology(data)
         intent_set |= output[0]
