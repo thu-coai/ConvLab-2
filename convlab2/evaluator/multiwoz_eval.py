@@ -383,8 +383,14 @@ class MultiWozEvaluator(Evaluator):
             if not query_result:
                 mismatch += 1
             else:
-                if self.booked[domain] is not None and not self.database.query(domain, list(self.booked[domain].items())):
-                    mismatch += 1
+                booked = self.booked[domain]
+                if booked is None:
+                    match += 1
+                elif isinstance(booked, dict):
+                    if all(booked.get(k, object()) == v for k, v in constraints):
+                        match += 1
+                    else:
+                        mismatch += 1
                 else:
                     match += 1
         return match, mismatch
