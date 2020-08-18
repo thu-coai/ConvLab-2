@@ -391,6 +391,7 @@ class Agenda(object):
             domain = goal.domains[idx]
 
             # inform
+            # first ask fail_info which return no result then ask info
             if 'fail_info' in goal.domain_goals[domain]:
                 for slot in random_sample(goal.domain_goals[domain]['fail_info'].keys(),
                                           len(goal.domain_goals[domain]['fail_info'])):
@@ -876,7 +877,9 @@ if __name__ == '__main__':
     user_policy.init_session()
     sys_policy.init_session()
 
-    print(user_policy.goal)
+    goal = user_policy.get_goal()
+
+    print(goal)
 
     print(user_policy.agenda)
     user_act = user_policy.predict([])
@@ -895,6 +898,9 @@ if __name__ == '__main__':
     print(user_act)
     user_utt = user_nlg.generate(user_act)
     print(user_utt)
+
+    print(goal)
+
     sys_act = sys_policy.predict(state)
     print(sys_act)
 

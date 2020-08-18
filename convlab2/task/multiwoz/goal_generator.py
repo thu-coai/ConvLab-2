@@ -422,27 +422,27 @@ class GoalGenerator:
                 if domain == 'train' and len(domain_goal['book']) <= 0:
                     domain_goal['book']['people'] = nomial_sample(cnt_slot_value['book']['people'])
 
-            # fail_book
-            if 'book' in domain_goal and random.random() < 0.5:
-                if domain == 'hotel':
-                    domain_goal['fail_book'] = deepcopy(domain_goal['book'])
-                    if 'stay' in domain_goal['book'] and random.random() < 0.5:
-                        # increase hotel-stay
-                        domain_goal['fail_book']['stay'] = str(int(domain_goal['book']['stay']) + 1)
-                    elif 'day' in domain_goal['book']:
-                        # push back hotel-day by a day
-                        domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) - 1) % 7]
-
-                elif domain == 'restaurant':
-                    domain_goal['fail_book'] = deepcopy(domain_goal['book'])
-                    if 'time' in domain_goal['book'] and random.random() < 0.5:
-                        hour, minute = domain_goal['book']['time'].split(':')
-                        domain_goal['fail_book']['time'] = str((int(hour) + 1) % 24) + ':' + minute
-                    elif 'day' in domain_goal['book']:
-                        if random.random() < 0.5:
-                            domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) - 1) % 7]
-                        else:
-                            domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) + 1) % 7]
+            # fail_book: not use any more since 2020.8.18
+            # if 'book' in domain_goal and random.random() < 0.5:
+            #     if domain == 'hotel':
+            #         domain_goal['fail_book'] = deepcopy(domain_goal['book'])
+            #         if 'stay' in domain_goal['book'] and random.random() < 0.5:
+            #             # increase hotel-stay
+            #             domain_goal['fail_book']['stay'] = str(int(domain_goal['book']['stay']) + 1)
+            #         elif 'day' in domain_goal['book']:
+            #             # push back hotel-day by a day
+            #             domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) - 1) % 7]
+            #
+            #     elif domain == 'restaurant':
+            #         domain_goal['fail_book'] = deepcopy(domain_goal['book'])
+            #         if 'time' in domain_goal['book'] and random.random() < 0.5:
+            #             hour, minute = domain_goal['book']['time'].split(':')
+            #             domain_goal['fail_book']['time'] = str((int(hour) + 1) % 24) + ':' + minute
+            #         elif 'day' in domain_goal['book']:
+            #             if random.random() < 0.5:
+            #                 domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) - 1) % 7]
+            #             else:
+            #                 domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) + 1) % 7]
 
             # fail_info
             if 'info' in domain_goal and len(self.db.query(domain, domain_goal['info'].items())) == 0:
@@ -453,6 +453,7 @@ class GoalGenerator:
                         if domain == 'train':
                             domain_goal['info'] = adjusted_info
                         else:
+                            # first ask fail_info which return no result then ask info
                             domain_goal['fail_info'] = domain_goal['info']
                             domain_goal['info'] = adjusted_info
 
