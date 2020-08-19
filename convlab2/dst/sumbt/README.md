@@ -36,8 +36,6 @@ We use the multiwoz data.
 
 ## Performance on Multiwoz
 
-`mode` determines the data we use: if mode=`usr`, use user utterances to train; if mode=`sys`, use system utterances to train.
-
 We evaluate the Joint accuracy and Slot accuracy on Multiwoz 2.0 validation and test set. 
 The accuracy on validation set are slightly higher than the results reported in the paper,
 because in the evaluation code all undefined values in ontology are set `none` but predictions 
