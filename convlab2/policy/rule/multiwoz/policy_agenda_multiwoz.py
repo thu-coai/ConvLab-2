@@ -668,11 +668,10 @@ class Agenda(object):
                     # elif random.random() < 0.5:
                     #     self._push_item(domain + '-inform', slot, DEF_VAL_DNC)
 
-                # elif random.random() < 0.5:
-                #     self._push_item(domain + '-inform', slot, DEF_VAL_DNC)
+                else:
+                    # for those sys requests that are not in user goal
+                    self._push_item(domain + '-inform', slot, DEF_VAL_DNC)
 
-                # for those sys requests that are not in user goal
-                self._push_item(domain + '-inform', slot, DEF_VAL_DNC)
         return False
 
     def _handle_nooffer(self, domain, intent, slot_vals, goal: Goal):
