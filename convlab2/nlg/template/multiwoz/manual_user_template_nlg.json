@@ -16,7 +16,7 @@
             "I would like to visit on in town #ATTRACTION-INFORM-AREA# please .",
             "Are there anything fun to do in city #ATTRACTION-INFORM-AREA# ?",
             "I ' m looking for some attractions in the #ATTRACTION-INFORM-AREA# .",
-            "I am also looking for suggestions on places to go in the #ATTRACTION-INFORM-AREA# of town . Can you help me with that ?",
+            "I am also looking for suggestions on places to go in the #ATTRACTION-INFORM-AREA# . Can you help me with that ?",
             "I am also looking for places to go in town . Maybe something in the #ATTRACTION-INFORM-AREA# .",
             "I also need a place to go in the #ATTRACTION-INFORM-AREA# .",
             "Can you recommend some fun entertainment in the #ATTRACTION-INFORM-AREA# ?"
@@ -221,22 +221,18 @@
         ],
         "Area": [
             "I need a place to stay in the #HOTEL-INFORM-AREA# please .",
-            "I would prefer the hotel be in the #HOTEL-INFORM-AREA# part of town .",
+            "I would prefer the hotel be in the #HOTEL-INFORM-AREA# .",
             "I ' m also looking for a place to stay . In the #HOTEL-INFORM-AREA# preferably .",
-            "Would you be able to help me find a place to stay in the #HOTEL-INFORM-AREA# side of town ?",
-            "I ' m looking for a place to stay in the #HOTEL-INFORM-AREA# part of town .",
+            "Would you be able to help me find a place to stay in the #HOTEL-INFORM-AREA# ?",
+            "I ' m looking for a place to stay in the #HOTEL-INFORM-AREA# .",
             "I ' m looking for a hotel in the #HOTEL-INFORM-AREA# .",
             "I need it in the #HOTEL-INFORM-AREA# , please ."
         ],
         "People": [
-            "I need reservations for #HOTEL-INFORM-PEOPLE# .",
             "Yes , could you book the hotel room for me for #HOTEL-INFORM-PEOPLE# people ?",
-            "There are #HOTEL-INFORM-PEOPLE# of us .",
             "That will work . Can you make a reservation for #HOTEL-INFORM-PEOPLE# people , please ?",
-            "There is going to be #HOTEL-INFORM-PEOPLE# of us",
             "Actually , I 'd like to book it for #HOTEL-INFORM-PEOPLE# people . Can you help with that ?",
             "There will be #HOTEL-INFORM-PEOPLE# people .",
-            "There will be #HOTEL-INFORM-PEOPLE# of us .",
             "Yes , could you book the hotel room for me for #HOTEL-INFORM-PEOPLE# people ?",
             "I would like to book it for #HOTEL-INFORM-PEOPLE# people . Thanks ."
         ],
@@ -441,14 +437,14 @@
             "I ' m looking for a restaurant named #RESTAURANT-INFORM-NAME# ."
         ],
         "Area": [
-            "I ' m so hungry - can you find me a place to eat in the city #RESTAURANT-INFORM-AREA# ?",
+            "I ' m so hungry - can you find me a place to eat in the #RESTAURANT-INFORM-AREA# ?",
             "Can you help me find a restaurant ? I want to find a place in the #RESTAURANT-INFORM-AREA# .",
-            "I would prefer it in the #RESTAURANT-INFORM-AREA# area .",
-            "I am also in the market for a new restaurant . Is there something in the #RESTAURANT-INFORM-AREA# of town ?",
+            "I would prefer it in the #RESTAURANT-INFORM-AREA# .",
+            "I am also in the market for a new restaurant . Is there something in the #RESTAURANT-INFORM-AREA# ?",
             "Is that located in the #RESTAURANT-INFORM-AREA# ?",
             "I 'd like to be in the #RESTAURANT-INFORM-AREA# please .",
             "What restaurants are located in the #RESTAURANT-INFORM-AREA# ?",
-            "I also would like information on a place to eat in the #RESTAURANT-INFORM-AREA# of town ."
+            "I also would like information on a place to eat in the #RESTAURANT-INFORM-AREA# ."
         ],
         "Price": [
             "it just needs to be #RESTAURANT-INFORM-PRICE# .",
@@ -456,7 +452,7 @@
             "I want to find a #RESTAURANT-INFORM-PRICE# priced restaurant .",
             "I ' m looking for an #RESTAURANT-INFORM-PRICE# restaurant .",
             "I am looking for a #RESTAURANT-INFORM-PRICE# restaurant .",
-            "Actually I need a #RESTAURANT-INFORM-PRICE#ly priced restaurant . Are there any fitting that description ?",
+            "Actually I need a #RESTAURANT-INFORM-PRICE# priced restaurant . Are there any fitting that description ?",
             "Oh , I really need something #RESTAURANT-INFORM-PRICE# .",
             "I also need a place to dine that is #RESTAURANT-INFORM-PRICE# priced ."
         ],
@@ -494,16 +490,14 @@
             "I need a reservation for #RESTAURANT-INFORM-PEOPLE# people .",
             "I need a table for #RESTAURANT-INFORM-PEOPLE# people .",
             "We will have #RESTAURANT-INFORM-PEOPLE# people in the party .",
-            "Book a table for #RESTAURANT-INFORM-PEOPLE# person please .",
-            "Can you book me a table for #RESTAURANT-INFORM-PEOPLE# ?",
-            "It will be for #RESTAURANT-INFORM-PEOPLE# people .",
-            "There will be #RESTAURANT-INFORM-PEOPLE# of us ."
+            "Book a table for #RESTAURANT-INFORM-PEOPLE# people please .",
+            "Can you book me a table for #RESTAURANT-INFORM-PEOPLE# people?",
+            "It will be for #RESTAURANT-INFORM-PEOPLE# people ."
         ],
         "Day": [
             "i am also looking for a restaurant to book for #RESTAURANT-INFORM-DAY#",
             "I 'll be needing a table for #RESTAURANT-INFORM-DAY# .",
             "book a table on #RESTAURANT-INFORM-DAY# .",
-            "We will be there #RESTAURANT-INFORM-DAY# night .",
             "Please make a reservation for #RESTAURANT-INFORM-DAY# .",
             "I do need a booking for #RESTAURANT-INFORM-DAY# .",
             "Please reserve a table on #RESTAURANT-INFORM-DAY# .",
