@@ -856,7 +856,12 @@ class Agenda(object):
                 except Exception as e:
                     break
         else:
-            for _ in range(initiative if self.__cur_push_num == 0 else self.__cur_push_num):
+            if self.__cur_push_num == 0 or (all([self.__stack[-i]['value'] == DEF_VAL_DNC for i in range(1, self.__cur_push_num+1)])):
+                # pop more when only dontcare
+                num2pop = 4
+            else:
+                num2pop = self.__cur_push_num
+            for _ in range(num2pop):
                 try:
                     item = self.__stack.pop(-1)
                     diaacts.append(item['diaact'])
@@ -908,7 +913,7 @@ if __name__ == '__main__':
         goal = goal_generator.get_user_goal()
         if 'taxi' in goal['domain_ordering']:
             break
-    pprint(goal)
+    # pprint(goal)
     user_goal = {'domain_ordering': ('restaurant', 'hotel', 'taxi'),
                  'attraction': {'info': {'area': 'west', 'type': 'museum'}, 'reqt': ['phone']},
                  'hotel': {'book': {'day': 'saturday', 'people': '5', 'stay': '4'},
@@ -943,10 +948,10 @@ if __name__ == '__main__':
     state = dst.state
     state['user_action'] = user_act
     dst.update(user_act)
-    pprint(state)
+    # pprint(state)
     sys_act = sys_policy.predict(state)
     # sys_act.append(["Request", "Restaurant", "Price", "?"])
-    sys_act = [['Inform', 'Hotel', 'Choice', '3']]
+    sys_act = [['Request', 'Hotel', 'Area', '?'], ['Request', 'Hotel', 'Stars', '?']]
     print(sys_act)
 
 
@@ -957,47 +962,71 @@ if __name__ == '__main__':
     state = dst.state
     state['user_action'] = user_act
     dst.update(user_act)
-    pprint(state)
+    # pprint(state)
     sys_act = sys_policy.predict(state)
     sys_act = [['Inform', 'Hotel', 'Choice', '3']]
     print(sys_act)
 
 
-    user_act = user_policy.predict(sys_act)
-    print(user_act)
-    user_utt = user_nlg.generate(user_act)
-    print(user_utt)
-    state = dst.state
-    state['user_action'] = user_act
-    dst.update(user_act)
-    pprint(state)
-    sys_act = sys_policy.predict(state)
-    # sys_act = [["Book", "Booking", "Ref", "7GAWK763"]]
-    print(sys_act)
-    #
-    user_act = user_policy.predict(sys_act)
-    print(user_act)
-    user_utt = user_nlg.generate(user_act)
-    print(user_utt)
-    state = dst.state
-    state['user_action'] = user_act
-    dst.update(user_act)
-    pprint(state)
-    sys_act = sys_policy.predict(state)
-    # sys_act = [["Reqmore", "General", "none", "none"]]
-    print(sys_act)
-    #
-    user_act = user_policy.predict(sys_act)
-    print(user_act)
-    user_utt = user_nlg.generate(user_act)
-    print(user_utt)
-    state = dst.state
-    state['user_action'] = user_act
-    dst.update(user_act)
-    pprint(state)
-    sys_act = sys_policy.predict(state)
-    # sys_act = [["Inform", "Hotel", "Parking", "none"]]
-    print(sys_act)
+    # user_act = user_policy.predict(sys_act)
+    # print(user_act)
+    # user_utt = user_nlg.generate(user_act)
+    # print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # # sys_act = [["Book", "Booking", "Ref", "7GAWK763"]]
+    # print(sys_act)
+    # #
+    # user_act = user_policy.predict(sys_act)
+    # print(user_act)
+    # user_utt = user_nlg.generate(user_act)
+    # print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # # sys_act = [["Reqmore", "General", "none", "none"]]
+    # print(sys_act)
+    # #
+    # user_act = user_policy.predict(sys_act)
+    # print(user_act)
+    # user_utt = user_nlg.generate(user_act)
+    # print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # # sys_act = [["Inform", "Hotel", "Parking", "none"]]
+    # print(sys_act)
+    # #
+    # # user_act = user_policy.predict(sys_act)
+    # # print(user_act)
+    # # user_utt = user_nlg.generate(user_act)
+    # # print(user_utt)
+    # # state = dst.state
+    # # state['user_action'] = user_act
+    # # dst.update(user_act)
+    # # pprint(state)
+    # # sys_act = sys_policy.predict(state)
+    # # # sys_act = [["Request", "Booking", "people", "?"]]
+    # # print(sys_act)
+    # #
+    # # user_act = user_policy.predict(sys_act)
+    # # print(user_act)
+    # # user_utt = user_nlg.generate(user_act)
+    # # print(user_utt)
+    # # state = dst.state
+    # # state['user_action'] = user_act
+    # # dst.update(user_act)
+    # # pprint(state)
+    # # sys_act = sys_policy.predict(state)
+    # # # sys_act = [["Inform", "Hotel", "Post", "233"], ["Book", "Booking", "none", "none"]]
+    # # print(sys_act)
     #
     # user_act = user_policy.predict(sys_act)
     # print(user_act)
@@ -1008,7 +1037,7 @@ if __name__ == '__main__':
     # dst.update(user_act)
     # pprint(state)
     # sys_act = sys_policy.predict(state)
-    # # sys_act = [["Request", "Booking", "people", "?"]]
+    # sys_act = [["Request", "Taxi", "Dest", "?"], ["Request", "Taxi", "Depart", "?"]]
     # print(sys_act)
     #
     # user_act = user_policy.predict(sys_act)
@@ -1020,29 +1049,5 @@ if __name__ == '__main__':
     # dst.update(user_act)
     # pprint(state)
     # sys_act = sys_policy.predict(state)
-    # # sys_act = [["Inform", "Hotel", "Post", "233"], ["Book", "Booking", "none", "none"]]
+    # # sys_act = [["Request", "Taxi", "Destination", "?"], ["Request", "Taxi", "Departure", "?"]]
     # print(sys_act)
-
-    user_act = user_policy.predict(sys_act)
-    print(user_act)
-    user_utt = user_nlg.generate(user_act)
-    print(user_utt)
-    state = dst.state
-    state['user_action'] = user_act
-    dst.update(user_act)
-    pprint(state)
-    sys_act = sys_policy.predict(state)
-    sys_act = [["Request", "Taxi", "Dest", "?"], ["Request", "Taxi", "Depart", "?"]]
-    print(sys_act)
-
-    user_act = user_policy.predict(sys_act)
-    print(user_act)
-    user_utt = user_nlg.generate(user_act)
-    print(user_utt)
-    state = dst.state
-    state['user_action'] = user_act
-    dst.update(user_act)
-    pprint(state)
-    sys_act = sys_policy.predict(state)
-    # sys_act = [["Request", "Taxi", "Destination", "?"], ["Request", "Taxi", "Departure", "?"]]
-    print(sys_act)
