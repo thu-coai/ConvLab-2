@@ -60,23 +60,23 @@
         "Post": [
             "Oh , and what is their postcode , please ?",
             "what is their postcode ?",
-            "Can I please have the postcode ?",
-            "Can you give me the postcode ?",
+            "Can I please have the postcode of the attraction ?",
+            "Can you give me the postcode of the attraction ?",
             "Can you tell me their postcode ?",
             "Yes , that will work great . Can I get their postcode please ?",
             "What is the postcode for this place ?",
             "Can you let me have their postcode ?",
-            "I 'll need the postcode ."
+            "I 'll need the postcode of the attraction ."
         ],
         "Phone": [
             "can I get the phone number of one ?",
             "Yes can I get the phone number of one you 'd recommend ?",
             "Can you give me their phone number please ?",
-            "What is the phone number ?",
-            "I need the phone number as well .",
+            "What is the phone number of the attraction ?",
+            "I need the phone number of the attraction as well .",
             "Please get me their phone number",
-            "Sounds good . Could I get the phone number ?",
-            "Can you give me the phone number ?",
+            "Sounds good . Could I get the phone number of the attraction ?",
+            "Can you give me the phone number of the attraction ?",
             "I 'd like their phone number if you have it available , please ."
         ],
         "Fee": [
@@ -136,10 +136,10 @@
     },
     "Hospital-Request": {
         "Phone": [
-            "I just need the general phone number , please .",
-            "Can you provide the phone number for me ?",
-            "No but I need the phone number",
-            "What is the phone number ?",
+            "I just need the phone number of the hospital , please .",
+            "Can you provide the phone number of the hospital for me ?",
+            "No but I need the phone number of the hospital ",
+            "What is the phone number of the hospital ?",
             "Could you send their phone number please ?",
             "May I also have the phone number please ?",
             "I am looking for the Hospital , can you please give me their phone number ?",
@@ -149,11 +149,11 @@
         "Post": [
             "Can I get the postcode as well ?",
             "but do you have the postal code by any chance ?",
-            "Can I also get the postcode ?",
+            "Can I also get the postcode of the hospital ?",
             "I just need the postcode , please .",
-            "Can I have the postcode ?",
+            "Can I have the postcode of the hospital ?",
             "What is the postcode ?",
-            "I need the postcode .",
+            "I need the postcode of the hospital .",
             "Could you also give me the postcode ?",
             "can you also give me their postcode ?"
         ],
@@ -295,23 +295,23 @@
         ],
         "Post": [
             "Can I get the postcode for both of them ?",
-            "That sounds fine , I just need the postcode though .",
+            "That sounds fine , I just need the postcode of the hotel though .",
             "Can I please have the post code ?",
             "I just need the postcode .",
-            "What is the postcode ?",
+            "What is the postcode of the hotel ?",
             "Actually , can you give me the postcode for that ?",
             "could you provide me with their postcode ?",
-            "And I need a postcode .",
+            "And I need a postcode of the hotel .",
             "I would like to get the postcode , please .",
             "Can I get their postcode please ?"
         ],
         "Phone": [
             "Do you have their phone numbers ?",
-            "i need the phone number",
-            "Could I get the phone number ?",
-            "What 's the phone number ?",
+            "i need the phone number of the hotel ",
+            "Could I get the phone number of the hotel ?",
+            "What 's the phone number of the hotel ?",
             "can you get me their phone number ?",
-            "Can you give me the phone number , please ?",
+            "Can you give me the phone number of the hotel , please ?",
             "Just get me their phone number .",
             "What is their phone number ?"
         ],
@@ -387,15 +387,15 @@
     },
     "Police-Request": {
         "Post": [
-            "Can I please have the postcode as well ?",
+            "Can I please have the postcode of the police station as well ?",
             "I will also need the postcode please .",
             "Can I get the postcode ?",
             "what is its postcode ?",
             "What is the postcode for that station ?",
             "may I also please have the postcode ?",
             "Can you help me with locating the postcode ?",
-            "the postcode please",
-            "What is the postcode ?"
+            "the postcode of the police station please",
+            "What is the postcode of the police station ?"
         ],
         "Addr": [
             "Was Parkside the address of the police station ? If not , can I have the address please ?",
@@ -410,14 +410,14 @@
             "Do you have their address ?"
         ],
         "Phone": [
-            "Do you have the phone number there ?",
+            "Do you have the phone number of the police station there ?",
             "What is the police phone number , please ?",
             "Can you give me the phone number please ?",
-            "May I get the phone number ?",
+            "May I get the phone number of the police station ?",
             "What is their phone number ?",
             "Yes , I 'll also need their phone number .",
             "Could you tell me where to find the nearest police station and give the telephone number ?",
-            "I only needed the phone number .",
+            "I only needed the phone number of the police station .",
             "I do n't know I am new to this area , please just give me the phone number to the police station .",
             "I need to call them actually right now - do you have their phone number ?"
         ]
@@ -516,24 +516,24 @@
         ],
         "Post": [
             "I just need the post code .",
-            "I will need the postcode though .",
+            "I will need the postcode of the restaurant though .",
             "Can I get the postcode for it please ?",
-            "What is the postal code ?",
+            "What is the postal code of the restaurant ?",
             "I just need the postcode .",
             "What is their postcode ?",
             "can I get the postcode for the restaurant ?",
             "Can I get the postcode ?",
-            "I would like to know the postcode , if possible ?",
+            "I would like to know the postcode of the restaurant , if possible ?",
             "can I have their postcode , please ?"
         ],
         "Phone": [
             "May I have their telephone number please ?",
             "I would like their phone number .",
-            "Please provide the phone number .",
+            "Please provide the phone number of the restaurant .",
             "Please provide their phone number .",
-            "That place sounds great . Can I get the phone number please ?",
-            "What is the phone number ?",
-            "Can I just get the phone number ?"
+            "That place sounds great . Can I get the phone number of the restaurant please ?",
+            "What is the phone number of the restaurant ?",
+            "Can I just get the phone number of the restaurant ?"
         ],
         "Price": [
             "What is the price range ?",
@@ -646,12 +646,12 @@
             "Can you give me the car type ?"
         ],
         "Phone": [
-            "Can I get the phone number ?",
-            "Could you please send me the phone number .",
+            "Can I get the phone number of the taxi ?",
+            "Could you please send me the phone number of the taxi ?",
             "Do you have their phone number ?",
             "Can I get the phone also please ?",
             "Can you get me the contact phone number please ?",
-            "please provide the phone number ."
+            "please provide the phone number of the taxi ."
         ]
     },
     "Train-Inform": {
