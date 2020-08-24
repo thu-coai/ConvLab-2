@@ -139,9 +139,9 @@ class BiSession(Session):
         """
         self.sys_agent.policy.train()
 
-    def init_session(self):
+    def init_session(self, **kwargs):
         self.sys_agent.init_session()
-        self.user_agent.init_session()
+        self.user_agent.init_session(**kwargs)
         if self.evaluator:
             self.evaluator.add_goal(self.user_agent.policy.get_goal())
 
