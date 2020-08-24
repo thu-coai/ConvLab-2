@@ -283,7 +283,7 @@
             "could I get their address ?",
             "Could you give me the address , please ?",
             "may I have the address for that hotel ?",
-            "I do n't need it booked but what s the address ?"
+            "what s the address ?"
         ],
         "Ref": [
             "Please book it and provide the reference number .",
@@ -619,7 +619,7 @@
         ],
         "Dest": [
             "I need a taxi to take me in time for my reservation to #TAXI-INFORM-DEST# today",
-            "I want to visit the #TAXI-INFORM-DEST# and need a taxi to take me",
+            "I want to visit #TAXI-INFORM-DEST# and need a taxi to take me",
             "I 'll be heading to #TAXI-INFORM-DEST# .",
             "Hi , i need to book a taxi to go to #TAXI-INFORM-DEST# .",
             "I need a tax to #TAXI-INFORM-DEST# .",

@@ -480,13 +480,14 @@ class GoalGenerator:
 
         # using taxi to communte between places, removing destination and departure.
         if 'taxi' in domain_ordering:
-            places = [dom for dom in domain_ordering[: domain_ordering.index('taxi')] if 'address' in self.ind_slot_dist[dom]['reqt'].keys()]
+            places = [dom for dom in domain_ordering[: domain_ordering.index('taxi')] if
+                      dom in ['attraction', 'hotel', 'restaurant', 'police', 'hospital']]
             if len(places) >= 1:
                 del user_goal['taxi']['info']['destination']
-                if 'reqt' not in user_goal[places[-1]]:
-                    user_goal[places[-1]]['reqt'] = []
-                if 'address' not in user_goal[places[-1]]['reqt']:
-                    user_goal[places[-1]]['reqt'].append('address')
+                # if 'reqt' not in user_goal[places[-1]]:
+                #     user_goal[places[-1]]['reqt'] = []
+                # if 'address' not in user_goal[places[-1]]['reqt']:
+                #     user_goal[places[-1]]['reqt'].append('address')
                 # the line below introduce randomness by `union`
                 # user_goal[places[-1]]['reqt'] = list(set(user_goal[places[-1]].get('reqt', [])).union({'address'}))
                 if places[-1] == 'restaurant' and 'book' in user_goal['restaurant']:
@@ -495,10 +496,10 @@ class GoalGenerator:
                         del user_goal['taxi']['info']['leaveAt']
             if len(places) >= 2:
                 del user_goal['taxi']['info']['departure']
-                if 'reqt' not in user_goal[places[-2]]:
-                    user_goal[places[-2]]['reqt'] = []
-                if 'address' not in user_goal[places[-2]]['reqt']:
-                    user_goal[places[-2]]['reqt'].append('address')
+                # if 'reqt' not in user_goal[places[-2]]:
+                #     user_goal[places[-2]]['reqt'] = []
+                # if 'address' not in user_goal[places[-2]]['reqt']:
+                #     user_goal[places[-2]]['reqt'].append('address')
                 # the line below introduce randomness by `union`
                 # user_goal[places[-2]]['reqt'] = list(set(user_goal[places[-2]].get('reqt', [])).union({'address'}))
 
