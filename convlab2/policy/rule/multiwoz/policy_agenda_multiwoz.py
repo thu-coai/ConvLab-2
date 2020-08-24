@@ -111,8 +111,8 @@ class UserPolicyAgendaMultiWoz(Policy):
                 self.agenda.close_session()
 
         # A -> A' + user_action
-        # action = self.agenda.get_action(random.randint(1, self.max_initiative))
-        action = self.agenda.get_action(self.max_initiative)
+        action = self.agenda.get_action(random.randint(2, self.max_initiative))
+        # action = self.agenda.get_action(self.max_initiative)
 
         # transform to DA
         action = self._transform_usract_out(action)
