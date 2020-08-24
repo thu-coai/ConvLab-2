@@ -200,6 +200,13 @@ class TemplateNLG(NLG):
                             "Anyone would be ok. ",
                             "Just select one for me. "
                         ])
+                    elif slot == 'Price' and 'same price range' in value:
+                        sentence = random.choice([
+                            "it just needs to be {} .".format(value),
+                            "Oh , I really need something {} .".format(value),
+                            "I would prefer something that is {} .".format(value),
+                            "it needs to be {} .".format(value)
+                        ])
                     elif dialog_act in template and slot in template[dialog_act]:
                         sentence = random.choice(template[dialog_act][slot])
                         sentence = sentence.replace('#{}-{}#'.format(dialog_act.upper(), slot.upper()), str(value))
