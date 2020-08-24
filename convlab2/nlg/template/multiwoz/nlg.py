@@ -207,6 +207,11 @@ class TemplateNLG(NLG):
                             "I would prefer something that is {} .".format(value),
                             "it needs to be {} .".format(value)
                         ])
+                    elif slot in ['Internet', 'Parking'] and value == 'no':
+                        sentence = random.choice([
+                            "It does n't need to have {} .".format(slot.lower()),
+                            "I do n't need free {} .".format(slot.lower()),
+                        ])
                     elif dialog_act in template and slot in template[dialog_act]:
                         sentence = random.choice(template[dialog_act][slot])
                         sentence = sentence.replace('#{}-{}#'.format(dialog_act.upper(), slot.upper()), str(value))
@@ -248,7 +253,7 @@ class TemplateNLG(NLG):
 
 def example():
     # dialog act
-    dialog_acts = [['Inform', 'Hotel', 'Area', 'east'],['Inform', 'Hotel', 'Name', 'fds'], ['welcome', 'general', 'none', 'none']]
+    dialog_acts = [['Inform', 'Hotel', 'Area', 'east'],['Inform', 'Hotel', 'Internet', 'no'], ['welcome', 'general', 'none', 'none']]
     print(dialog_acts)
 
     # system model for manual, auto, auto_manual

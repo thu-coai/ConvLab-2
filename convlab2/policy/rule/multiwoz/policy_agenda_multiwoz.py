@@ -956,9 +956,9 @@ if __name__ == '__main__':
     #     if 'restaurant' in goal['domain_ordering'] and 'hotel' in goal['domain_ordering']:
     #         break
     # # pprint(goal)
-    user_goal = {'domain_ordering': ('restaurant', 'taxi'),
+    user_goal = {'domain_ordering': ('restaurant', 'hotel', 'taxi'),
                  'hotel': {'book': {'day': 'sunday', 'people': '6', 'stay': '4'},
-                           'info': {'internet': 'yes',
+                           'info': {'internet': 'no',
                                     'parking': 'no',
                                     'pricerange': 'moderate',
                                     'area': 'centre'}},
