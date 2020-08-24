@@ -456,13 +456,13 @@
             "I also need a place to dine that is #RESTAURANT-INFORM-PRICE# priced ."
         ],
         "Food": [
-            "How about #RESTAURANT-INFORM-FOOD# .",
+            "How about #RESTAURANT-INFORM-FOOD# food .",
             "are there any #RESTAURANT-INFORM-FOOD# restaurants ?",
-            "Hmm , I 'll try #RESTAURANT-INFORM-FOOD# .",
+            "Hmm , I 'll try #RESTAURANT-INFORM-FOOD# food .",
             "I 'd like to find a #RESTAURANT-INFORM-FOOD# restaurant , if possible .",
             "Do you have #RESTAURANT-INFORM-FOOD# food ?",
             "Yes . This restaurant should serve #RESTAURANT-INFORM-FOOD# food too .",
-            "I ' m visiting Cambridge and would like some suggestions for an restaurant which serves #RESTAURANT-INFORM-FOOD# .",
+            "I ' m visiting Cambridge and would like some suggestions for an restaurant which serves #RESTAURANT-INFORM-FOOD# food .",
             "how about a #RESTAURANT-INFORM-FOOD# restaurant ?",
             "I would prefer #RESTAURANT-INFORM-FOOD# food please ."
         ],

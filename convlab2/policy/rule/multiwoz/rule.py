@@ -30,11 +30,11 @@ class RulePolicy(Policy):
         """
         return self.policy.predict(state)
 
-    def init_session(self):
+    def init_session(self, **kwargs):
         """
         Restore after one session
         """
-        self.policy.init_session()
+        self.policy.init_session(**kwargs)
 
     def is_terminated(self):
         if self.character == 'sys':
