@@ -81,6 +81,7 @@ class Analyzer:
         if not os.path.exists(output_dir):
             os.mkdir(output_dir)
         f = open(os.path.join(output_dir, 'res.txt'), 'w')
+        flog = open(os.path.join(output_dir, 'log.txt'), 'w')
 
         for j in tqdm(range(total_dialog), desc="dialogue"):
             sys_response = '' if self.user_agent.nlu else []
@@ -106,13 +107,13 @@ class Analyzer:
             for i in range(40):
                 sys_response, user_response, session_over, reward = sess.next_turn(
                     sys_response)
-                # print('user in', sess.user_agent.get_in_da(),file=f)
-                # print('user out', sess.user_agent.get_out_da(),file=f)
+                print('user in', sess.user_agent.get_in_da(),file=flog)
+                print('user out', sess.user_agent.get_out_da(),file=flog)
                 #
-                # print('sys in', sess.sys_agent.get_in_da(),file=f)
-                # print('sys out', sess.sys_agent.get_out_da(),file=f)
-                # print('user:', user_response,file=f)
-                # print('sys:', sys_response,file=f)
+                print('sys in', sess.sys_agent.get_in_da(),file=flog)
+                print('sys out', sess.sys_agent.get_out_da(),file=flog)
+                print('user:', user_response,file=flog)
+                print('sys:', sys_response,file=flog)
 
                 step += 2
 
