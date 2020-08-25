@@ -169,9 +169,9 @@ class Analyzer:
                 logger.info('task success: %.3f', suc_num/(j+1))
                 logger.info('book rate: %.3f', np.mean(match))
                 logger.info('inform precision/recall/f1: %.3f %.3f %.3f', np.mean(precision), np.mean(recall), np.mean(f1))
-                logging.info("percentage of domains that satisfy the database constraints: %.3f}" % \
+                logging.info("percentage of domains that satisfy the database constraints: %.3f" % \
                              (1 if num_domains == 0 else (num_domains_satisfying_constraints / num_domains)))
-                logging.info("percentage of dialogs that satisfy the database constraints: %.3f}" % (num_dialogs_satisfying_constraints / (j + 1)))
+                logging.info("percentage of dialogs that satisfy the database constraints: %.3f" % (num_dialogs_satisfying_constraints / (j + 1)))
             domain_set = []
             for da in sess.evaluator.usr_da_array:
                 if da.split('-')[0] != 'general' and da.split('-')[0] not in domain_set:
@@ -206,9 +206,9 @@ class Analyzer:
         print('average book rate:', np.mean(match))
         print("average turn (succ):", tmp)
         print("average turn (all):", turn_num / total_dialog)
-        print("percentage of domains that satisfy the database constraints: %.3f}" % \
+        print("percentage of domains that satisfy the database constraints: %.3f" % \
               (1 if num_domains == 0 else (num_domains_satisfying_constraints / num_domains)))
-        print("percentage of dialogs that satisfy the database constraints: %.3f}" % (num_dialogs_satisfying_constraints / total_dialog))
+        print("percentage of dialogs that satisfy the database constraints: %.3f" % (num_dialogs_satisfying_constraints / total_dialog))
         print("=" * 100)
         print("complete number of dialogs/tot:", complete_num / total_dialog, file=f)
         print("success number of dialogs/tot:", suc_num / total_dialog, file=f)
@@ -218,9 +218,9 @@ class Analyzer:
         print('average book rate:', np.mean(match), file=f)
         print("average turn (succ):", tmp, file=f)
         print("average turn (all):", turn_num / total_dialog, file=f)
-        print("percentage of domains that satisfy the database constraints: %.3f}" % \
+        print("percentage of domains that satisfy the database constraints: %.3f" % \
               (1 if num_domains == 0 else (num_domains_satisfying_constraints / num_domains)), file=f)
-        print("percentage of dialogs that satisfy the database constraints: %.3f}" % (num_dialogs_satisfying_constraints / total_dialog), file=f)
+        print("percentage of dialogs that satisfy the database constraints: %.3f" % (num_dialogs_satisfying_constraints / total_dialog), file=f)
         f.close()
 
         reporter.report(complete_num/total_dialog, suc_num/total_dialog, np.mean(precision), np.mean(recall), np.mean(f1), tmp, turn_num / total_dialog)
