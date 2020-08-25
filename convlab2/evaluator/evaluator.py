@@ -51,3 +51,7 @@ class Evaluator(object):
         judge if the domain (subtask) is successfully completed
         """
         raise NotImplementedError
+
+    def final_goal_analyze(self):
+        """judge whether the final goal satisfies the database constraints"""
+        raise NotImplementedError

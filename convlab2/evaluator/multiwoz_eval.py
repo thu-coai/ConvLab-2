@@ -396,6 +396,8 @@ class MultiWozEvaluator(Evaluator):
         return match, mismatch
 
     def final_goal_analyze(self):
+        """percentage of domains, in which the final goal satisfies the database constraints.
+        If there is no dialog action, returns 1."""
         match, mismatch = self._final_goal_analyze()
         if match == mismatch == 0:
             return 1
