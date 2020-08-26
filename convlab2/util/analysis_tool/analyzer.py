@@ -114,8 +114,8 @@ class Analyzer:
                 print('user in', sess.user_agent.get_in_da(),file=flog)
                 print('user out', sess.user_agent.get_out_da(),file=flog)
                 #
-                print('sys in', sess.sys_agent.get_in_da(),file=flog)
-                print('sys out', sess.sys_agent.get_out_da(),file=flog)
+                # print('sys in', sess.sys_agent.get_in_da(),file=flog)
+                # print('sys out', sess.sys_agent.get_out_da(),file=flog)
                 print('user:', user_response,file=flog)
                 print('sys:', sys_response,file=flog)
 
