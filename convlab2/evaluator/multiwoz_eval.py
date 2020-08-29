@@ -40,7 +40,8 @@ class MultiWozEvaluator(Evaluator):
         self.goal = {}
         self.cur_domain = ''
         self.booked = {}
-        self.dbs = Database().dbs
+        self.database = Database()
+        self.dbs = self.database.dbs
 
     def _init_dict(self):
         dic = {}
@@ -294,10 +295,12 @@ class MultiWozEvaluator(Evaluator):
         """
         book_sess = self.book_rate(ref2goal)
         inform_sess = self.inform_F1(ref2goal)
+        goal_sess = self.final_goal_analyze()
         # book rate == 1 & inform recall == 1
-        if (book_sess == 1 and inform_sess[1] == 1) \
+        if ((book_sess == 1 and inform_sess[1] == 1) \
                 or (book_sess == 1 and inform_sess[1] is None) \
-                or (book_sess is None and inform_sess[1] == 1):
+                or (book_sess is None and inform_sess[1] == 1)) \
+            and goal_sess == 1:
             return 1
         else:
             return 0
@@ -366,3 +369,37 @@ class MultiWozEvaluator(Evaluator):
             return 1
         else:
             return 0
+
+    def _final_goal_analyze(self):
+        """whether the final goal satisfies constraints"""
+        match = mismatch = 0
+        for domain, dom_goal_dict in self.goal.items():
+            constraints = []
+            if 'reqt' in dom_goal_dict:
+                constraints += list(dom_goal_dict['reqt'].items())
+            if 'info' in dom_goal_dict:
+                constraints += list(dom_goal_dict['info'].items())
+            query_result = self.database.query(domain, constraints)
+            if not query_result:
+                mismatch += 1
+            else:
+                booked = self.booked[domain]
+                if booked is None:
+                    match += 1
+                elif isinstance(booked, dict):
+                    if all(booked.get(k, object()) == v for k, v in constraints):
+                        match += 1
+                    else:
+                        mismatch += 1
+                else:
+                    match += 1
+        return match, mismatch
+
+    def final_goal_analyze(self):
+        """percentage of domains, in which the final goal satisfies the database constraints.
+        If there is no dialog action, returns 1."""
+        match, mismatch = self._final_goal_analyze()
+        if match == mismatch == 0:
+            return 1
+        else:
+            return match / (match + mismatch)

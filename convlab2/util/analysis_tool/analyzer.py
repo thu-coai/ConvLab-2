@@ -50,6 +50,7 @@ class Analyzer:
         print('task success:', sess.evaluator.task_success())
         print('book rate:', sess.evaluator.book_rate())
         print('inform precision/recall/f1:', sess.evaluator.inform_F1())
+        print(f"percentage of domains that satisfies the database constraints: {sess.evaluator.final_goal_analyze()}")
         print('-' * 50)
         print('final goal:')
         pprint(sess.evaluator.goal)
@@ -67,6 +68,9 @@ class Analyzer:
         complete_num = 0
         turn_num = 0
         turn_suc_num = 0
+        num_domains = 0
+        num_domains_satisfying_constraints = 0
+        num_dialogs_satisfying_constraints = 0
 
         reporter = Reporter(model_name)
         logger = logging.getLogger(__name__)
@@ -110,8 +114,8 @@ class Analyzer:
                 print('user in', sess.user_agent.get_in_da(),file=flog)
                 print('user out', sess.user_agent.get_out_da(),file=flog)
                 #
-                print('sys in', sess.sys_agent.get_in_da(),file=flog)
-                print('sys out', sess.sys_agent.get_out_da(),file=flog)
+                # print('sys in', sess.sys_agent.get_in_da(),file=flog)
+                # print('sys out', sess.sys_agent.get_out_da(),file=flog)
                 print('user:', user_response,file=flog)
                 print('sys:', sys_response,file=flog)
 
@@ -142,6 +146,7 @@ class Analyzer:
             task_complete = sess.user_agent.policy.policy.goal.task_complete()
             book_rate = sess.evaluator.book_rate()
             stats = sess.evaluator.inform_F1()
+            percentage = sess.evaluator.final_goal_analyze()
             if task_success:
                 suc_num += 1
                 turn_suc_num += step
@@ -153,6 +158,10 @@ class Analyzer:
                 f1.append(stats[2])
             if book_rate is not None:
                 match.append(book_rate)
+            if len(sess.evaluator.goal) > 0:
+                num_domains += len(sess.evaluator.goal)
+                num_domains_satisfying_constraints += len(sess.evaluator.goal) * percentage
+            num_dialogs_satisfying_constraints += (percentage == 1)
             if (j+1) % 100 == 0:
                 logger.info("model name %s", model_name)
                 logger.info("dialogue %d", j+1)
@@ -161,6 +170,9 @@ class Analyzer:
                 logger.info('task success: %.3f', suc_num/(j+1))
                 logger.info('book rate: %.3f', np.mean(match))
                 logger.info('inform precision/recall/f1: %.3f %.3f %.3f', np.mean(precision), np.mean(recall), np.mean(f1))
+                logging.info("percentage of domains that satisfy the database constraints: %.3f" % \
+                             (1 if num_domains == 0 else (num_domains_satisfying_constraints / num_domains)))
+                logging.info("percentage of dialogs that satisfy the database constraints: %.3f" % (num_dialogs_satisfying_constraints / (j + 1)))
             domain_set = []
             for da in sess.evaluator.usr_da_array:
                 if da.split('-')[0] != 'general' and da.split('-')[0] not in domain_set:
@@ -195,6 +207,9 @@ class Analyzer:
         print('average book rate:', np.mean(match))
         print("average turn (succ):", tmp)
         print("average turn (all):", turn_num / total_dialog)
+        print("percentage of domains that satisfy the database constraints: %.3f" % \
+              (1 if num_domains == 0 else (num_domains_satisfying_constraints / num_domains)))
+        print("percentage of dialogs that satisfy the database constraints: %.3f" % (num_dialogs_satisfying_constraints / total_dialog))
         print("=" * 100)
         print("complete number of dialogs/tot:", complete_num / total_dialog, file=f)
         print("success number of dialogs/tot:", suc_num / total_dialog, file=f)
@@ -204,6 +219,9 @@ class Analyzer:
         print('average book rate:', np.mean(match), file=f)
         print("average turn (succ):", tmp, file=f)
         print("average turn (all):", turn_num / total_dialog, file=f)
+        print("percentage of domains that satisfy the database constraints: %.3f" % \
+              (1 if num_domains == 0 else (num_domains_satisfying_constraints / num_domains)), file=f)
+        print("percentage of dialogs that satisfy the database constraints: %.3f" % (num_dialogs_satisfying_constraints / total_dialog), file=f)
         f.close()
 
         reporter.report(complete_num/total_dialog, suc_num/total_dialog, np.mean(precision), np.mean(recall), np.mean(f1), tmp, turn_num / total_dialog)
