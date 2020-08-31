@@ -200,26 +200,27 @@ class TemplateNLG(NLG):
                 sentences += sentence
             else:
                 for slot, value in slot_value_pairs:
+                    value_lower = value.lower()
                     if value in ["do nt care", "do n't care", "dontcare"]:
-                        sentence = 'I don\'t care about the {} of the {}'.format(slot.lower(), dialog_act.split('-')[0].lower())
-                    elif self.is_user and dialog_act.split('-')[1] == 'inform' and slot == 'choice' and value == 'any':
+                        sentence = 'I don\'t care about the {} of the {}'.format(slot, dialog_act.split('-')[0])
+                    elif self.is_user and dialog_act.split('-')[1] == 'inform' and slot == 'choice' and value_lower == 'any':
                         # user have no preference, any choice is ok
                         sentence = random.choice([
                             "Please pick one for me. ",
                             "Anyone would be ok. ",
                             "Just select one for me. "
                         ])
-                    elif slot == 'price' and 'same price range' in value.lower():
+                    elif slot == 'price' and 'same price range' in value_lower:
                         sentence = random.choice([
                             "it just needs to be {} .".format(value),
                             "Oh , I really need something {} .".format(value),
                             "I would prefer something that is {} .".format(value),
                             "it needs to be {} .".format(value)
                         ])
-                    elif slot in ['internet', 'parking'] and value.lower() == 'no':
+                    elif slot in ['internet', 'parking'] and value_lower == 'no':
                         sentence = random.choice([
-                            "It does n't need to have {} .".format(slot.lower()),
-                            "I do n't need free {} .".format(slot.lower()),
+                            "It does n't need to have {} .".format(slot),
+                            "I do n't need free {} .".format(slot),
                         ])
                     elif dialog_act in template and slot in template[dialog_act]:
                         sentence = random.choice(template[dialog_act][slot])
