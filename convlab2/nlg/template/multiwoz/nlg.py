@@ -202,21 +202,21 @@ class TemplateNLG(NLG):
                 for slot, value in slot_value_pairs:
                     if value in ["do nt care", "do n't care", "dontcare"]:
                         sentence = 'I don\'t care about the {} of the {}'.format(slot.lower(), dialog_act.split('-')[0].lower())
-                    elif self.is_user and dialog_act.split('-')[1] == 'Inform' and slot == 'Choice' and value == 'any':
+                    elif self.is_user and dialog_act.split('-')[1] == 'inform' and slot == 'choice' and value == 'any':
                         # user have no preference, any choice is ok
                         sentence = random.choice([
                             "Please pick one for me. ",
                             "Anyone would be ok. ",
                             "Just select one for me. "
                         ])
-                    elif slot == 'Price' and 'same price range' in value:
+                    elif slot == 'price' and 'same price range' in value.lower():
                         sentence = random.choice([
                             "it just needs to be {} .".format(value),
                             "Oh , I really need something {} .".format(value),
                             "I would prefer something that is {} .".format(value),
                             "it needs to be {} .".format(value)
                         ])
-                    elif slot in ['Internet', 'Parking'] and value == 'no':
+                    elif slot in ['internet', 'parking'] and value.lower() == 'no':
                         sentence = random.choice([
                             "It does n't need to have {} .".format(slot.lower()),
                             "I do n't need free {} .".format(slot.lower()),
@@ -224,7 +224,7 @@ class TemplateNLG(NLG):
                     elif dialog_act in template and slot in template[dialog_act]:
                         sentence = random.choice(template[dialog_act][slot])
                         sentence = sentence.replace('#{}-{}#'.format(dialog_act.upper(), slot.upper()), str(value))
-                    elif slot == 'NotBook':
+                    elif slot == 'notbook':
                         sentence = random.choice([
                             "I do not need to book. ",
                             "I 'm not looking to make a booking at the moment."
@@ -263,6 +263,7 @@ class TemplateNLG(NLG):
 def example():
     # dialog act
     dialog_acts = [['Inform', 'Hotel', 'Area', 'east'],['Inform', 'Hotel', 'Internet', 'no'], ['welcome', 'general', 'none', 'none']]
+    #dialog_acts = [['Inform', 'Restaurant', 'NotBook', 'none']]
     print(dialog_acts)
 
     # system model for manual, auto, auto_manual
