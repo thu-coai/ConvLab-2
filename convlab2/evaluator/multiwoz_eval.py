@@ -376,23 +376,30 @@ class MultiWozEvaluator(Evaluator):
         for domain, dom_goal_dict in self.goal.items():
             constraints = []
             if 'reqt' in dom_goal_dict:
-                constraints += list(dom_goal_dict['reqt'].items())
+                reqt_constraints = list(dom_goal_dict['reqt'].items())
+                query_result = self.database.query(domain, reqt_constraints, fuzzy_match=True)
+                constraints += reqt_constraints
+                if not query_result:
+                    mismatch += 1
+                    continue
             if 'info' in dom_goal_dict:
-                constraints += list(dom_goal_dict['info'].items())
-            query_result = self.database.query(domain, constraints)
-            if not query_result:
-                mismatch += 1
-            else:
-                booked = self.booked[domain]
-                if booked is None:
+                info_constraints = list(dom_goal_dict['info'].items())
+                query_result = self.database.query(domain, info_constraints, fuzzy_match=False)
+                constraints += info_constraints
+                if not query_result:
+                    mismatch += 1
+                    continue
+
+            booked = self.booked[domain]
+            if booked is None:
+                match += 1
+            elif isinstance(booked, dict):
+                if all(booked.get(k, object()) == v for k, v in constraints):
                     match += 1
-                elif isinstance(booked, dict):
-                    if all(booked.get(k, object()) == v for k, v in constraints):
-                        match += 1
-                    else:
-                        mismatch += 1
                 else:
-                    match += 1
+                    mismatch += 1
+            else:
+                match += 1
         return match, mismatch
 
     def final_goal_analyze(self):
