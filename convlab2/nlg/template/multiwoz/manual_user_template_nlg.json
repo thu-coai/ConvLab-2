@@ -176,8 +176,8 @@
             "I do n't want to have to pay for parking .",
             "It must have free parking .",
             "Hello , I ' m looking for a place to stay that offers free parking .",
-            "Hello , I would like to find a hotel that includes free parking .",
-            "I ' m looking for a place to stay . I need a hotel that includes free parking",
+            "Hello , I would like to find a place to stay that includes free parking .",
+            "I ' m looking for a place to stay that includes free parking",
             "I 'd like to book one that offers parking please ."
         ],
         "Stay": [
@@ -201,9 +201,9 @@
         ],
         "Price": [
             "I would like to keep it in the #HOTEL-INFORM-PRICE# range , please .",
-            "Could you also find me a hotel with a #HOTEL-INFORM-PRICE# price ?",
+            "Could you also find me a place to stay with a #HOTEL-INFORM-PRICE# price ?",
             "I would prefer something that is in the #HOTEL-INFORM-PRICE# price range .",
-            "How about a hotel in the #HOTEL-INFORM-PRICE# price range ?",
+            "How about in the #HOTEL-INFORM-PRICE# price range ?",
             "it needs to be in the #HOTEL-INFORM-PRICE# price range .",
             "I ' m looking for some #HOTEL-INFORM-PRICE# priced accommodations for my visit . Can you help me with that ?",
             "I would like to keep the price #HOTEL-INFORM-PRICE# .",
@@ -225,15 +225,13 @@
             "I ' m also looking for a place to stay . In the #HOTEL-INFORM-AREA# preferably .",
             "Would you be able to help me find a place to stay in the #HOTEL-INFORM-AREA# ?",
             "I ' m looking for a place to stay in the #HOTEL-INFORM-AREA# .",
-            "I ' m looking for a hotel in the #HOTEL-INFORM-AREA# .",
             "I need it in the #HOTEL-INFORM-AREA# , please ."
         ],
         "People": [
-            "Yes , could you book the hotel room for me for #HOTEL-INFORM-PEOPLE# people ?",
+            "Yes , could you book the reservation for me for #HOTEL-INFORM-PEOPLE# people ?",
             "That will work . Can you make a reservation for #HOTEL-INFORM-PEOPLE# people , please ?",
             "Actually , I 'd like to book it for #HOTEL-INFORM-PEOPLE# people . Can you help with that ?",
             "There will be #HOTEL-INFORM-PEOPLE# people .",
-            "Yes , could you book the hotel room for me for #HOTEL-INFORM-PEOPLE# people ?",
             "I would like to book it for #HOTEL-INFORM-PEOPLE# people ."
         ],
         "Stars": [
@@ -294,7 +292,7 @@
             "I need the reference number too ."
         ],
         "Post": [
-            "Can I get the postcode for both of them ?",
+            "Can I get the postcode ?",
             "That sounds fine , I just need the postcode of the hotel though .",
             "Can I please have the post code ?",
             "I just need the postcode .",
