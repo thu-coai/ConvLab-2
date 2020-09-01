@@ -30,7 +30,7 @@ mapping = {'restaurant': {'addr': 'address', 'area': 'area', 'food': 'food', 'na
            'hospital': {'post': 'postcode', 'phone': 'phone', 'addr': 'address', 'department': 'department'},
            'police': {'post': 'postcode', 'phone': 'phone', 'addr': 'address'}}
 
-time_re = re.compile(r'^(([01]\d|2[0-3]):([0-5]\d)|24:00)$')
+time_re = re.compile(r'^(([01]\d|2[0-4]):([0-5]\d)|24:00)$')
 NUL_VALUE = ["", "dont care", 'not mentioned', "don't care", "dontcare", "do n't care"]
 
 class MultiWozEvaluator(Evaluator):
@@ -229,7 +229,7 @@ class MultiWozEvaluator(Evaluator):
         elif key == "duration":
             return 'minute' in value
         elif key == "internet" or key == "parking":
-            return value in ["yes", "no"]
+            return value in ["yes", "no", "none"]
         elif key == "phone":
             return re.match(r'^\d{11}$', value) or domain == "restaurant"
         elif key == "price":
