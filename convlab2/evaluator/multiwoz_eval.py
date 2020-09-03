@@ -393,7 +393,9 @@ class MultiWozEvaluator(Evaluator):
                 continue
 
             booked = self.booked[domain]
-            if isinstance(booked, dict):
+            if not self.goal[domain].get('book'):
+                match += 1
+            elif isinstance(booked, dict):
                 ref = booked['Ref']
                 if any(found['Ref'] == ref for found in query_result):
                     match += 1
