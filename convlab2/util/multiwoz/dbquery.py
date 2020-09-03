@@ -3,6 +3,7 @@
 import json
 import os
 import random
+from copy import deepcopy
 
 
 class Database(object):
@@ -26,9 +27,16 @@ class Database(object):
             'taxi_types': random.choice(self.dbs[domain]['taxi_types']),
             'taxi_phone': ''.join([str(random.randint(1, 9)) for _ in range(11)])}]
         if domain == 'police':
-            return self.dbs['police']
+            return deepcopy(self.dbs['police'])
         if domain == 'hospital':
-            return self.dbs['hospital']
+            department = None
+            for key, val in constraints:
+                if key == 'department':
+                    department = val
+            if not department:
+                return deepcopy(self.dbs['hospital'])
+            else:
+                return [deepcopy(x) for x in self.dbs['hospital'] if x['department'].lower() == department.strip().lower()]
         for ele in constraints:
             if ele[0] == 'area' and ele[1] == 'center':
                 ele[1] = 'centre'
@@ -62,10 +70,13 @@ class Database(object):
                     except:
                         continue
             else:
-                record['Ref'] = '{0:08d}'.format(i)
-                found.append(record)
+                res = deepcopy(record)
+                res['Ref'] = '{0:08d}'.format(i)
+                found.append(res)
 
         return found
+
+
 if __name__ == '__main__':
     db = Database()
     print(db.query("train", [['departure', 'cambridge'], ['destination','peterborough'], ['day', 'tuesday'], ['arriveBy', '11:15']]))
