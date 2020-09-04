@@ -3,6 +3,8 @@
 import json
 import os
 import random
+from fuzzywuzzy import fuzz
+from itertools import chain
 from copy import deepcopy
 
 
@@ -18,7 +20,7 @@ class Database(object):
                     'data/multiwoz/db/{}_db.json'.format(domain))) as f:
                 self.dbs[domain] = json.load(f)
 
-    def query(self, domain, constraints, ignore_open=False):
+    def query(self, domain, constraints, ignore_open=False, soft_contraints=(), fuzzy_match_ratio=60):
         """Returns the list of entities for a given domain
         based on the annotation of the belief state"""
         # query the db
@@ -43,7 +45,9 @@ class Database(object):
 
         found = []
         for i, record in enumerate(self.dbs[domain]):
-            for key, val in constraints:
+            constraints_iterator = zip(constraints, [False] * len(constraints))
+            soft_contraints_iterator = zip(soft_contraints, [True] * len(soft_contraints))
+            for (key, val), fuzzy_match in chain(constraints_iterator, soft_contraints_iterator):
                 if val == "" or val == "dont care" or val == 'not mentioned' or val == "don't care" or val == "dontcare" or val == "do n't care":
                     pass
                 else:
@@ -64,9 +68,16 @@ class Database(object):
                         # elif ignore_open and key in ['destination', 'departure', 'name']:
                         elif ignore_open and key in ['destination', 'departure']:
                             continue
+                        elif record[key].strip() == '?':
+                            # '?' matches any constraint
+                            continue
                         else:
-                            if val.strip().lower() != record[key].strip().lower():
-                                break
+                            if not fuzzy_match:
+                                if val.strip().lower() != record[key].strip().lower():
+                                    break
+                            else:
+                                if fuzz.partial_ratio(val.strip().lower(), record[key].strip().lower()) < fuzzy_match_ratio:
+                                    break
                     except:
                         continue
             else:
