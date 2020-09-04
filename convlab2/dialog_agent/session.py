@@ -144,6 +144,8 @@ class BiSession(Session):
         self.user_agent.init_session(**kwargs)
         if self.evaluator:
             self.evaluator.add_goal(self.user_agent.policy.get_goal())
+        self.dialog_history = []
+        self.__turn_indicator = 0
 
 
 class DealornotSession(Session):
@@ -198,3 +200,5 @@ class DealornotSession(Session):
         self.__turn_indicator = random.choice([0, 1])
         self.alice.init_session()
         self.bob.init_session()
+        self.current_agent = None
+        self.dialog_history = []
