@@ -1,0 +1,110 @@
+{
+    "397": {
+        "messages": [
+            {
+                "content": "Hello, can you recommend an attraction with a playing time of 1 hour-2 hours and a rating of 4.5 points or above?",
+                "role": "usr"
+            },
+            {
+                "content": "No problem! You can pay a visit to Peking University.",
+                "role": "sys"
+            },
+            {
+                "content": "OK, are there any good restaurants around it?",
+                "role": "usr"
+            },
+            {
+                "content": "There are many restaurants around it, including Baijia Dayuan and Quanjude Toast Duck Restaurant (Qinghuayuan).",
+                "role": "sys"
+            },
+            {
+                "content": "That's great! I'm just looking for a nearby restaurant with a per-person cost of 150-500 yuan serving Mashed potato in chicken soup. Which restaurant is suitable for me?",
+                "role": "usr"
+            },
+            {
+                "content": "Sorry, there is no one that fully meets your needs. I recommend you to try Baijia Dayuan. Its recommended dishes are Excellent selection of delicious food. And its other conditions meet your needs. Does it work for you?",
+                "role": "sys"
+            },
+            {
+                "content": "Okay, what are the opening hours of it?",
+                "role": "usr"
+            },
+            {
+                "content": "The opening hours are Monday to Sunday 11:00-22:00.",
+                "role": "sys"
+            },
+            {
+                "content": "OK, I am free at that time. Does it have a high rating?",
+                "role": "usr"
+            },
+            {
+                "content": "Not bad. The rating is 4.5 points.",
+                "role": "sys"
+            },
+            {
+                "content": "That's good. Can you find a restaurant with a per-person cost of 100-150 yuan serving Boiled fish in soup, Taro rolls and Roast duck? I'm going to change a place to enjoy tomorrow.",
+                "role": "usr"
+            },
+            {
+                "content": "Sorry, but we haven't found any restaurants that fully meet your needs. I recommend Youth Restaurant (Wuzi University) and you can have a try. The per-person cost of it is only 75 yuan and you can eat what you want.",
+                "role": "sys"
+            },
+            {
+                "content": "OK, it's much cheaper. I'm so satisfied. Where is it?",
+                "role": "usr"
+            },
+            {
+                "content": "It is at No.6, material College Road, Chaoyang North Road.",
+                "role": "sys"
+            },
+            {
+                "content": "Well, I got it. I need to find a place for my accommodation after dinner. Could you recommend a hotel with a rating of 5 points?",
+                "role": "usr"
+            },
+            {
+                "content": "No problem! Golden Phoenix Hotel is a very good one.",
+                "role": "sys"
+            },
+            {
+                "content": "Really? What are the nearby attractions around this hotel?",
+                "role": "usr"
+            },
+            {
+                "content": "Sorry, there is no attraction around it.",
+                "role": "sys"
+            },
+            {
+                "content": "I'm sorry to hear that. I want to find a free attraction with a rating of 4.5 points or above around it. What should I do?",
+                "role": "usr"
+            },
+            {
+                "content": "I'm so sorry, but there is no attraction around the hotel. I'd like to recommend another for you. GUI Street Snacks meets your needs. How do you like it?",
+                "role": "sys"
+            },
+            {
+                "content": "Well, it is fine. I decide to go there. Do you have its telephone number?",
+                "role": "usr"
+            },
+            {
+                "content": "Yes, their number 15210801573.",
+                "role": "sys"
+            },
+            {
+                "content": "Ok, I get it. Are there any other attractions around it?",
+                "role": "usr"
+            },
+            {
+                "content": "Well, there are a lot of them, including Prince Kung's Mansion and The Forbidden City. They are very famous.",
+                "role": "sys"
+            },
+            {
+                "content": "That sounds great. Thank you so much. Goodbye.",
+                "role": "usr"
+            },
+            {
+                "content": "You're welcome. Goodbye.",
+                "role": "sys"
+            }
+        ]
+    }
+}
