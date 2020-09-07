@@ -56,7 +56,9 @@ setup(
         'jieba',
         'embeddings',
         'quadprog',
-        'pyyaml'
+        'pyyaml',
+        'fuzzywuzzy',
+        'python-Levenshtein'
     ],
     extras_require={
         'develop': [
