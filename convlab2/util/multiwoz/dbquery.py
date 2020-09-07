@@ -39,9 +39,7 @@ class Database(object):
                 return deepcopy(self.dbs['hospital'])
             else:
                 return [deepcopy(x) for x in self.dbs['hospital'] if x['department'].lower() == department.strip().lower()]
-        for ele in constraints:
-            if ele[0] == 'area' and ele[1] == 'center':
-                ele[1] = 'centre'
+        constraints = list(map(lambda ele: ele if not(ele[0] == 'area' and ele[1] == 'center') else ('area', 'centre'), constraints))
 
         found = []
         for i, record in enumerate(self.dbs[domain]):
