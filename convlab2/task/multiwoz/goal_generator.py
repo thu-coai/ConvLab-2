@@ -142,7 +142,7 @@ class GoalGenerator:
                  sample_reqt_from_trainset=False):
         """
         Args:
-            goal_model_path: path to a goal model 
+            goal_model_path: path to a goal model
             corpus_path: path to a dialog corpus to build a goal model
             boldify: highlight some information in the goal message
             sample_info_from_trainset: if True, sample info slots combination from train set, else sample each slot independently
@@ -422,27 +422,27 @@ class GoalGenerator:
                 if domain == 'train' and len(domain_goal['book']) <= 0:
                     domain_goal['book']['people'] = nomial_sample(cnt_slot_value['book']['people'])
 
-            # fail_book
-            if 'book' in domain_goal and random.random() < 0.5:
-                if domain == 'hotel':
-                    domain_goal['fail_book'] = deepcopy(domain_goal['book'])
-                    if 'stay' in domain_goal['book'] and random.random() < 0.5:
-                        # increase hotel-stay
-                        domain_goal['fail_book']['stay'] = str(int(domain_goal['book']['stay']) + 1)
-                    elif 'day' in domain_goal['book']:
-                        # push back hotel-day by a day
-                        domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) - 1) % 7]
-
-                elif domain == 'restaurant':
-                    domain_goal['fail_book'] = deepcopy(domain_goal['book'])
-                    if 'time' in domain_goal['book'] and random.random() < 0.5:
-                        hour, minute = domain_goal['book']['time'].split(':')
-                        domain_goal['fail_book']['time'] = str((int(hour) + 1) % 24) + ':' + minute
-                    elif 'day' in domain_goal['book']:
-                        if random.random() < 0.5:
-                            domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) - 1) % 7]
-                        else:
-                            domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) + 1) % 7]
+            # fail_book: not use any more since 2020.8.18
+            # if 'book' in domain_goal and random.random() < 0.5:
+            #     if domain == 'hotel':
+            #         domain_goal['fail_book'] = deepcopy(domain_goal['book'])
+            #         if 'stay' in domain_goal['book'] and random.random() < 0.5:
+            #             # increase hotel-stay
+            #             domain_goal['fail_book']['stay'] = str(int(domain_goal['book']['stay']) + 1)
+            #         elif 'day' in domain_goal['book']:
+            #             # push back hotel-day by a day
+            #             domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) - 1) % 7]
+            #
+            #     elif domain == 'restaurant':
+            #         domain_goal['fail_book'] = deepcopy(domain_goal['book'])
+            #         if 'time' in domain_goal['book'] and random.random() < 0.5:
+            #             hour, minute = domain_goal['book']['time'].split(':')
+            #             domain_goal['fail_book']['time'] = str((int(hour) + 1) % 24) + ':' + minute
+            #         elif 'day' in domain_goal['book']:
+            #             if random.random() < 0.5:
+            #                 domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) - 1) % 7]
+            #             else:
+            #                 domain_goal['fail_book']['day'] = days[(days.index(domain_goal['book']['day']) + 1) % 7]
 
             # fail_info
             if 'info' in domain_goal and len(self.db.query(domain, domain_goal['info'].items())) == 0:
@@ -453,6 +453,7 @@ class GoalGenerator:
                         if domain == 'train':
                             domain_goal['info'] = adjusted_info
                         else:
+                            # first ask fail_info which return no result then ask info
                             domain_goal['fail_info'] = domain_goal['info']
                             domain_goal['info'] = adjusted_info
 
@@ -479,13 +480,14 @@ class GoalGenerator:
 
         # using taxi to communte between places, removing destination and departure.
         if 'taxi' in domain_ordering:
-            places = [dom for dom in domain_ordering[: domain_ordering.index('taxi')] if 'address' in self.ind_slot_dist[dom]['reqt'].keys()]
+            places = [dom for dom in domain_ordering[: domain_ordering.index('taxi')] if
+                      dom in ['attraction', 'hotel', 'restaurant', 'police', 'hospital']]
             if len(places) >= 1:
                 del user_goal['taxi']['info']['destination']
-                if 'reqt' not in user_goal[places[-1]]:
-                    user_goal[places[-1]]['reqt'] = []
-                if 'address' not in user_goal[places[-1]]['reqt']:
-                    user_goal[places[-1]]['reqt'].append('address')
+                # if 'reqt' not in user_goal[places[-1]]:
+                #     user_goal[places[-1]]['reqt'] = []
+                # if 'address' not in user_goal[places[-1]]['reqt']:
+                #     user_goal[places[-1]]['reqt'].append('address')
                 # the line below introduce randomness by `union`
                 # user_goal[places[-1]]['reqt'] = list(set(user_goal[places[-1]].get('reqt', [])).union({'address'}))
                 if places[-1] == 'restaurant' and 'book' in user_goal['restaurant']:
@@ -494,10 +496,10 @@ class GoalGenerator:
                         del user_goal['taxi']['info']['leaveAt']
             if len(places) >= 2:
                 del user_goal['taxi']['info']['departure']
-                if 'reqt' not in user_goal[places[-2]]:
-                    user_goal[places[-2]]['reqt'] = []
-                if 'address' not in user_goal[places[-2]]['reqt']:
-                    user_goal[places[-2]]['reqt'].append('address')
+                # if 'reqt' not in user_goal[places[-2]]:
+                #     user_goal[places[-2]]['reqt'] = []
+                # if 'address' not in user_goal[places[-2]]['reqt']:
+                #     user_goal[places[-2]]['reqt'].append('address')
                 # the line below introduce randomness by `union`
                 # user_goal[places[-2]]['reqt'] = list(set(user_goal[places[-2]].get('reqt', [])).union({'address'}))
 

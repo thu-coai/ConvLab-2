@@ -30,8 +30,9 @@ mapping = {'restaurant': {'addr': 'address', 'area': 'area', 'food': 'food', 'na
            'hospital': {'post': 'postcode', 'phone': 'phone', 'addr': 'address', 'department': 'department'},
            'police': {'post': 'postcode', 'phone': 'phone', 'addr': 'address'}}
 
-time_re = re.compile(r'^(([01]\d|2[0-3]):([0-5]\d)|24:00)$')
+time_re = re.compile(r'^(([01]\d|2[0-4]):([0-5]\d)|24:00)$')
 NUL_VALUE = ["", "dont care", 'not mentioned', "don't care", "dontcare", "do n't care"]
+
 
 class MultiWozEvaluator(Evaluator):
     def __init__(self):
@@ -40,7 +41,8 @@ class MultiWozEvaluator(Evaluator):
         self.goal = {}
         self.cur_domain = ''
         self.booked = {}
-        self.dbs = Database().dbs
+        self.database = Database()
+        self.dbs = self.database.dbs
 
     def _init_dict(self):
         dic = {}
@@ -100,10 +102,12 @@ class MultiWozEvaluator(Evaluator):
             if da == 'booking-book-ref' and self.cur_domain in ['hotel', 'restaurant', 'train']:
                 if not self.booked[self.cur_domain] and re.match(r'^\d{8}$', value) and \
                         len(self.dbs[self.cur_domain]) > int(value):
-                    self.booked[self.cur_domain] = self.dbs[self.cur_domain][int(value)]
+                    self.booked[self.cur_domain] = self.dbs[self.cur_domain][int(value)].copy()
+                    self.booked[self.cur_domain]['Ref'] = value
             elif da == 'train-offerbooked-ref' or da == 'train-inform-ref':
                 if not self.booked['train'] and re.match(r'^\d{8}$', value) and len(self.dbs['train']) > int(value):
-                    self.booked['train'] = self.dbs['train'][int(value)]
+                    self.booked['train'] = self.dbs['train'][int(value)].copy()
+                    self.booked['train']['Ref'] = value
             elif da == 'taxi-inform-car':
                 if not self.booked['taxi']:
                     self.booked['taxi'] = 'booked'
@@ -181,7 +185,7 @@ class MultiWozEvaluator(Evaluator):
         for domain in domains:
             inform_slot[domain] = set()
         TP, FP, FN = 0, 0, 0
-        
+
         inform_not_reqt = set()
         reqt_not_inform = set()
         bad_inform = set()
@@ -197,7 +201,7 @@ class MultiWozEvaluator(Evaluator):
                 else:
                     bad_inform.add((intent, domain, key))
                     FP += 1
-        
+
         for domain in domains:
             for k in goal[domain]['reqt']:
                 if k in inform_slot[domain]:
@@ -224,11 +228,11 @@ class MultiWozEvaluator(Evaluator):
             return time_re.match(value)
         elif key == "day":
             return value.lower() in ["monday", "tuesday", "wednesday", "thursday", "friday",
-                              "saturday", "sunday"]
+                                     "saturday", "sunday"]
         elif key == "duration":
             return 'minute' in value
         elif key == "internet" or key == "parking":
-            return value in ["yes", "no"]
+            return value in ["yes", "no", "none"]
         elif key == "phone":
             return re.match(r'^\d{11}$', value) or domain == "restaurant"
         elif key == "price":
@@ -294,10 +298,12 @@ class MultiWozEvaluator(Evaluator):
         """
         book_sess = self.book_rate(ref2goal)
         inform_sess = self.inform_F1(ref2goal)
+        goal_sess = self.final_goal_analyze()
         # book rate == 1 & inform recall == 1
-        if (book_sess == 1 and inform_sess[1] == 1) \
-                or (book_sess == 1 and inform_sess[1] is None) \
-                or (book_sess is None and inform_sess[1] == 1):
+        if ((book_sess == 1 and inform_sess[1] == 1) \
+            or (book_sess == 1 and inform_sess[1] is None) \
+            or (book_sess is None and inform_sess[1] == 1)) \
+                and goal_sess == 1:
             return 1
         else:
             return 0
@@ -325,7 +331,6 @@ class MultiWozEvaluator(Evaluator):
 
         inform = self._inform_F1_goal(goal, self.sys_da_array, [domain])
         return inform
-        
 
     def domain_success(self, domain, ref2goal=True):
         """
@@ -366,3 +371,45 @@ class MultiWozEvaluator(Evaluator):
             return 1
         else:
             return 0
+
+    def _final_goal_analyze(self):
+        """whether the final goal satisfies constraints"""
+        match = mismatch = 0
+        for domain, dom_goal_dict in self.goal.items():
+            constraints = []
+            if 'reqt' in dom_goal_dict:
+                reqt_constraints = list(dom_goal_dict['reqt'].items())
+                constraints += reqt_constraints
+            else:
+                reqt_constraints = []
+            if 'info' in dom_goal_dict:
+                info_constraints = list(dom_goal_dict['info'].items())
+                constraints += info_constraints
+            else:
+                info_constraints = []
+            query_result = self.database.query(domain, info_constraints, soft_contraints=reqt_constraints)
+            if not query_result:
+                mismatch += 1
+                continue
+
+            booked = self.booked[domain]
+            if not self.goal[domain].get('book'):
+                match += 1
+            elif isinstance(booked, dict):
+                ref = booked['Ref']
+                if any(found['Ref'] == ref for found in query_result):
+                    match += 1
+                else:
+                    mismatch += 1
+            else:
+                match += 1
+        return match, mismatch
+
+    def final_goal_analyze(self):
+        """percentage of domains, in which the final goal satisfies the database constraints.
+        If there is no dialog action, returns 1."""
+        match, mismatch = self._final_goal_analyze()
+        if match == mismatch == 0:
+            return 1
+        else:
+            return match / (match + mismatch)

@@ -32,7 +32,7 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def init_session(self):
+    def init_session(self, **kwargs):
         """Reset the class variables to prepare for a new session."""
         pass
 
@@ -140,7 +140,7 @@ class PipelineAgent(Agent):
             return self.policy.get_reward()
         return None
 
-    def init_session(self):
+    def init_session(self, **kwargs):
         """Init the attributes of DST and Policy module."""
         if self.nlu is not None:
             self.nlu.init_session()
@@ -149,7 +149,7 @@ class PipelineAgent(Agent):
             if self.name == 'sys':
                 self.dst.state['history'].append([self.name, 'null'])
         if self.policy is not None:
-            self.policy.init_session()
+            self.policy.init_session(**kwargs)
         if self.nlg is not None:
             self.nlg.init_session()
         self.history = []
