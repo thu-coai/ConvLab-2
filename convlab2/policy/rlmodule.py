@@ -78,7 +78,7 @@ class EpsilonGreedyPolicy(nn.Module):
 
         return a_weights
 
-    def select_action(self, s, sample=True):
+    def select_action(self, s, is_train=True):
         """
         :param s: [s_dim]
         :return: [1]
@@ -86,7 +86,7 @@ class EpsilonGreedyPolicy(nn.Module):
         # forward to get action probs
         # [s_dim] => [a_dim]
 
-        if sample:
+        if is_train:
             if self.epsilon > np.random.rand():
                 # select a random action
                 a = torch.randint(self.a_dim, (1, ))
@@ -312,7 +312,11 @@ class MemoryReplay(object):
             if len(self.memory) < self.max_size:
                 self.memory.append(None)
             self.memory[self.index] = transition
-            self.index = (self.index + 1) % self.max_size 
+            self.index = (self.index + 1) % self.max_size
+
+    def reset(self):
+        self.memory = []
+        self.index = 0
 
     def __len__(self):
         return len(self.memory)        
