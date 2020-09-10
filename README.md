@@ -117,7 +117,7 @@ Performance (the first row is the default config for each module. Empty entries 
 | None        | **TRADE** | RulePolicy | TemplateNLG |    32.4      |    20.1     |    34.7      |  46.9/48.5/44.0 |  11.4/23.9      |
 | None        | **SUMBT** | RulePolicy | TemplateNLG |   34.5       |   29.4     |   62.4    |  54.1/50.3/48.3  |   11.0/28.1     |
 | BERTNLU | RuleDST | **MDRG**       | None        | 21.6 | 17.8 | 31.2 | 39.9/36.3/34.8 | 15.6/30.5|
-| BERTNLU | RuleDST | **LaRL**       | None        | 34.8 | 27.0 | 29.6 | 29.1/53.6/47.8 |13.2/24.4|
+| BERTNLU | RuleDST | **LaRL**       | None        | 34.8 | 27.0 | 29.6 | 49.1/53.6/47.8 |13.2/24.4|
 | None | **SUMBT** | **LaRL** | None |   |   |   | ||
 | None | None | **Sequicity*** | None | 23.1| 9.8 | 4.1 | 33.0/32.7/29.9 | 12.2/32.6 |
 | None | None | **DAMD***      | None | |  |  |  |  |
