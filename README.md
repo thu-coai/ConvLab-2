@@ -118,9 +118,9 @@ Performance (the first row is the default config for each module. Empty entries 
 | None        | **SUMBT** | RulePolicy | TemplateNLG |   34.5       |   29.4     |   62.4    |  54.1/50.3/48.3  |   11.0/28.1     |
 | BERTNLU | RuleDST | **MDRG**       | None        | 21.6 | 17.8 | 31.2 | 39.9/36.3/34.8 | 15.6/30.5|
 | BERTNLU | RuleDST | **LaRL**       | None        | 34.8 | 27.0 | 29.6 | 49.1/53.6/47.8 |13.2/24.4|
-| None | **SUMBT** | **LaRL** | None |   |   |   | ||
+| None | **SUMBT** | **LaRL** | None |  32.9 | 23.7  |  25.9 | 48.6/52.0/46.7 | 12.5/24.3|
 | None | None | **Sequicity*** | None | 23.1| 9.8 | 4.1 | 33.0/32.7/29.9 | 12.2/32.6 |
-| None | None | **DAMD***      | None | |  |  |  |  |
+| None | None | **DAMD***      | None | 39.5| 34.3 | 51.4 | 60.4/59.8/56.3 | 15.8/29.8 |
 
 *: end-to-end models used as sys_agent directly.
 
