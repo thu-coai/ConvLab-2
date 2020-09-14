@@ -114,8 +114,10 @@ class DQN(Policy):
             batch = self.memory.get_batch(batch_size=self.batch_size)
             
             for _ in range(self.training_batch_iter):
+                # 2. calculate the Q loss
                 loss = self.calc_q_loss(batch)
 
+                # 3. make a optimization step
                 self.net_optim.zero_grad()
                 loss.backward()
                 self.net_optim.step()
@@ -127,8 +129,12 @@ class DQN(Policy):
         total_loss /= (self.training_batch_iter * self.training_iter)
         logging.debug('<<dialog policy dqn>> epoch {}, total_loss {}'.format(epoch, total_loss))
 
+        # update the epsilon value
         self.net.update_epsilon(epoch)
+
+        # update the target network
         self.target_net.load_state_dict(self.net.state_dict())
+        
         if (epoch+1) % self.save_per_epoch == 0:
             self.save(self.save_dir, epoch)
     
