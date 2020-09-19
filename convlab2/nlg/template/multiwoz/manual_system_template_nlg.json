@@ -34,7 +34,6 @@
         ],
         "Fee": [
             "Its entrance fee is #ATTRACTION-INFORM-FEE# .",
-            "The park is #ATTRACTION-INFORM-FEE# .",
             "The entry fee is #ATTRACTION-INFORM-FEE# .",
             "their entrance fee is #ATTRACTION-INFORM-FEE# by our system currently ."
         ],
@@ -146,7 +145,6 @@
         ],
         "Fee": [
             "Its entrance fee is #ATTRACTION-RECOMMEND-FEE# .",
-            "The park is #ATTRACTION-RECOMMEND-FEE# .",
             "The entry fee is #ATTRACTION-RECOMMEND-FEE# .",
             "their entrance fee is #ATTRACTION-RECOMMEND-FEE# by our system currently ."
         ],
