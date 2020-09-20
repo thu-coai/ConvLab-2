@@ -12,11 +12,11 @@ from allennlp.data import DatasetReader
 from allennlp.data.tokenizers.word_splitter import SpacyWordSplitter
 from allennlp.models.archival import load_archive
 
-from convlab2.util.file_util import cached_path
+from convlab2.util.file_util import cached_path, get_root_path
 from convlab2.nlu.nlu import NLU
 from convlab2.nlu.milu import dataset_reader, model
-
-from spacy.symbols import ORTH, LEMMA
+import json
+from spacy.symbols import ORTH, LEMMA, POS
 
 DEFAULT_CUDA_DEVICE = -1
 DEFAULT_DIRECTORY = "models"
@@ -47,6 +47,12 @@ class MILU(NLU):
         self.tokenizer = SpacyWordSplitter(language="en_core_web_sm")
         _special_case = [{ORTH: u"id", LEMMA: u"id"}]
         self.tokenizer.spacy.tokenizer.add_special_case(u"id", _special_case)
+        with open(os.path.join(get_root_path(), 'data/multiwoz/db/postcode.json'), 'r') as f:
+            token_list = json.load(f)
+
+        for token in token_list:
+            token = token.strip()
+            self.tokenizer.spacy.tokenizer.add_special_case(token, [{ORTH: token, LEMMA: token, POS: u'NOUN'}])
 
         dataset_reader_params = archive.config["dataset_reader"]
         self.dataset_reader = DatasetReader.from_params(dataset_reader_params)
