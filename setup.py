@@ -38,12 +38,12 @@ setup(
         'visdom',
         'Pillow',
         'future',
-        'torch',
+        'torch>=1.2.0,<1.6.0',
         'numpy>=1.15.0',
         'scipy',
         'scikit-learn==0.20.3',
         'pytorch-pretrained-bert>=0.6.1',
-        'transformers>=2.3.0',
+        'transformers>=2.3.0,<3.0.0',
         'tensorflow==1.14',
         'tensorboard>=1.14.0',
         'tensorboardX==1.7',
@@ -56,7 +56,9 @@ setup(
         'jieba',
         'embeddings',
         'quadprog',
-        'pyyaml'
+        'pyyaml',
+        'fuzzywuzzy',
+        'python-Levenshtein'
     ],
     extras_require={
         'develop': [
