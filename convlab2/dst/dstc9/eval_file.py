@@ -2,6 +2,9 @@
     evaluate output file
 """
 
+import os
+import json
+
 from convlab2.dst.dstc9.utils import prepare_data, extract_gt, eval_states, get_subdir
 
 
@@ -18,7 +21,8 @@ def evaluate(model_dir, subtask, gt):
     json.dump(results, open(os.path.join(model_dir, subdir, 'file-results.json'), 'w'), indent=4, ensure_ascii=False)
 
 
-def dump_example(test_data):
+def dump_example(subtask, split):
+    test_data = prepare_data(subtask, split)
     gt = extract_gt(test_data)
     json.dump(gt, open(os.path.join('example', get_subdir(subtask), 'submission1.json'), 'w'), ensure_ascii=False, indent=4)
     for dialog_id, states in gt.items():
@@ -30,15 +34,14 @@ def dump_example(test_data):
 
 
 if __name__ == '__main__':
-    import os
-    import json
     from argparse import ArgumentParser
     parser = ArgumentParser()
     parser.add_argument('subtask', type=str, choices=['multiwoz', 'crosswoz'])
     parser.add_argument('split', type=str, choices=['train', 'val', 'test', 'human_val'])
     args = parser.parse_args()
     subtask = args.subtask
-    test_data = prepare_data(subtask, args.split)
-    dump_example(test_data)
+    split = args.split
+    dump_example(subtask, split)
+    test_data = prepare_data(subtask, split)
     gt = extract_gt(test_data)
     evaluate('example', subtask, gt)

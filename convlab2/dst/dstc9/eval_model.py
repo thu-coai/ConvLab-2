@@ -34,7 +34,6 @@ if __name__ == '__main__':
     parser.add_argument('split', type=str, choices=['train', 'val', 'test', 'human_val'])
     args = parser.parse_args()
     subtask = args.subtask
-
     test_data = prepare_data(subtask, args.split)
     gt = {
         dialog_id: [state for _, _, state in turns]
