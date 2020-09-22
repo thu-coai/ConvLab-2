@@ -2,21 +2,13 @@ import os
 import json
 import zipfile
 
-
-def load_test_data(subtask):
-    from convlab2 import DATA_ROOT
-    data_dir = os.path.join(DATA_ROOT, 'multiwoz_zh' if subtask == 'multiwoz' else 'crosswoz_en')
-    # test public data currently
-    # to check if this script works properly with your code when label information is
-    # not available, you may need to fill the missing fields yourself (with any value)
-    zip_filename = os.path.join(data_dir, 'dstc9-test-250.zip')
-    test_data = json.load(zipfile.ZipFile(zip_filename).open('data.json'))
-    assert len(test_data) == 250
-    return test_data
+from convlab2 import DATA_ROOT
 
 
-def prepare_data(subtask):
-    test_data = load_test_data(subtask)
+def prepare_data(subtask, split, data_root=DATA_ROOT):
+    data_dir = os.path.join(data_root, 'multiwoz_zh' if subtask == 'multiwoz' else 'crosswoz_en')
+    zip_filename = os.path.join(data_dir, f'{split}.json.zip')
+    test_data = json.load(zipfile.ZipFile(zip_filename).open(f'{split}.json'))
     data = {}
     if subtask == 'multiwoz':
         for dialog_id, dialog in test_data.items():
@@ -55,6 +47,14 @@ def prepare_data(subtask):
             data[dialog_id] = dialog_data
 
     return data
+
+
+def extract_gt(test_data):
+    gt = {
+        dialog_id: [state for _, _, state in turns]
+        for dialog_id, turns in test_data.items()
+    }
+    return gt
 
 
 def eval_states(gt, pred):
@@ -116,3 +116,8 @@ def eval_states(gt, pred):
         #     'f1': f1,
         # }
     }
+
+
+def get_subdir(subtask):
+    subdir = 'multiwoz_zh' if subtask == 'multiwoz' else 'crosswoz_en'
+    return subdir
