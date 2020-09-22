@@ -6,9 +6,13 @@ import zipfile
 def load_test_data(subtask):
     from convlab2 import DATA_ROOT
     data_dir = os.path.join(DATA_ROOT, 'multiwoz_zh' if subtask == 'multiwoz' else 'crosswoz_en')
-    # the filename will change to test file during testing phase
-    zip_filename = os.path.join(data_dir, 'human_val.json.zip')
-    return json.load(zipfile.ZipFile(zip_filename).open('human_val.json'))
+    # test public data currently
+    # to check if this script works properly with your code when label information is
+    # not available, you may need to fill the missing fields yourself (with any value)
+    zip_filename = os.path.join(data_dir, 'dstc9-test-250.zip')
+    test_data = json.load(zipfile.ZipFile(zip_filename).open('data.json'))
+    assert len(test_data) == 250
+    return test_data
 
 
 def prepare_data(subtask):
