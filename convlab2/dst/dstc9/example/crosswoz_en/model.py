@@ -2,8 +2,9 @@ from convlab2.dst import DST
 
 
 class ExampleModel(DST):
-    def update_turn(self, sys_utt, user_utt):
-        return {
+    def init_session(self):
+        self.history = []
+        self.state = {
             "Attraction": {
                 "name": "",
                 "fee": "",
@@ -41,3 +42,10 @@ class ExampleModel(DST):
                 "to": ""
             }
         }
+
+    def update_turn(self, sys_utt, user_utt):
+        if sys_utt is not None:
+            self.history.append(sys_utt)
+        self.history.append(user_utt)
+        # model can do some modification to state here
+        return self.state
