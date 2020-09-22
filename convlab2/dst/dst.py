@@ -20,7 +20,6 @@ class DST(Module):
         """
         pass
 
-    @abstractmethod
     def update_turn(self, sys_utt, user_utt):
         """ Update the internal dialog state variable with .
 
