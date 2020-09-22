@@ -104,10 +104,11 @@ def eval_states(gt, pred):
     return {
         'status': 'ok',
         'joint accuracy': joint_acc / joint_tot,
-        'slot': {
-            'accuracy': slot_acc / slot_tot,
-            'precision': precision,
-            'recall': recall,
-            'f1': f1,
-        }
+        'slot accuracy': slot_acc / slot_tot,
+        # 'slot': {
+        #     'accuracy': slot_acc / slot_tot,
+        #     'precision': precision,
+        #     'recall': recall,
+        #     'f1': f1,
+        # }
     }
