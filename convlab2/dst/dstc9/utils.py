@@ -57,7 +57,20 @@ def extract_gt(test_data):
     return gt
 
 
-def eval_states(gt, pred):
+def eval_states(gt, pred, subtask):
+    # for unifying values with the same meaning to the same expression
+    value_unifier = {
+        'multiwoz': {
+
+        },
+        'crosswoz': {
+            '未提及': '',
+        }
+    }[subtask]
+
+    def unify_value(value):
+        return value_unifier.get(value, value)
+
     def exception(description, **kargs):
         ret = {
             'status': 'exception',
@@ -89,32 +102,34 @@ def eval_states(gt, pred):
                 for slot_name, gt_value in gt_domain.items():
                     if slot_name not in pred_domain:
                         return exception('slot missing', dialog_id=dialog_id, turn_id=turn_id, domain=domain_name, slot=slot_name)
-                    pred_value = pred_domain[slot_name]
+                    gt_value = unify_value(gt_value)
+                    pred_value = unify_value(pred_domain[slot_name])
                     slot_tot += 1
                     if gt_value == pred_value:
                         slot_acc += 1
-                        tp += 1
+                        if gt_value:
+                            tp += 1
                     else:
                         turn_result = False
-                        # for class of gt_value
-                        fn += 1
-                        # for class of pred_value
-                        fp += 1
+                        if gt_value:
+                            fn += 1
+                        if pred_value:
+                            fp += 1
             joint_acc += turn_result
 
-    precision = tp / (tp + fp)
-    recall = tp / (tp + fn)
-    f1 = 2 * tp / (2 * tp + fp + fn)
+    precision = tp / (tp + fp) if tp + fp else 1
+    recall = tp / (tp + fn) if tp + fn else 1
+    f1 = 2 * tp / (2 * tp + fp + fn) if (2 * tp + fp + fn) else 1
     return {
         'status': 'ok',
         'joint accuracy': joint_acc / joint_tot,
-        'slot accuracy': slot_acc / slot_tot,
-        # 'slot': {
-        #     'accuracy': slot_acc / slot_tot,
-        #     'precision': precision,
-        #     'recall': recall,
-        #     'f1': f1,
-        # }
+        # 'slot accuracy': slot_acc / slot_tot,
+        'slot': {
+            'accuracy': slot_acc / slot_tot,
+            'precision': precision,
+            'recall': recall,
+            'f1': f1,
+        }
     }
 
 
