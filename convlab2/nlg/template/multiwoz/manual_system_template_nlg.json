@@ -58,8 +58,8 @@
             "It is in the #ATTRACTION-INFORM-AREA# ."
         ],
         "Phone": [
-            "The phone number is #ATTRACTION-INFORM-PHONE# .",
-            "Here is the phone number , #ATTRACTION-INFORM-PHONE# ."
+            "The attraction phone number is #ATTRACTION-INFORM-PHONE# .",
+            "Here is the attraction phone number , #ATTRACTION-INFORM-PHONE# ."
         ],
         "Type": [
             "It is listed as a #ATTRACTION-INFORM-TYPE# attraction .",
@@ -165,8 +165,8 @@
             "Their postcode is #ATTRACTION-RECOMMEND-POST# ."
         ],
         "Phone": [
-            "The phone number is #ATTRACTION-RECOMMEND-PHONE# .",
-            "Here is the phone number , #ATTRACTION-RECOMMEND-PHONE# ."
+            "The attraction phone number is #ATTRACTION-RECOMMEND-PHONE# .",
+            "Here is the attraction phone number , #ATTRACTION-RECOMMEND-PHONE# ."
         ],
         "Area": [
             "That one is located in the #ATTRACTION-RECOMMEND-AREA# .",
@@ -454,8 +454,8 @@
             "the parking is free ."
         ],
         "Phone": [
-            "Their phone number is #HOTEL-INFORM-PHONE# .",
-            "The phone number is #HOTEL-INFORM-PHONE# ."
+            "The hotel phone number is #HOTEL-INFORM-PHONE# .",
+            "The phone number of the hotel is #HOTEL-INFORM-PHONE# ."
         ],
         "Choice": [
             "i have #HOTEL-INFORM-CHOICE# options for you",
@@ -629,8 +629,8 @@
             "would you like a recommendation ?"
         ],
         "Phone": [
-            "Their phone number is #HOTEL-RECOMMEND-PHONE# .",
-            "The phone number is #HOTEL-RECOMMEND-PHONE# ."
+            "The hotel phone number is #HOTEL-RECOMMEND-PHONE# .",
+            "The phone number of the hotel is #HOTEL-RECOMMEND-PHONE# ."
         ],
         "Choice": [
             "i have #HOTEL-RECOMMEND-CHOICE# options for you",
@@ -758,15 +758,10 @@
             "The post code is #RESTAURANT-INFORM-POST# ."
         ],
         "Phone": [
-            "The number there is #RESTAURANT-INFORM-PHONE# .",
-            "their phone number is #RESTAURANT-INFORM-PHONE#",
-            "The phone number is #RESTAURANT-INFORM-PHONE# .",
-            "#RESTAURANT-INFORM-PHONE# is the phone number",
-            "Their phone number is #RESTAURANT-INFORM-PHONE#",
-            "Their number is #RESTAURANT-INFORM-PHONE# .",
-            "It is #RESTAURANT-INFORM-PHONE# .",
-            "Their phone number is #RESTAURANT-INFORM-PHONE# .",
-            "The phone number is #RESTAURANT-INFORM-PHONE# ."
+            "The number of the restaurant is #RESTAURANT-INFORM-PHONE# .",
+            "The restaurant's phone number is #RESTAURANT-INFORM-PHONE# .",
+            "The phone number of the restaurant is #RESTAURANT-INFORM-PHONE# .",
+            "#RESTAURANT-INFORM-PHONE# is the restaurant phone number"
         ],
         "Area": [
             "it is in the #RESTAURANT-INFORM-AREA# area .",
@@ -876,15 +871,10 @@
             "The post code is #RESTAURANT-RECOMMEND-POST# ."
         ],
         "Phone": [
-            "The number there is #RESTAURANT-RECOMMEND-PHONE# .",
-            "their phone number is #RESTAURANT-RECOMMEND-PHONE#",
-            "The phone number is #RESTAURANT-RECOMMEND-PHONE# .",
-            "#RESTAURANT-RECOMMEND-PHONE# is the phone number",
-            "Their phone number is #RESTAURANT-RECOMMEND-PHONE#",
-            "Their number is #RESTAURANT-RECOMMEND-PHONE# .",
-            "It is #RESTAURANT-RECOMMEND-PHONE# .",
-            "Their phone number is #RESTAURANT-RECOMMEND-PHONE# .",
-            "The phone number is #RESTAURANT-RECOMMEND-PHONE# ."
+            "The number of the restaurant is #RESTAURANT-RECOMMEND-PHONE# .",
+            "The restaurant's phone number is #RESTAURANT-RECOMMEND-PHONE#",
+            "The phone number of the restaurant is #RESTAURANT-RECOMMEND-PHONE# .",
+            "#RESTAURANT-RECOMMEND-PHONE# is the restaurant phone number"
         ],
         "none": [
             "Is there anything else I can help you with ?",
