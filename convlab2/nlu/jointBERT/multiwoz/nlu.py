@@ -56,6 +56,12 @@ class BERTNLU(NLU):
         self.use_context = config['model']['context']
         self.dataloader = dataloader
         self.nlp = spacy.load('en_core_web_sm')
+        with open(os.path.join(get_root_path(), 'data/multiwoz/db/postcode.json'), 'r') as f:
+            token_list = json.load(f)
+
+        for token in token_list:
+            token = token.strip()
+            self.nlp.tokenizer.add_special_case(token, [{ORTH: token, LEMMA: token, POS: u'NOUN'}])
         print("BERTNLU loaded")
 
     def predict(self, utterance, context=list()):

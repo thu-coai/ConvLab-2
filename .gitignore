@@ -44,7 +44,10 @@ convlab2/nlu/jointBERT_new/multiwoz/**/data
 convlab2/nlu/jointBERT_new/crosswoz/**/log
 convlab2/nlu/jointBERT_new/multiwoz/**/log
 convlab2/nlu/jointBERT_new/**/output/
-convlab2/nlu/milu/0919*
+convlab2/nlu/milu/09*
+convlab2/nlu/jointBERT/multiwoz/configs/multiwoz_new_usr_context.json
+convlab2/nlu/milu/multiwoz/configs/system_without_context.jsonnet
+convlab2/nlu/milu/multiwoz/configs/user_without_context.jsonnet
 
 # test script
 *_test.py

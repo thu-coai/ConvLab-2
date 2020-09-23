@@ -1,1 +1,0 @@
-from convlab2.nlu.jointBERT_new.multiwoz.nlu import BERTNLU
