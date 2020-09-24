@@ -22,8 +22,8 @@ def evaluate(model_dir, subtask, test_data, gt):
     for dialog_id, turns in test_data.items():
         model.init_session()
         pred[dialog_id] = [model.update_turn(sys_utt, user_utt) for sys_utt, user_utt, gt_turn in turns]
-    result = eval_states(gt, pred)
-    print(result)
+    result = eval_states(gt, pred, subtask)
+    print(json.dumps(result, indent=4))
     json.dump(result, open(os.path.join(model_dir, subdir, 'model-result.json'), 'w'), indent=4, ensure_ascii=False)
 
 
