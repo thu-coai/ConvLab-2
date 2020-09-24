@@ -42,6 +42,8 @@ RUN pip install jieba
 RUN pip install embeddings
 RUN pip install quadprog
 RUN pip install pyyaml
+RUN pip install fuzzywuzzy
+RUN pip install python-Levenshtein
 
 
 RUN [ "python", "-c", "import nltk; nltk.download('stopwords')" ]

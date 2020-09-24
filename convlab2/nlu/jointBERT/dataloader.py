@@ -57,6 +57,7 @@ class Dataloader:
                 new2ori = None
             d.append(new2ori)
             d.append(word_seq)
+
             d.append(self.seq_tag2id(tag_seq))
             d.append(self.seq_intent2id(d[2]))
             # d = (tokens, tags, intents, da2triples(turn["dialog_act"]), context(token id), new2ori, new_word_seq, tag2id_seq, intent2id_seq)
@@ -95,7 +96,7 @@ class Dataloader:
         return split_tokens, new_tag_seq, new2ori
 
     def seq_tag2id(self, tags):
-        return [self.tag2id[x] for x in tags if x in self.tag2id]
+        return [self.tag2id[x] if x in self.tag2id else self.tag2id['O'] for x in tags]
 
     def seq_id2tag(self, ids):
         return [self.id2tag[x] for x in ids]
