@@ -75,9 +75,11 @@ class MILUDatasetReader(DatasetReader):
             dialog = dialogs[dial_name]["log"]
             context_tokens_list = []
             for i, turn in enumerate(dialog):
-                if self._agent and self._agent == "user" and i % 2 != 1: 
+                if self._agent and self._agent == "user" and i % 2 == 1: 
+                    context_tokens_list.append(turn["text"].lower().split()+ ["SENT_END"])
                     continue
-                if self._agent and self._agent == "system" and i % 2 != 0: 
+                if self._agent and self._agent == "system" and i % 2 == 0: 
+                    context_tokens_list.append(turn["text"].lower().split()+ ["SENT_END"])
                     continue
 
                 tokens = turn["text"].split()
