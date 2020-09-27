@@ -854,7 +854,6 @@ class Agenda(object):
         diaacts = []
         slots = []
         values = []
-        print('pop', self.__stack)
         p_diaact, p_slot = self.__check_next_diaact_slot()
         if p_diaact.split('-')[1] == 'inform' and p_slot in BOOK_SLOT:
             for _ in range(10 if self.__cur_push_num == 0 else self.__cur_push_num):
