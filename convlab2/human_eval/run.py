@@ -23,7 +23,7 @@ MASTER_QUALIF_SDBOX = {
 LOCALE_QUALIF_SDBOX = {
     'QualificationTypeId': '00000000000000000071',
     "Comparator": "In",
-    'LocaleValues': [{'Country': "HK"}, {'Country': "US"}, {'Country': "CN"}]
+    'LocaleValues': [{'Country': "US"}, {'Country': 'HK'}, {'Country': 'IN'} ]
 }
 
 

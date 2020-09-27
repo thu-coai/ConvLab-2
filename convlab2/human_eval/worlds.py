@@ -202,10 +202,10 @@ class MultiWozEvalWorld(MTurkTaskWorld):
     def __init__(self, opt, agent,
                  num_extra_trial=2,
                  max_turn=50,
-                 max_resp_time=300,
+                 max_resp_time=180,
                  model_agent_opt=None,
                  world_tag='',
-                 agent_timeout_shutdown=300):
+                 agent_timeout_shutdown=180):
         self.opt = opt
         self.agent = agent
         self.turn_idx = 1
@@ -422,7 +422,6 @@ class MultiWozEvalWorld(MTurkTaskWorld):
                                 if 'text' in acts[idx] and \
                                         acts[idx]['text'] != '':
                                     self.final_goal[domain]['reqt'][slot] = acts[idx]['text']
-                    # print(self.final_goal)
 
                 # Language Understanding Check
                 control_msg['text'] = UNDERSTANDING_MSG
