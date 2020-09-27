@@ -200,7 +200,8 @@ class TemplateNLG(NLG):
                 sentences += sentence
             else:
                 for slot, value in slot_value_pairs:
-                    value_lower = value.lower()
+                    if isinstance(value, str):
+                        value_lower = value.lower()
                     if value in ["do nt care", "do n't care", "dontcare"]:
                         sentence = 'I don\'t care about the {} of the {}'.format(slot, dialog_act.split('-')[0])
                     elif self.is_user and dialog_act.split('-')[1] == 'inform' and slot == 'choice' and value_lower == 'any':
