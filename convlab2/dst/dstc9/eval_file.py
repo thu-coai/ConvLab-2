@@ -2,9 +2,8 @@
     evaluate output file
 """
 
-import os
 import json
-from copy import deepcopy
+import os
 
 from convlab2.dst.dstc9.utils import prepare_data, extract_gt, eval_states, get_subdir
 
