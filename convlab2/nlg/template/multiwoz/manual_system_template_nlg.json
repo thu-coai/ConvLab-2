@@ -27,7 +27,7 @@
             "We have #ATTRACTION-INFORM-CHOICE# such location ."
         ],
         "Post": [
-            "The postcode is #ATTRACTION-INFORM-POST# .",
+            "The postcode of the attraction is #ATTRACTION-INFORM-POST# .",
             "The post code is #ATTRACTION-INFORM-POST# .",
             "Its postcode is #ATTRACTION-INFORM-POST# .",
             "Their postcode is #ATTRACTION-INFORM-POST# ."
@@ -64,7 +64,7 @@
         "Type": [
             "It is listed as a #ATTRACTION-INFORM-TYPE# attraction .",
             "it is a #ATTRACTION-INFORM-TYPE# .",
-            "Absolutely . There are some wonderful #ATTRACTION-INFORM-TYPE# in that area .",
+            "There are some wonderful #ATTRACTION-INFORM-TYPE# in that area .",
             "it 's considered a #ATTRACTION-INFORM-TYPE# .",
             "Would you be interested in visiting a #ATTRACTION-INFORM-TYPE# ?",
             "It 's a #ATTRACTION-INFORM-TYPE# attraction .",
@@ -91,7 +91,7 @@
         ],
         "Type": [
             "There are no #ATTRACTION-NOOFFER-TYPE# close to the area you are requesting",
-            "No , I ' m sorry , I am not finding anything with #ATTRACTION-NOOFFER-TYPE# .      Perhaps another type of attraction would interest you ?",
+            "No , I ' m sorry , I am not finding anything with #ATTRACTION-NOOFFER-TYPE# .",
             "I ' m sorry , but it does n't look like we have a #ATTRACTION-NOOFFER-TYPE# that matches your criteria .",
             "Unfortunately there are no #ATTRACTION-NOOFFER-TYPE# venues in that location .",
             "I ' m sorry , I do n't see any #ATTRACTION-NOOFFER-TYPE# attractions in that area of town . Is there anything else you 'd be interested in seeing ?",
@@ -108,7 +108,6 @@
             "no such attractions in #ATTRACTION-NOOFFER-AREA#",
             "I ' m sorry , I could n't find anything like that in the #ATTRACTION-NOOFFER-AREA# .",
             "sorry , i could n't find anything in the #ATTRACTION-NOOFFER-AREA# .",
-            "I ' m sorry there 's no entertainment in the #ATTRACTION-NOOFFER-AREA# .",
             "I am sorry , I am unable to locate an attraction in #ATTRACTION-NOOFFER-AREA# ?"
         ],
         "Fee": [
@@ -125,7 +124,7 @@
             "#ATTRACTION-RECOMMEND-NAME# looks good , would you like to head there ?",
             "Would you like #ATTRACTION-RECOMMEND-NAME# ?",
             "you would love #ATTRACTION-RECOMMEND-NAME#",
-            "I recommend #ATTRACTION-RECOMMEND-NAME# , it 's got a lot of great features to watch !",
+            "I recommend #ATTRACTION-RECOMMEND-NAME# ",
             "I would suggest #ATTRACTION-RECOMMEND-NAME# .",
             "I 'd recommend #ATTRACTION-RECOMMEND-NAME# . Would you like some information on it ?",
             "You would love #ATTRACTION-RECOMMEND-NAME#",
@@ -136,9 +135,7 @@
             "I would suggest visiting one of the famous #ATTRACTION-RECOMMEND-TYPE# .",
             "How about a #ATTRACTION-RECOMMEND-TYPE# ?",
             "Would a #ATTRACTION-RECOMMEND-TYPE# work for you ?",
-            "How about visiting one of our many architecturally important #ATTRACTION-RECOMMEND-TYPE# ? May I offer you a list ?",
-            "It 's an #ATTRACTION-RECOMMEND-TYPE# .     Great for the whole family , especially the younger ones !",
-            "All Saints Church has some lovely #ATTRACTION-RECOMMEND-TYPE# . Does that suit your needs ?"
+            "It 's an #ATTRACTION-RECOMMEND-TYPE# . Great for the whole family , especially the younger ones !"
         ],
         "none": [
             "It 's a really fun attraction with lots of interesting things to do in it ."
@@ -184,7 +181,6 @@
         ],
         "Choice": [
             "I ' ve found #ATTRACTION-RECOMMEND-CHOICE# places for you to go . Do you have any specific ideas in mind ?",
-            "sorry about that , there are actually #ATTRACTION-RECOMMEND-CHOICE# .",
             "sure , there are #ATTRACTION-RECOMMEND-CHOICE# for you to choose from .",
             "There are #ATTRACTION-RECOMMEND-CHOICE# . Would you like me to recommend one for you ?",
             "We have #ATTRACTION-RECOMMEND-CHOICE# of those ! Anything specific you need or just a recommendation ?",
@@ -227,7 +223,7 @@
             "I ' m sorry for the confusion , what attraction are you interested in ?",
             "What attraction were you thinking of ?",
             "Do you know the name of it ?",
-            "Yes can you give me the name of it ?"
+            "can you give me the name of it ?"
         ],
         "Price": [
             "any specific price range to help narrow down available options ?",
@@ -263,14 +259,14 @@
         ],
         "Day": [
             "I was able to book you for #BOOKING-BOOK-DAY# .",
-            "I have also reserved for #BOOKING-BOOK-DAY#",
+            "I have reserved for #BOOKING-BOOK-DAY#",
             "I was able to get you that reservation on #BOOKING-BOOK-DAY# ."
         ],
         "Time": [
             "Would #BOOKING-BOOK-TIME# be a convenient time for you ?"
         ],
         "Stay": [
-            "Yes , I ' ve booked you for #BOOKING-BOOK-STAY# night .",
+            "I ' ve booked you for #BOOKING-BOOK-STAY# night .",
             "I was able to book your reservation for #BOOKING-BOOK-STAY# days ."
         ],
         "People": [
@@ -309,7 +305,6 @@
             "So for #BOOKING-INFORM-PEOPLE# people in total ?",
             "Ok I will book it for you for #BOOKING-INFORM-PEOPLE# people",
             "I will book that for #BOOKING-INFORM-PEOPLE# people .",
-            "I will get a confirmation number for #BOOKING-INFORM-PEOPLE#",
             "Do you want reservations for #BOOKING-INFORM-PEOPLE# people ?"
         ],
         "Day": [
@@ -336,7 +331,7 @@
             "Unfortunately the booking was not successful ."
         ],
         "Day": [
-            "I apologize , but it looks like #BOOKING-NOBOOK-DAY# is not working either .",
+            "I apologize , but it looks like #BOOKING-NOBOOK-DAY# is not working .",
             "I ' m sorry #BOOKING-NOBOOK-DAY# is n't working either .",
             "I ' m sorry but i ' m unable to make the reservation on #BOOKING-NOBOOK-DAY# .",
             "sorry , but #BOOKING-NOBOOK-DAY# is all booked",
@@ -348,7 +343,7 @@
         "Stay": [
             "Sorry , the hotel ca n't accommodate you for #BOOKING-NOBOOK-STAY# . want to change dates ?",
             "Neither is available for #BOOKING-NOBOOK-STAY# nights .",
-            "They do n't have a room available for #BOOKING-NOBOOK-STAY# nights either . Anything else you 'd like me to try ?",
+            "They do n't have a room available for #BOOKING-NOBOOK-STAY# nights . Anything else you 'd like me to try ?",
             "Unfortunately it can not be booked for #BOOKING-NOBOOK-STAY# days . Did you want to get information about a different hotel instead ?"
         ],
         "Ref": [
@@ -363,18 +358,14 @@
             "I am sorry they do not have a table at #BOOKING-NOBOOK-TIME# , perhaps another restaurant ?"
         ],
         "People": [
-            "Sorry , but there is not space for #BOOKING-NOBOOK-PEOPLE# people .",
-            "Unfortunately , the time that you provided for #BOOKING-NOBOOK-PEOPLE# people is not available . Do you have other times that you prefer ?",
-            "I am sorry , I am unable to make a reservation for #BOOKING-NOBOOK-PEOPLE# at that time . Would you like me to try and find another restaurant ?",
-            "I ' m unable to book for #BOOKING-NOBOOK-PEOPLE# people . Would you like to try for one day ?",
-            "I ' m sorry but there is no availability for #BOOKING-NOBOOK-PEOPLE# people for that day and time . Would you like to try another day or time slot ?"
+            "I am sorry , I am unable to make a reservation for #BOOKING-NOBOOK-PEOPLE# people",
+            "I ' m unable to book for #BOOKING-NOBOOK-PEOPLE# people .",
+            "I ' m sorry but there is no availability for #BOOKING-NOBOOK-PEOPLE# people ."
         ]
     },
     "Booking-Request": {
         "Day": [
-            "What day will you be staying ?",
             "What day would you like your booking for ?",
-            "What day will you be arriving ?",
             "What day would you like that reservation ?",
             "what day would you like the booking to be made for ?",
             "What day would you like to book ?",
@@ -383,7 +374,7 @@
         "Stay": [
             "How many nights will you be staying ?",
             "And how many nights ?",
-            "Ok and for how many days ?",
+            "for how many days ?",
             "And for how many days ?",
             "how many days would you like to stay ?",
             "How many nights would you like to book it for ?",
@@ -432,7 +423,7 @@
             "Does the #HOTEL-INFORM-NAME# work ?",
             "You can try #HOTEL-INFORM-NAME#",
             "#HOTEL-INFORM-NAME# is a great place",
-            "Sorry about that ! how about #HOTEL-INFORM-NAME# ?",
+            "how about #HOTEL-INFORM-NAME# ?",
             "How about #HOTEL-INFORM-NAME# ?",
             "Okay , how about #HOTEL-INFORM-NAME# ?",
             "what about #HOTEL-INFORM-NAME# ?",
@@ -464,9 +455,8 @@
             "I have #HOTEL-INFORM-CHOICE# different options for you !"
         ],
         "Addr": [
-            "The address is #HOTEL-INFORM-ADDR# .",
+            "The hotel address is #HOTEL-INFORM-ADDR# .",
             "They are located at #HOTEL-INFORM-ADDR#",
-            "The address is #HOTEL-INFORM-ADDR# .",
             "It is located at #HOTEL-INFORM-ADDR#"
         ],
         "Post": [
@@ -487,7 +477,7 @@
             "It is a #HOTEL-INFORM-PRICE# place .",
             "It is #HOTEL-INFORM-PRICE# .",
             "This is an #HOTEL-INFORM-PRICE# hotel .",
-            "It is #HOTEL-INFORM-PRICE# priced . I do n't have an exact price .",
+            "It is #HOTEL-INFORM-PRICE# priced .",
             "The price range is #HOTEL-INFORM-PRICE# ."
         ],
         "Ref": [
@@ -540,14 +530,13 @@
         ],
         "Name": [
             "I am not finding anything for #HOTEL-NOOFFER-NAME# that suit your needs",
-            "Yes , I am sure . There is no #HOTEL-NOOFFER-NAME# in our system .",
+            "There is no #HOTEL-NOOFFER-NAME# in our system .",
             "#HOTEL-NOOFFER-NAME# is not available ."
         ],
         "Price": [
             "I ' m sorry , I do n't have anything in the #HOTEL-NOOFFER-PRICE# price range , would you like to search for something else ?",
             "There is none that is #HOTEL-NOOFFER-PRICE# . Would you like to change your criteria ?",
-            "I ' m sorry , there are no #HOTEL-NOOFFER-PRICE# hotels . Would you like to try searching for something else ?",
-            "I am sorry we do n't have any #HOTEL-NOOFFER-PRICE# ones in the area"
+            "I ' m sorry , there are no #HOTEL-NOOFFER-PRICE# hotels . Would you like to try searching for something else ?"
         ],
         "Internet": [
             "There does n't appear to be a hotel with wifi .",
@@ -564,10 +553,10 @@
             "How about #HOTEL-RECOMMEND-NAME# ?",
             "#HOTEL-RECOMMEND-NAME# looks like it would be a good choice .",
             "Will #HOTEL-RECOMMEND-NAME# be alright ?",
-            "Yes , I would suggest #HOTEL-RECOMMEND-NAME#"
+            "I would suggest #HOTEL-RECOMMEND-NAME#"
         ],
         "Type": [
-            "Of course , would a #HOTEL-RECOMMEND-TYPE# be OK ?"
+            "would a #HOTEL-RECOMMEND-TYPE# be OK ?"
         ],
         "Price": [
             "Its listed as #HOTEL-RECOMMEND-PRICE# .",
@@ -616,7 +605,7 @@
             "It is rated #HOTEL-RECOMMEND-STARS# stars , is that okay ?",
             "It has #HOTEL-RECOMMEND-STARS# stars .",
             "It has a rating of #HOTEL-RECOMMEND-STARS# stars .",
-            "No it has #HOTEL-RECOMMEND-STARS# star rating .",
+            "it has #HOTEL-RECOMMEND-STARS# star rating .",
             "They have a #HOTEL-RECOMMEND-STARS# Star rating",
             "The hotel is #HOTEL-RECOMMEND-STARS# stars .",
             "It is a #HOTEL-RECOMMEND-STARS#-star rating .",
@@ -659,8 +648,8 @@
             "Is there a price you are looking for ?",
             "Do you have a price range preference ?",
             "Is there a price range you prefer ?",
-            "Yes do you have a price range preference ?",
-            "Yes , what price range are you looking for ?",
+            "do you have a price range preference ?",
+            "what price range are you looking for ?",
             "What is the price range for you ?"
         ],
         "Type": [
@@ -714,7 +703,7 @@
         "Addr": [
             "they are located at #RESTAURANT-INFORM-ADDR#",
             "It is at #RESTAURANT-INFORM-ADDR#",
-            "The address is #RESTAURANT-INFORM-ADDR# .",
+            "The restaurant address is #RESTAURANT-INFORM-ADDR# .",
             "Their address is #RESTAURANT-INFORM-ADDR# ."
         ],
         "Price": [
@@ -745,7 +734,7 @@
         ],
         "Choice": [
             "I have #RESTAURANT-INFORM-CHOICE# different restaurants I can give you some information for . They are all pretty good .",
-            "Yes there are #RESTAURANT-INFORM-CHOICE# different places that match your description .",
+            "there are #RESTAURANT-INFORM-CHOICE# different places that match your description .",
             "There are #RESTAURANT-INFORM-CHOICE# restaurants in that area that fit that criteria .",
             "i have #RESTAURANT-INFORM-CHOICE# options for you",
             "We have #RESTAURANT-INFORM-CHOICE# such places .",
@@ -753,7 +742,7 @@
             "there are #RESTAURANT-INFORM-CHOICE# available restaurants ."
         ],
         "Post": [
-            "The postcode is #RESTAURANT-INFORM-POST# .",
+            "The restaurant postcode is #RESTAURANT-INFORM-POST# .",
             "Their postcode is #RESTAURANT-INFORM-POST#",
             "The post code is #RESTAURANT-INFORM-POST# ."
         ],
@@ -768,10 +757,10 @@
             "It is located in the #RESTAURANT-INFORM-AREA# ."
         ],
         "Ref": [
-            "Yes I was able to get you into that restaurant and your reference number is #RESTAURANT-INFORM-REF#.",
+            "I was able to get you into that restaurant and your reference number is #RESTAURANT-INFORM-REF#.",
             "The reference number is #RESTAURANT-INFORM-REF# .",
-            "Great I have a reference number for you . It is #RESTAURANT-INFORM-REF# .",
-            "Yes , the reference number is #RESTAURANT-INFORM-REF#.",
+            "I have a reference number for you . It is #RESTAURANT-INFORM-REF# .",
+            "the reference number is #RESTAURANT-INFORM-REF#.",
             "The reference number is #RESTAURANT-INFORM-REF#",
             "Reference number is : #RESTAURANT-INFORM-REF#.",
             "Your reference number is #RESTAURANT-INFORM-REF# . You will likely need it .",
@@ -793,7 +782,7 @@
             "I am unable to find any #RESTAURANT-NOOFFER-FOOD# restaurants in town .",
             "I have nothing with #RESTAURANT-NOOFFER-FOOD# . Do you have another preference ?",
             "There are no #RESTAURANT-NOOFFER-FOOD# restaurants .",
-            "I did not find any #RESTAURANT-NOOFFER-FOOD# restaurants . Give me a moment and I will search for unusual ones .",
+            "I did not find any #RESTAURANT-NOOFFER-FOOD# restaurants .",
             "There no #RESTAURANT-NOOFFER-FOOD# restaurants that I can find right now . Would something else work ?",
             "I ' m sorry I have no restaurants serving #RESTAURANT-NOOFFER-FOOD# food .",
             "There are no #RESTAURANT-NOOFFER-FOOD# restaurants unfortunately ."
@@ -837,7 +826,7 @@
             "I would suggest #RESTAURANT-RECOMMEND-NAME# .",
             "#RESTAURANT-RECOMMEND-NAME# sounds like it might be what you are looking for .",
             "#RESTAURANT-RECOMMEND-NAME# matches your description .",
-            "Yes , I have a place called #RESTAURANT-RECOMMEND-NAME# , does that sound like something you would enjoy ?",
+            "I have a place called #RESTAURANT-RECOMMEND-NAME# , does that sound like something you would enjoy ?",
             "I recommend #RESTAURANT-RECOMMEND-NAME#"
         ],
         "Food": [
@@ -1152,7 +1141,7 @@
             "Did you want reservations ?"
         ],
         "Depart": [
-            "Woudl you like me to book a train from #TRAIN-OFFERBOOK-DEPART# for you ?"
+            "Would you like me to book a train from #TRAIN-OFFERBOOK-DEPART# for you ?"
         ],
         "Id": [
             "Train #TRAIN-OFFERBOOK-ID# would work for you .",
@@ -1168,7 +1157,7 @@
             "Will you train arriving at #TRAIN-OFFERBOOK-ARRIVE# work ok for you ?",
             "I have a train arriving at #TRAIN-OFFERBOOK-ARRIVE# . Would that do ?",
             "It arrives by #TRAIN-OFFERBOOK-ARRIVE# would that be okay to book for you ?",
-            "I can get you tickets for an arrival time at #TRAIN-OFFERBOOK-ARRIVE# , that is the soonest , is that okay ?",
+            "I can get you tickets for an arrival time at #TRAIN-OFFERBOOK-ARRIVE# , is that okay ?",
             "Will an arrival time of #TRAIN-OFFERBOOK-ARRIVE# work for you ?",
             "Would you like me to book the #TRAIN-OFFERBOOK-ARRIVE# train ?"
         ],
@@ -1201,7 +1190,7 @@
             "There are #TRAIN-OFFERBOOK-CHOICE# trains available . Should I book a train for you ?"
         ],
         "Dest": [
-            "Woudl you like me to book a train to #TRAIN-OFFERBOOK-DEST# for you ?"
+            "Would you like me to book a train to #TRAIN-OFFERBOOK-DEST# for you ?"
         ],
         "Time": [
             "The travel time is #TRAIN-OFFERBOOK-TIME# , would you like me to book it for you ?"
@@ -1307,7 +1296,7 @@
         "People": [
             "How many tickets would you like ?",
             "how many tickets would you like me to book ?",
-            "Yes , for how many tickets ?",
+            "for how many tickets ?",
             "For how many people ?",
             "how many tickets do you need ?",
             "No problem . How many seats would you like to book ?"
