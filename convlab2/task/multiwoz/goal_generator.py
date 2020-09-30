@@ -45,6 +45,7 @@ templates = {
         'fail_info food': 'If there is no such restaurant, how about one that serves {} food.',
         'fail_info area': 'If there is no such restaurant, how about one in the {} area.',
         'fail_info pricerange': 'If there is no such restaurant, how about one in the {} price range.',
+        'fail_info name': 'If there is no such restaurant, how about one called {}.',
         'fail_book time': 'If the booking fails how about {}.',
         'fail_book day': 'If the booking fails how about {}.'
     },
@@ -69,6 +70,7 @@ templates = {
         'fail_info parking no': 'If there is no such hotel, how about one that does not has free parking.',
         'fail_info internet yes': 'If there is no such hotel, how about one that has free wifi.',
         'fail_info internet no': 'If there is no such hotel, how about one that does not has free wifi.',
+        'fail_info name': 'If there is no such restaurant, how about one called {}.',
         'fail_book stay': 'If the booking fails how about {} nights.',
         'fail_book day': 'If the booking fails how about {}.'
     },
@@ -79,7 +81,8 @@ templates = {
         'type': 'The attraction should be in the type of {}.',
         'name': 'You are looking for a particular attraction. Its name is called {}.',
         'fail_info type': 'If there is no such attraction, how about one that is in the type of {}.',
-        'fail_info area': 'If there is no such attraction, how about one in the {} area.'
+        'fail_info area': 'If there is no such attraction, how about one in the {} area.',
+        'fail_info name': 'If there is no such restaurant, how about one called {}.',
     },
     'taxi': {
         'intro': 'You are also looking for a taxi.',
@@ -135,14 +138,14 @@ class GoalGenerator:
     """User goal generator."""
 
     def __init__(self,
-                 goal_model_path=os.path.join(get_root_path(), 'data/multiwoz/goal/new_goal_model_no_police_hospital.pkl'),
+                 goal_model_path=os.path.join(get_root_path(), 'data/multiwoz/goal/new_goal_model.pkl'),
                  corpus_path=None,
                  boldify=False,
                  sample_info_from_trainset=True,
                  sample_reqt_from_trainset=False):
         """
         Args:
-            goal_model_path: path to a goal model 
+            goal_model_path: path to a goal model
             corpus_path: path to a dialog corpus to build a goal model
             boldify: highlight some information in the goal message
             sample_info_from_trainset: if True, sample info slots combination from train set, else sample each slot independently
@@ -163,13 +166,13 @@ class GoalGenerator:
             self._build_goal_model()
             print('Building goal model is done')
 
-        # remove some slot (now no police and hospital domains)
-        # del self.ind_slot_dist['police']['reqt']['postcode']
-        # del self.ind_slot_value_dist['police']['reqt']['postcode']
-        # del self.ind_slot_dist['hospital']['reqt']['postcode']
-        # del self.ind_slot_value_dist['hospital']['reqt']['postcode']
-        # del self.ind_slot_dist['hospital']['reqt']['address']
-        # del self.ind_slot_value_dist['hospital']['reqt']['address']
+        # remove some slot
+        del self.ind_slot_dist['police']['reqt']['postcode']
+        del self.ind_slot_value_dist['police']['reqt']['postcode']
+        del self.ind_slot_dist['hospital']['reqt']['postcode']
+        del self.ind_slot_value_dist['hospital']['reqt']['postcode']
+        del self.ind_slot_dist['hospital']['reqt']['address']
+        del self.ind_slot_value_dist['hospital']['reqt']['address']
 
         # print(self.slots_combination_dist['police'])
         # print(self.slots_combination_dist['hospital'])
@@ -187,8 +190,6 @@ class GoalGenerator:
         domain_orderings = []
         for d in dialogs:
             d_domains = _get_dialog_domains(dialogs[d])
-            if 'police' in d_domains or 'hospital' in d_domains:
-                continue
             first_index = []
             for domain in d_domains:
                 message = [dialogs[d]['goal']['message']] if type(dialogs[d]['goal']['message']) == str else \
@@ -211,9 +212,6 @@ class GoalGenerator:
         self.slots_num_dist = {domain: {} for domain in domains}
 
         for d in dialogs:
-            d_domains = _get_dialog_domains(dialogs[d])
-            if 'police' in d_domains or 'hospital' in d_domains:
-                continue
             for domain in domains:
                 if dialogs[d]['goal'][domain] != {}:
                     domain_cnt[domain] += 1
@@ -551,10 +549,6 @@ class GoalGenerator:
                 del user_goal['train']
                 domain_ordering = tuple(list(domain_ordering).remove('train'))
 
-        for domain in user_goal:
-            if not user_goal[domain]['info']:
-                user_goal[domain]['info'] = {'none':'none'}
-
         user_goal['domain_ordering'] = domain_ordering
 
         return user_goal
@@ -624,6 +618,9 @@ class GoalGenerator:
                                                                                                         'leaveAt'])))
                     message.append(' '.join(m))
             else:
+                if dom == 'police':
+                    assert len(state[info]) == 0
+                    message.append(' '.join(m))
                 while len(state[info]) > 0:
                     num_acts = random.randint(1, min(len(state[info]), 3))
                     slots = random.sample(list(state[info].keys()), num_acts)
@@ -740,5 +737,4 @@ class GoalGenerator:
 
 if __name__ == '__main__':
     goal_generator = GoalGenerator(corpus_path=os.path.join(get_root_path(), 'data/multiwoz/train.json'), sample_reqt_from_trainset=True)
-    # goal_generator._build_goal_model()
     pprint(goal_generator.get_user_goal())
