@@ -1053,7 +1053,6 @@
             "The trip will last #TRAIN-INFORM-TIME#",
             "the travel will take #TRAIN-INFORM-TIME#",
             "The trip is #TRAIN-INFORM-TIME# .",
-            "The travel time for the trip is #TRAIN-INFORM-TIME# one way ."
         ],
         "Arrive": [
             "It arrives at #TRAIN-INFORM-ARRIVE# .",
@@ -1242,7 +1241,6 @@
             "The trip will last #TRAIN-OFFERBOOKED-TIME#",
             "the travel will take #TRAIN-OFFERBOOKED-TIME#",
             "The trip is #TRAIN-OFFERBOOKED-TIME# .",
-            "The travel time for the trip is #TRAIN-OFFERBOOKED-TIME# one way ."
         ],
         "Day": [
             "The train is for #TRAIN-OFFERBOOKED-DAY# you are all set",
