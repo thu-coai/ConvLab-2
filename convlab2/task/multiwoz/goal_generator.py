@@ -45,6 +45,7 @@ templates = {
         'fail_info food': 'If there is no such restaurant, how about one that serves {} food.',
         'fail_info area': 'If there is no such restaurant, how about one in the {} area.',
         'fail_info pricerange': 'If there is no such restaurant, how about one in the {} price range.',
+        'fail_info name': 'If there is no such restaurant, how about one called {}.',
         'fail_book time': 'If the booking fails how about {}.',
         'fail_book day': 'If the booking fails how about {}.'
     },
@@ -69,6 +70,7 @@ templates = {
         'fail_info parking no': 'If there is no such hotel, how about one that does not has free parking.',
         'fail_info internet yes': 'If there is no such hotel, how about one that has free wifi.',
         'fail_info internet no': 'If there is no such hotel, how about one that does not has free wifi.',
+        'fail_info name': 'If there is no such restaurant, how about one called {}.',
         'fail_book stay': 'If the booking fails how about {} nights.',
         'fail_book day': 'If the booking fails how about {}.'
     },
@@ -79,7 +81,8 @@ templates = {
         'type': 'The attraction should be in the type of {}.',
         'name': 'You are looking for a particular attraction. Its name is called {}.',
         'fail_info type': 'If there is no such attraction, how about one that is in the type of {}.',
-        'fail_info area': 'If there is no such attraction, how about one in the {} area.'
+        'fail_info area': 'If there is no such attraction, how about one in the {} area.',
+        'fail_info name': 'If there is no such restaurant, how about one called {}.',
     },
     'taxi': {
         'intro': 'You are also looking for a taxi.',
@@ -546,10 +549,6 @@ class GoalGenerator:
                 del user_goal['train']
                 domain_ordering = tuple(list(domain_ordering).remove('train'))
 
-        for domain in user_goal:
-            if not user_goal[domain]['info']:
-                user_goal[domain]['info'] = {'none':'none'}
-
         user_goal['domain_ordering'] = domain_ordering
 
         return user_goal
@@ -619,6 +618,9 @@ class GoalGenerator:
                                                                                                         'leaveAt'])))
                     message.append(' '.join(m))
             else:
+                if dom == 'police':
+                    assert len(state[info]) == 0
+                    message.append(' '.join(m))
                 while len(state[info]) > 0:
                     num_acts = random.randint(1, min(len(state[info]), 3))
                     slots = random.sample(list(state[info].keys()), num_acts)

@@ -11,6 +11,7 @@ from threading import Thread
 # Agent
 from convlab2.dialog_agent import PipelineAgent, BiSession
 from convlab2.nlu.milu.multiwoz import MILU
+from convlab2.nlu.jointBERT.multiwoz import BERTNLU
 from convlab2.dst.rule.multiwoz import RuleDST
 from convlab2.policy.rule.multiwoz import RulePolicy
 from convlab2.nlg.template.multiwoz import TemplateNLG
@@ -24,6 +25,7 @@ rgo_queue = PriorityQueue(maxsize=0)
 
 app = Flask(__name__)
 
+# sys_nlu = BERTNLU()
 sys_nlu = MILU()
 sys_dst = RuleDST()
 sys_policy = RulePolicy(character='sys')
@@ -33,16 +35,18 @@ agent = PipelineAgent(sys_nlu,sys_dst,sys_policy, sys_nlg,'sys')
 
 print(agent.response('I am looking for a hotel'))
 
-
+global_counter = 0
 @app.route('/', methods=['GET', 'POST'])
 def process():
+    global global_counter
     try:
         in_request = request.json
         print(in_request)
     except:
         return "invalid input: {}".format(in_request)
-    rgi_queue.put(in_request)
-    rgi_queue.join()
+    global_counter += 1
+    rgi_queue.put((global_counter, in_request))
+    # rgi_queue.join()
     output = rgo_queue.get()
     print(output['response'])
     rgo_queue.task_done()
@@ -53,19 +57,21 @@ def process():
 def generate_response(in_queue, out_queue):
     while True:
         # pop input
-        last_action = 'null'
-        in_request = in_queue.get()
+        # last_action = 'null'
+        _, in_request = in_queue.get()
         obs = in_request['input']
         if in_request['agent_state'] == {}:
             agent.init_session()
         else:
-            encoded_state, dst_state, last_action = in_request['agent_state']
-            agent.dst.state = copy.deepcopy(dst_state)
+            # encoded_state, dst_state, last_action = in_request['agent_state']
+            # agent.dst.state = copy.deepcopy(dst_state)
+            agent.state_replace(in_request['agent_state'])
         try:
             action = agent.response(obs)
             print(f'obs:{obs}; action:{action}')
-            dst_state = copy.deepcopy(agent.dst.state)
-            encoded_state = None
+            # dst_state = copy.deepcopy(agent.dst.state)
+            # encoded_state = None
+            in_request['agent_state'] = agent.state_return()
         except Exception as e:
             print('agent error', e)
 
@@ -78,8 +84,9 @@ def generate_response(in_queue, out_queue):
             print('Response generation error', e)
             response = 'What did you say?'
 
-        last_action = action
-        out_queue.put({'response': response, 'agent_state': (encoded_state, dst_state, last_action)})
+        # last_action = action
+        # out_queue.put({'response': response, 'agent_state': (encoded_state, dst_state, last_action)})
+        out_queue.put({'response': response, 'agent_state': in_request['agent_state']})
         in_queue.task_done()
         out_queue.join()
 

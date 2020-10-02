@@ -4,12 +4,13 @@ import json
 import torch
 from unidecode import unidecode
 import spacy
-from convlab2.util.file_util import cached_path
+from convlab2.util.file_util import cached_path, get_root_path
 from convlab2.nlu.nlu import NLU
 from convlab2.nlu.jointBERT.dataloader import Dataloader
 from convlab2.nlu.jointBERT.jointBERT import JointBERT
 from convlab2.nlu.jointBERT.multiwoz.postprocess import recover_intent
 from convlab2.nlu.jointBERT.multiwoz.preprocess import preprocess
+from spacy.symbols import ORTH, LEMMA, POS
 
 
 class BERTNLU(NLU):
@@ -56,11 +57,18 @@ class BERTNLU(NLU):
         self.use_context = config['model']['context']
         self.dataloader = dataloader
         self.nlp = spacy.load('en_core_web_sm')
+        with open(os.path.join(get_root_path(), 'data/multiwoz/db/postcode.json'), 'r') as f:
+            token_list = json.load(f)
+
+        for token in token_list:
+            token = token.strip()
+            self.nlp.tokenizer.add_special_case(token, [{ORTH: token, LEMMA: token, POS: u'NOUN'}])
         print("BERTNLU loaded")
 
     def predict(self, utterance, context=list()):
-        # ori_word_seq = unidecode(utterance).split()
+        # tokenization first, very important!
         ori_word_seq = [token.text for token in self.nlp(unidecode(utterance)) if token.text.strip()]
+        # print(ori_word_seq)
         ori_tag_seq = ['O'] * len(ori_word_seq)
         if self.use_context:
             if len(context) > 0 and type(context[0]) is list and len(context[0]) > 1:
@@ -94,9 +102,9 @@ class BERTNLU(NLU):
 
 
 if __name__ == '__main__':
-    text = "I will need you departure and arrival city and time ."
+    text = "How about rosa's bed and breakfast ? Their postcode is cb22ha."
     nlu = BERTNLU(mode='sys', config_file='multiwoz_sys_context.json',
                   model_file='https://convlab.blob.core.windows.net/convlab-2/bert_multiwoz_all_context.zip')
-    print(nlu.predict(text, context=['', "I ' m looking for a train leaving on tuesday please ."]))
-    text = "I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant."
     print(nlu.predict(text))
+    # text = "I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant."
+    # print(nlu.predict(text))
