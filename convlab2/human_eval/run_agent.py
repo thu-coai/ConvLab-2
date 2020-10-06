@@ -35,16 +35,18 @@ agent = PipelineAgent(sys_nlu,sys_dst,sys_policy, sys_nlg,'sys')
 
 print(agent.response('I am looking for a hotel'))
 
-
+global_counter = 0
 @app.route('/', methods=['GET', 'POST'])
 def process():
+    global global_counter
     try:
         in_request = request.json
         print(in_request)
     except:
         return "invalid input: {}".format(in_request)
-    rgi_queue.put(in_request)
-    rgi_queue.join()
+    global_counter += 1
+    rgi_queue.put((global_counter, in_request))
+    # rgi_queue.join()
     output = rgo_queue.get()
     print(output['response'])
     rgo_queue.task_done()
@@ -56,7 +58,7 @@ def generate_response(in_queue, out_queue):
     while True:
         # pop input
         # last_action = 'null'
-        in_request = in_queue.get()
+        _, in_request = in_queue.get()
         obs = in_request['input']
         if in_request['agent_state'] == {}:
             agent.init_session()
