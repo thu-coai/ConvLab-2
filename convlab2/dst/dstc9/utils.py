@@ -69,7 +69,7 @@ def unify_value(value, subtask):
             ret[i] = unify_value(v, subtask)
         return ret
 
-    return {
+    value = {
         'multiwoz': {
             '未提及': '',
             'none': '',
@@ -80,6 +80,8 @@ def unify_value(value, subtask):
             'None': '',
         }
     }[subtask].get(value, value)
+
+    return ' '.join(value.strip().split())
 
 
 def eval_states(gt, pred, subtask):
@@ -135,7 +137,6 @@ def eval_states(gt, pred, subtask):
     return {
         'status': 'ok',
         'joint accuracy': joint_acc / joint_tot,
-        # 'slot accuracy': slot_acc / slot_tot,
         'slot': {
             'accuracy': slot_acc / slot_tot,
             'precision': precision,
