@@ -107,19 +107,16 @@ Performance (the first row is the default config for each module. Empty entries 
 | ----------- | --------- | -------------- | ----------- | ------------- | ------------ | --------- | --------- | -------------- |
 | **BERTNLU** | RuleDST   | RulePolicy     | TemplateNLG |   90.5       |     81.3    |   91.1 | 79.7/92.6/83.5 | 11.6/12.3      |
 | **MILU**    | RuleDST | RulePolicy | TemplateNLG |    93.3       |   81.8      |   93.0    | 80.4/94.7/84.8 | 11.3/12.1      |
-| **SVMNLU**  | RuleDST | RulePolicy | TemplateNLG |     57.5      |   38.5    |  57.1   | 62.9/67.7/62.6 |  11.0/13.4    |
 | BERTNLU | RuleDST | RulePolicy | **SCLSTM**  |   48.5    | 40.2 | 56.9   | 62.3/62.5/58.7 |  11.9/27.1         |
 | BERTNLU     | RuleDST | **MLEPolicy**  | TemplateNLG |     42.7          |    35.9      |  17.6   | 62.8/69.8/62.9  |  12.1/24.1    |
 | BERTNLU | RuleDST | **PGPolicy**   | TemplateNLG |     37.4         |    31.7     |   17.4  |  57.4/63.7/56.9  |   11.0/25.3    |
 | BERTNLU | RuleDST | **PPOPolicy**  | TemplateNLG |     61.1         |    44.0    |   44.6    | 63.9/76.8/67.2  |  12.5/20.8   |
 | BERTNLU | RuleDST | **GDPLPolicy** | TemplateNLG |     49.4         |     38.4    |  20.1     |  64.5/73.8/65.6 |  11.5/21.3    |
-| None        | **MDBT**  | RulePolicy | TemplateNLG |    12.4       |      7.8     |   30.4  | 32.6/21.5/23.9 |     7.9/25.1    |
 | None        | **TRADE** | RulePolicy | TemplateNLG |    32.4      |    20.1     |    34.7      |  46.9/48.5/44.0 |  11.4/23.9      |
 | None        | **SUMBT** | RulePolicy | TemplateNLG |   34.5       |   29.4     |   62.4    |  54.1/50.3/48.3  |   11.0/28.1     |
 | BERTNLU | RuleDST | **MDRG**       | None        | 21.6 | 17.8 | 31.2 | 39.9/36.3/34.8 | 15.6/30.5|
 | BERTNLU | RuleDST | **LaRL**       | None        | 34.8 | 27.0 | 29.6 | 49.1/53.6/47.8 |13.2/24.4|
 | None | **SUMBT** | **LaRL** | None |  32.9 | 23.7  |  25.9 | 48.6/52.0/46.7 | 12.5/24.3|
-| None | None | **Sequicity*** | None | 23.1| 9.8 | 4.1 | 33.0/32.7/29.9 | 12.2/32.6 |
 | None | None | **DAMD***      | None | 39.5| 34.3 | 51.4 | 60.4/59.8/56.3 | 15.8/29.8 |
 
 *: end-to-end models used as sys_agent directly.

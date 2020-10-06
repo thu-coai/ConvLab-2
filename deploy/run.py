@@ -94,4 +94,5 @@ def dialog_eg():
 
 if __name__ == '__main__':
     # gunicorn deploy.run:app --threads 4
+    # Note that if you want to run this on a server, use host '0.0.0.0'
     app.run(host='127.0.0.1', port=dep_conf['net']['port'], debug=True)
