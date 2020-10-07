@@ -157,8 +157,8 @@ class ServerCtrl(object):
             if temp_data is not None and model_map[mod] is not None:
                 # on response
                 param = [temp_data]
-                if mod == 'nlu': #and dst_model is None:
-                    context = [x[1] for x in dst_model.state['history']]
+                if mod == 'nlu' and dst_model is None:
+                    context = [x[1] for x in dst_model.state['history'][:-1]]
                     param.append(context)
                 # if mod == 'dst':
                 #     dst_model.state['user_action'] = temp_data
