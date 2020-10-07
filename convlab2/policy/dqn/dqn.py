@@ -148,12 +148,25 @@ class DQN(Policy):
     
     def load(self, filename):
         dqn_mdl_candidates = [
-            filename + '.dqn.mdl',
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), filename + '.dqn.mdl'),
+            filename + '_dqn.pol.mdl',
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), filename + '_dqn.pol.mdl'),
         ]
+
         for dqn_mdl in dqn_mdl_candidates:
             if os.path.exists(dqn_mdl):
                 self.net.load_state_dict(torch.load(dqn_mdl, map_location=DEVICE))
                 self.target_net.load_state_dict(torch.load(dqn_mdl, map_location=DEVICE))
                 logging.info('<<dialog policy>> loaded checkpoint from file: {}'.format(dqn_mdl))
                 break
+
+    @classmethod
+    def from_pretrained(cls,
+                        archive_file="",
+                        model_file="https://convlab.blob.core.windows.net/convlab-2/dqn_policy_multiwoz.zip",
+                        is_train=False,
+                        dataset='Multiwoz'):
+        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json'), 'r') as f:
+            cfg = json.load(f)
+        model = cls(is_train=is_train, dataset=dataset)
+        model.load(cfg['load'])
+        return model
