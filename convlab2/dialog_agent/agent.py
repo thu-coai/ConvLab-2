@@ -32,7 +32,7 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def init_session(self):
+    def init_session(self, **kwargs):
         """Reset the class variables to prepare for a new session."""
         pass
 
@@ -91,6 +91,26 @@ class PipelineAgent(Agent):
         self.init_session()
         self.history = []
 
+    def state_replace(self, agent_state):
+        """
+        this interface is reserved to replace all interal states of agent
+        the code snippet example below is for the scenario when the agent state only depends on self.history and self.dst.state
+        """
+        self.history = deepcopy(agent_state['history'])
+        self.dst.state = deepcopy(agent_state['dst_state'])
+
+    def state_return(self):
+        """
+        this interface is reserved to return all interal states of agent
+        the code snippet example below is for the scenario when the agent state only depends on self.history and self.dst.state
+        """
+        agent_state = {}
+        agent_state['history'] = deepcopy(self.history)
+        agent_state['dst_state'] = deepcopy(self.dst.state)
+
+        return agent_state
+
+
     def response(self, observation):
         """Generate agent response using the agent modules."""
         # Note: If you modify the logic of this function, please ensure that it is consistent with deploy.server.ServerCtrl._turn()
@@ -140,7 +160,7 @@ class PipelineAgent(Agent):
             return self.policy.get_reward()
         return None
 
-    def init_session(self):
+    def init_session(self, **kwargs):
         """Init the attributes of DST and Policy module."""
         if self.nlu is not None:
             self.nlu.init_session()
@@ -149,7 +169,7 @@ class PipelineAgent(Agent):
             if self.name == 'sys':
                 self.dst.state['history'].append([self.name, 'null'])
         if self.policy is not None:
-            self.policy.init_session()
+            self.policy.init_session(**kwargs)
         if self.nlg is not None:
             self.nlg.init_session()
         self.history = []

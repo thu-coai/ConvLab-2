@@ -33,7 +33,7 @@ def extract_ontology(data):
                         assert isinstance(value, str)
                         value_set.add(value)
             else:
-                for domain, svd in turn['sys_state'].items():
+                for domain, svd in turn['sys_state_init'].items():
                     domain_set.add(domain)
                     for slot, value in svd.items():
                         slot_set.add(slot)

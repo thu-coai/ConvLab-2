@@ -213,6 +213,7 @@ def evaluate(dataset_name, model_name, load_path, calculate_reward=True):
                     logging.info(f'task success: {task_succ}')
                     logging.info(f'book rate: {sess.evaluator.book_rate()}')
                     logging.info(f'inform precision/recall/f1: {sess.evaluator.inform_F1()}')
+                    logging.info(f"percentage of domains that satisfies the database constraints: {sess.evaluator.final_goal_analyze()}")
                     logging.info('-'*50)
                     break
             else: 
@@ -221,8 +222,7 @@ def evaluate(dataset_name, model_name, load_path, calculate_reward=True):
             for key in sess.evaluator.goal: 
                 if key not in task_success: 
                     task_success[key] = []
-                else: 
-                    task_success[key].append(task_succ)
+                task_success[key].append(task_succ)
             task_success['All'].append(task_succ)
         
         for key in task_success: 

@@ -1,6 +1,7 @@
 from pathlib import Path
 import zipfile
 import json
+import os
 from convlab2.util.allennlp_file_utils import cached_path as allennlp_cached_path
 
 
@@ -24,3 +25,7 @@ def dump_json(content, filepath):
 def write_zipped_json(zip_path, filepath):
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
         zf.write(filepath)
+
+
+def get_root_path():
+    return os.path.abspath(os.path.join(os.path.abspath(__file__), '../../..'))

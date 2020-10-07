@@ -20,16 +20,22 @@ mapping = {'restaurant': {'addr': 'address', 'area': 'area', 'food': 'food', 'na
            'hospital': {'post': 'postcode', 'phone': 'phone', 'addr': 'address', 'department': 'department'},
            'police': {'post': 'postcode', 'phone': 'phone', 'addr': 'address'}}
 
+DEFAULT_INTENT_FILEPATH = os.path.join(
+                            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
+                            'data/multiwoz/trackable_intent.json'
+                        )
 
 class MultiWozVector(Vector):
 
     def __init__(self, voc_file, voc_opp_file, character='sys',
-                 intent_file=os.path.join(
-                     os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
-                     'data/multiwoz/trackable_intent.json')):
+                 intent_file=DEFAULT_INTENT_FILEPATH,
+                 composite_actions=False,
+                 vocab_size=500):
 
         self.belief_domains = ['Attraction', 'Restaurant', 'Train', 'Hotel', 'Taxi', 'Hospital', 'Police']
         self.db_domains = ['Attraction', 'Restaurant', 'Train', 'Hotel']
+        self.composite_actions = composite_actions
+        self.vocab_size = vocab_size
 
         with open(intent_file) as f:
             intents = json.load(f)
@@ -41,9 +47,30 @@ class MultiWozVector(Vector):
             self.da_voc = f.read().splitlines()
         with open(voc_opp_file) as f:
             self.da_voc_opp = f.read().splitlines()
+
+        if self.composite_actions:
+            self.load_composite_actions()
         self.character = character
         self.generate_dict()
         self.cur_domain = None
+
+
+    def load_composite_actions(self):
+        """
+        load the composite actions to self.da_voc
+        """
+        composite_actions_filepath = os.path.join(
+                    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
+                    'data/multiwoz/da_slot_cnt.json')
+        with open(composite_actions_filepath, 'r') as f:
+            composite_actions_stats = json.load(f)
+            for action in composite_actions_stats:
+                if len(action.split(';')) > 1:
+                    # append only composite actions as single actions are already in self.da_voc
+                    self.da_voc.append(action)
+
+                if len(self.da_voc) == self.vocab_size:
+                    break
 
     def generate_dict(self):
         """
@@ -195,9 +222,14 @@ class MultiWozVector(Vector):
                 Dialog act
         """
         act_array = []
-        for i, idx in enumerate(action_vec):
-            if idx == 1:
-                act_array.append(self.vec2act[i])
+
+        if self.composite_actions:
+            act_idx = np.argmax(action_vec)
+            act_array = self.vec2act[act_idx].split(';')
+        else:
+            for i, idx in enumerate(action_vec):
+                if idx == 1:
+                    act_array.append(self.vec2act[i])
         action = deflat_da(act_array)
         entities = {}
         for domint in action:
@@ -213,7 +245,15 @@ class MultiWozVector(Vector):
         action = delexicalize_da(action, self.requestable)
         action = flat_da(action)
         act_vec = np.zeros(self.da_dim)
-        for da in action:
-            if da in self.act2vec:
-                act_vec[self.act2vec[da]] = 1.
+
+        if self.composite_actions:
+            composite_action = ';'.join(action)
+            for act in self.act2vec:
+                if set(action) == set(act.split(';')):
+                    act_vec[self.act2vec[act]] = 1.
+                    break
+        else:
+            for da in action:
+                if da in self.act2vec:
+                    act_vec[self.act2vec[da]] = 1.
         return act_vec

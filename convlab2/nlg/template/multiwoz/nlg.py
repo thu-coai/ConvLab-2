@@ -2,16 +2,25 @@ import json
 import random
 import os
 from pprint import pprint
+import collections
 from convlab2.nlg import NLG
 
 
+def lower_keys(x):
+    if isinstance(x, list):
+        return [lower_keys(v) for v in x]
+    elif isinstance(x, dict):
+        return {k.lower(): lower_keys(v) for k, v in x.items()}
+    else:
+        return x
+
 def read_json(filename):
     with open(filename, 'r') as f:
-        return json.load(f)
+        return lower_keys(json.load(f))
 
 
 # supported slot
-slot2word = {
+Slot2word = {
     'Fee': 'fee',
     'Addr': 'address',
     'Area': 'area',
@@ -42,6 +51,7 @@ slot2word = {
     # 'TrainID': 'TrainID'
 }
 
+slot2word = dict((k.lower(), v.lower()) for k,v in Slot2word.items())
 
 class TemplateNLG(NLG):
     def __init__(self, is_user, mode="manual"):
@@ -67,6 +77,32 @@ class TemplateNLG(NLG):
         self.manual_user_template = read_json(os.path.join(template_dir, 'manual_user_template_nlg.json'))
         self.manual_system_template = read_json(os.path.join(template_dir, 'manual_system_template_nlg.json'))
 
+    def sorted_dialog_act(self, dialog_acts):
+        new_action_group = {}
+        for item in dialog_acts:
+            intent, domain, slot, value = item
+            if domain not in new_action_group:
+                new_action_group[domain] = {'nooffer': [], 'inform-name': [], 'inform-other': [], 'request': [], 'other': []}
+            if intent == 'NoOffer':
+                new_action_group[domain]['nooffer'].append(item)
+            elif intent == 'Inform' and slot == 'Name':
+                new_action_group[domain]['inform-name'].append(item)
+            elif intent == 'Inform':
+                new_action_group[domain]['inform-other'].append(item)
+            elif intent == 'request':
+                new_action_group[domain]['request'].append(item)
+            else:
+                new_action_group[domain]['other'].append(item)
+
+        new_action = []
+        if 'general' in new_action_group:
+            new_action += new_action_group['general']['other']
+            del new_action_group['general']
+        for domain in new_action_group:
+            for k in ['nooffer', 'inform-name', 'inform-other', 'request', 'other']:
+                new_action = new_action_group[domain][k] + new_action
+        return new_action
+
     def generate(self, dialog_acts):
         """NLG for Multiwoz dataset
 
@@ -75,11 +111,12 @@ class TemplateNLG(NLG):
         Returns:
             generated sentence
         """
-        action = {}
+        dialog_acts = self.sorted_dialog_act(dialog_acts)
+        action = collections.OrderedDict()
         for intent, domain, slot, value in dialog_acts:
-            k = '-'.join([domain, intent])
+            k = '-'.join([domain.lower(), intent.lower()])
             action.setdefault(k, [])
-            action[k].append([slot, value])
+            action[k].append([slot.lower(), value])
         dialog_acts = action
         mode = self.mode
         try:
@@ -132,7 +169,7 @@ class TemplateNLG(NLG):
         sentences = ''
         for dialog_act, slot_value_pairs in dialog_acts.items():
             intent = dialog_act.split('-')
-            if 'Select' == intent[1]:
+            if 'select' == intent[1]:
                 slot2values = {}
                 for slot, value in slot_value_pairs:
                     slot2values.setdefault(slot, [])
@@ -148,7 +185,7 @@ class TemplateNLG(NLG):
                             sentence += ' , ' + value
                     sentence += ' {} ? '.format(slot2word[slot])
                     sentences += sentence
-            elif 'Request' == intent[1]:
+            elif 'request' == intent[1]:
                 for slot, value in slot_value_pairs:
                     if dialog_act not in template or slot not in template[dialog_act]:
                         sentence = 'What is the {} of {} ? '.format(slot.lower(), dialog_act.split('-')[0].lower())
@@ -163,11 +200,37 @@ class TemplateNLG(NLG):
                 sentences += sentence
             else:
                 for slot, value in slot_value_pairs:
+                    if isinstance(value, str):
+                        value_lower = value.lower()
                     if value in ["do nt care", "do n't care", "dontcare"]:
-                        sentence = 'I don\'t care about the {} of the {}'.format(slot.lower(), dialog_act.split('-')[0].lower())
+                        sentence = 'I don\'t care about the {} of the {}'.format(slot, dialog_act.split('-')[0])
+                    elif self.is_user and dialog_act.split('-')[1] == 'inform' and slot == 'choice' and value_lower == 'any':
+                        # user have no preference, any choice is ok
+                        sentence = random.choice([
+                            "Please pick one for me. ",
+                            "Anyone would be ok. ",
+                            "Just select one for me. "
+                        ])
+                    elif slot == 'price' and 'same price range' in value_lower:
+                        sentence = random.choice([
+                            "it just needs to be {} .".format(value),
+                            "Oh , I really need something {} .".format(value),
+                            "I would prefer something that is {} .".format(value),
+                            "it needs to be {} .".format(value)
+                        ])
+                    elif slot in ['internet', 'parking'] and value_lower == 'no':
+                        sentence = random.choice([
+                            "It does n't need to have {} .".format(slot),
+                            "I do n't need free {} .".format(slot),
+                        ])
                     elif dialog_act in template and slot in template[dialog_act]:
                         sentence = random.choice(template[dialog_act][slot])
                         sentence = sentence.replace('#{}-{}#'.format(dialog_act.upper(), slot.upper()), str(value))
+                    elif slot == 'notbook':
+                        sentence = random.choice([
+                            "I do not need to book. ",
+                            "I 'm not looking to make a booking at the moment."
+                        ])
                     else:
                         if slot in slot2word:
                             sentence = 'The {} is {} . '.format(slot2word[slot], str(value))
@@ -185,7 +248,7 @@ class TemplateNLG(NLG):
                 key += s + ';'
             if dialog_act in template and key in template[dialog_act]:
                 sentence = random.choice(template[dialog_act][key])
-                if 'Request' in dialog_act or 'general' in dialog_act:
+                if 'request' in dialog_act or 'general' in dialog_act:
                     sentence = self._postprocess(sentence)
                     sentences += sentence
                 else:
@@ -201,7 +264,8 @@ class TemplateNLG(NLG):
 
 def example():
     # dialog act
-    dialog_acts = [['Inform', 'Train', 'Day', 'wednesday'], ['Inform', 'Train', 'Leave', '10:15']]
+    dialog_acts = [['Inform', 'Hotel', 'Area', 'east'],['Inform', 'Hotel', 'Internet', 'no'], ['welcome', 'general', 'none', 'none']]
+    #dialog_acts = [['Inform', 'Restaurant', 'NotBook', 'none']]
     print(dialog_acts)
 
     # system model for manual, auto, auto_manual

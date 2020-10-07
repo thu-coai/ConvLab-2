@@ -61,7 +61,7 @@ In terms of `success F1`,  Sequicity by order shows the (F1, Precision, Recall) 
 
 | BLEU | Match | Success (F1, Prec., Rec.) |
 | - | - | - |
-| 0.0691 | 0.4994 |(0.5059, 0.5925, 0.4414)|
+| 0.1506 | 0.6057 |(0.5662, 0.6701, 0.4902)|
 
 ## Reference
 

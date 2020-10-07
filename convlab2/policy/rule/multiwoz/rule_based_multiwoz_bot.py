@@ -225,16 +225,16 @@ class RuleBasedMultiwozBot(Policy):
                         slot_name = REF_USR_DA[domain].get(slot, slot)
                         DA[domain + "-NoOffer"].append([slot_name, state['belief_state'][domain.lower()]['semi'][slot]])
 
-                p = random.random()
+                # p = random.random()
 
-                # Ask user if he wants to change constraint
-                if p < 0.3:
-                    req_num = min(random.randint(0, 999999) % len(DA[domain + "-NoOffer"]) + 1, 3)
-                    if domain + "-Request" not in DA:
-                        DA[domain + "-Request"] = []
-                    for i in range(req_num):
-                        slot_name = REF_USR_DA[domain].get(DA[domain + "-NoOffer"][i][0], DA[domain + "-NoOffer"][i][0])
-                        DA[domain + "-Request"].append([slot_name, "?"])
+                # # Ask user if he wants to change constraint
+                # if p < 0.3:
+                #     req_num = min(random.randint(0, 999999) % len(DA[domain + "-NoOffer"]) + 1, 3)
+                #     if domain + "-Request" not in DA:
+                #         DA[domain + "-Request"] = []
+                #     for i in range(req_num):
+                #         slot_name = REF_USR_DA[domain].get(DA[domain + "-NoOffer"][i][0], DA[domain + "-NoOffer"][i][0])
+                #         DA[domain + "-Request"].append([slot_name, "?"])
 
             # There's exactly one result matching user's constraint
             # elif len(state['kb_results_dict']) == 1:

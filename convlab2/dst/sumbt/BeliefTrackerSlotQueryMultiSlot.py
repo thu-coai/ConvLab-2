@@ -1,14 +1,12 @@
-import os.path
 import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 from torch.nn import CrossEntropyLoss
-from torch.nn import CosineEmbeddingLoss
 
-from pytorch_pretrained_bert.modeling import BertModel
-from pytorch_pretrained_bert.modeling import BertPreTrainedModel
+from transformers import BertModel
+from transformers import BertPreTrainedModel
 
 
 class BertForUtteranceEncoding(BertPreTrainedModel):
@@ -19,7 +17,7 @@ class BertForUtteranceEncoding(BertPreTrainedModel):
         self.bert = BertModel(config)
 
     def forward(self, input_ids, token_type_ids, attention_mask, output_all_encoded_layers=False):
-        return self.bert(input_ids, token_type_ids, attention_mask, output_all_encoded_layers)
+        return self.bert(input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids, encoder_hidden_states=output_all_encoded_layers)
 
 
 class MultiHeadAttention(nn.Module):
@@ -93,7 +91,8 @@ class BeliefTracker(nn.Module):
         self.device = device
 
         ### Utterance Encoder
-        self.utterance_encoder = BertForUtteranceEncoding.from_pretrained(args.bert_model)
+        self.utterance_encoder = BertForUtteranceEncoding.from_pretrained(args.bert_model_name, cache_dir=args.bert_model_cache_dir)
+        self.utterance_encoder.train()
         self.bert_output_dim = self.utterance_encoder.config.hidden_size
         self.hidden_dropout_prob = self.utterance_encoder.config.hidden_dropout_prob
         if args.fix_utterance_encoder:
@@ -101,7 +100,8 @@ class BeliefTracker(nn.Module):
                 p.requires_grad = False
 
         ### slot, slot-value Encoder (not trainable)
-        self.sv_encoder = BertForUtteranceEncoding.from_pretrained(args.bert_model)
+        self.sv_encoder = BertForUtteranceEncoding.from_pretrained(args.bert_model_name, cache_dir=args.bert_model_cache_dir)
+        self.sv_encoder.train()
         for p in self.sv_encoder.bert.parameters():
             p.requires_grad = False
 
@@ -149,6 +149,9 @@ class BeliefTracker(nn.Module):
 
         ### Etc.
         self.dropout = nn.Dropout(self.hidden_dropout_prob)
+
+        # default evaluation mode
+        self.eval()
 
     def initialize_slot_value_lookup(self, label_ids, slot_ids):
 
@@ -272,6 +275,8 @@ class BeliefTracker(nn.Module):
 
         # calculate joint accuracy
         pred_slot = torch.cat(pred_slot, 2)
+        # print('pred slot:', pred_slot[0][0])
+        # print('labels:', labels[0][0])
         accuracy = (pred_slot == labels).view(-1, slot_dim)
         acc_slot = torch.sum(accuracy, 0).float() \
                    / torch.sum(labels.view(-1, slot_dim) > -1, 0).float()

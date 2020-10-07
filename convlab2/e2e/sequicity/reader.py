@@ -767,30 +767,25 @@ class MultiWozReader(_ReaderBase):
         self.result_file = ''
 
     def _get_tokenized_data(self, raw_data, db_data, construct_vocab):
-        requestable_keys = ['addr', 'area', 'fee', 'name', 'phone', 'post', 'price', 'type', 'department', 'internet', 'parking', 'stars', 'food', 'arrive', 'day', 'depart', 'dest', 'leave', 'ticket', 'id']
-        
         tokenized_data = []
         vk_map = self._value_key_map(db_data)
         for dial_id, dial in enumerate(raw_data):
             tokenized_dial = []
             for turn in dial['dial']:
                 turn_num = turn['turn']
-                constraint = []
+                constraint = [turn['domain']]
                 requested = []
                 for slot_act in turn['usr']['slu']:
                     if slot_act == 'inform':
                         slot_values = turn['usr']['slu'][slot_act]
                         for v in slot_values:
-                            s = v[1]
-                            if s not in ['dont_care', 'none']:
-                                constraint.append(s)
+                            if v[1] not in ['do_nt_care', 'none']:
+                                constraint.append(v[1])
                     elif slot_act == 'request':
                         slot_values = turn['usr']['slu'][slot_act]
                         for v in slot_values:
-                            s = v[0]
-                            if s in requestable_keys:
-                                requested.append(s)
-                degree = len(self.db_search(constraint))
+                            requested.append(v[0])
+                degree = len(self.db_search(constraint[1:], constraint[0]))
                 requested = sorted(requested)
                 constraint.append('EOS_Z1')
                 requested.append('EOS_Z2')
@@ -837,31 +832,34 @@ class MultiWozReader(_ReaderBase):
             string = re.sub(r'_+', '_', string)
             string = re.sub(r'children', 'child_-s', string)
             return string
-        requestable_dict = {'address':'addr', 
-                            'area':'area',
-                            'entrance fee':'fee',
-                            'name':'name',
-                            'phone':'phone', 
-                            'postcode':'post',
-                            'pricerange':'price', 
-                            'type':'type',
-                            'department':'department',
-                            'internet':'internet',
-                            'parking':'parking',
-                            'stars':'stars',
-                            'food':'food',
-                            'arriveBy':'arrive',
-                            'day':'day',
-                            'departure':'depart',
-                            'destination':'dest',
-                            'leaveAt':'leave',
-                            'price':'ticket',
-                            'trainId':'id'}
+        slot_dict = {'address':'addr',
+                     'area':'area',
+                     'entrance fee':'fee',
+                     'name':'name',
+                     'phone':'phone',
+                     'postcode':'post',
+                     'pricerange':'price',
+                     'type':'type',
+                     'department':'department',
+                     'internet':'internet',
+                     'parking':'parking',
+                     'stars':'stars',
+                     'food':'food',
+                     'arriveBy':'arrive',
+                     'day':'day',
+                     'departure':'depart',
+                     'destination':'dest',
+                     'leaveAt':'leave',
+                     'price':'ticket',
+                     'trainId':'id',
+                     'time':'time',
+                     'ref':'ref'}
         value_key = {}
-        for db_entry in db_data:
-            for k, v in db_entry.items():
-                if k in requestable_dict:
-                    value_key[normal(v)] = requestable_dict[k]
+        for domain in db_data:
+            for db_entry in db_data[domain]:
+                for k, v in db_entry.items():
+                    if k in slot_dict:
+                        value_key[normal(v)] = slot_dict[k]
         return value_key
 
     def _get_encoded_data(self, tokenized_data):
@@ -897,10 +895,11 @@ class MultiWozReader(_ReaderBase):
         return encoded_data
 
     def _get_clean_db(self, raw_db_data):
-        for entry in raw_db_data:
-            for k, v in list(entry.items()):
-                if not isinstance(v, str) or v == '?':
-                    entry.pop(k)
+        for domain in raw_db_data:
+            for entry in raw_db_data[domain]:
+                for k, v in list(entry.items()):
+                    if not isinstance(v, str) or v == '?':
+                        entry.pop(k)
 
     def _construct(self, train_json_path, dev_json_path, test_json_path, db_json_path):
         """
@@ -921,13 +920,14 @@ class MultiWozReader(_ReaderBase):
             dev_raw_data = json.loads(f.read().lower())
         with open(test_json_path) as f:
             test_raw_data = json.loads(f.read().lower())
-        db_data = list()
+        db_data = dict()
         for domain_db_json_path in db_json_path:
             with open(domain_db_json_path) as f:
                 db_data_domain = json.loads(f.read().lower())
                 for i, item in enumerate(db_data_domain):
                     item['ref'] = f'{i:08d}'
-                db_data += db_data_domain
+                domain=domain_db_json_path.split('/')[-1][:-8]
+                db_data[domain] = db_data_domain
         self._get_clean_db(db_data)
         self.db = db_data
         
@@ -946,9 +946,14 @@ class MultiWozReader(_ReaderBase):
         random.shuffle(self.dev)
         random.shuffle(self.test)
 
-    def db_search(self, constraints):
+    def db_search(self, constraints, domain):
+        if domain == 'taxi':
+            match_results = [{'phone':'0123456789','car':'black toyota'}]
+            return match_results
+        elif domain not in self.db:
+            return []
         match_results = []
-        for entry in self.db:
+        for entry in self.db[domain]:
             entry_values = ' '.join(entry.values())
             match = True
             for c in constraints:
@@ -993,7 +998,7 @@ class MultiWozReader(_ReaderBase):
                     in constraint_request else constraint_request
                 for j, ent in enumerate(constraints):
                     constraints[j] = ent.replace('_', ' ')
-                degree = self.db_search(constraints)
+                degree = self.db_search(constraints[1:], constraints[0] if constraints else 'restaurant')
                 #print('constraints',constraints)
                 #print('degree',degree)
                 venue = random.sample(degree, 1)[0] if degree else dict()

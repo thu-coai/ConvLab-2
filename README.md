@@ -1,10 +1,13 @@
 # ConvLab-2
+[![Build Status](https://travis-ci.com/thu-coai/ConvLab-2.svg?branch=master)](https://travis-ci.com/thu-coai/ConvLab-2)
+
 **ConvLab-2** is an open-source toolkit that enables researchers to build task-oriented dialogue systems with state-of-the-art models, perform an end-to-end evaluation, and diagnose the weakness of systems. As the successor of [ConvLab](https://github.com/ConvLab/ConvLab), ConvLab-2 inherits ConvLab's framework but integrates more powerful dialogue models and supports more datasets. Besides, we have developed an analysis tool and an interactive tool to assist researchers in diagnosing dialogue systems. [[paper]](https://arxiv.org/abs/2002.04793)
 
 - [Installation](#installation)
 - [Tutorials](#tutorials)
+- [Documents](#documents)
 - [Models](#models)
-- [Supported Dataset](#Supported-Dataset)
+- [Supported Datasets](#Supported-Datasets)
 - [End-to-end Performance on MultiWOZ](#End-to-end-Performance-on-MultiWOZ)
 - [Module Performance on MultiWOZ](#Module-Performance-on-MultiWOZ)
 - [Issues](#issues)
@@ -33,7 +36,10 @@ pip install -e .
 - [Getting Started](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Getting_Started.ipynb) (Have a try on [Colab](https://colab.research.google.com/github/thu-coai/ConvLab-2/blob/master/tutorials/Getting_Started.ipynb)!)
 - [Add New Model](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Add_New_Model.md)
 - [Train RL Policies](https://github.com/thu-coai/ConvLab-2/blob/master/tutorials/Train_RL_Policies)
-- [Interactive Tool](https://github.com/thu-coai/ConvLab-2/blob/master/deploy) [[demo video]](https://drive.google.com/file/d/1HR3mjhgLL0g9IbqU443NsH2G0-PpAsog/view?usp=sharing)
+- [Interactive Tool](https://github.com/thu-coai/ConvLab-2/blob/master/deploy) [[demo video]](https://youtu.be/00VWzbcx26E)
+
+## Documents
+Our documents are on https://thu-coai.github.io/ConvLab-2_docs/convlab2.html.
 
 ## Models
 
@@ -69,6 +75,8 @@ For  more details about these models, You can refer to `README.md` under `convla
 
 ## End-to-end Performance on MultiWOZ
 
+*Notice*: The results are for commits before [`bdc9dba`](https://github.com/thu-coai/ConvLab-2/commit/bdc9dba72c957d97788e533f9458ed03a4b0137b) (inclusive). We will update the results after improving user policy.
+
 We perform end-to-end evaluation (1000 dialogues) on MultiWOZ using the user simulator below (a full example on `tests/test_end2end.py`) :
 
 ```python
@@ -97,23 +105,19 @@ Performance (the first row is the default config for each module. Empty entries 
 
 | NLU         | DST       | Policy         | NLG         | Complete rate | Success rate | Book rate | Inform P/R/F1 | Turn(succ/all) |
 | ----------- | --------- | -------------- | ----------- | ------------- | ------------ | --------- | --------- | -------------- |
-| **BERTNLU** | RuleDST   | RulePolicy     | TemplateNLG | 92.1          | 85.5         | 91.5      | 79.8/92.8/83.8 | 12.7/13.8      |
-| **MILU**    | RuleDST | RulePolicy | TemplateNLG | 89.9          | 83.1         | 90.9      | 78.3/91.7/82.5 | 12.1/13.9      |
-| **SVMNLU**  | RuleDST | RulePolicy | TemplateNLG | 84.2          | 70.4         | 76.1      | 79.1/88.8/81.5 | 14.8/17.7      |
-| BERTNLU | RuleDST | RulePolicy | **SCLSTM**  | 40.1       | 41.0  | 51.5    | 68.5/56.5/59.1 |      11.6/29.2      |
-| BERTNLU     | RuleDST | **MLEPolicy**  | TemplateNLG | 52.6              | 48.4         | 35.5      |  66.3/72.7/66.0 | 12.5/26.3      |
-| BERTNLU | RuleDST | **PGPolicy**   | TemplateNLG | 42.9              | 43.3         | 31.0      |  61.9/66.8/60.4 | 14.7/29.1      |
-| BERTNLU | RuleDST | **PPOPolicy**  | TemplateNLG | 69.7              | 56.6         | 56.6      |  64.8/79.0/68.1 | 12.9/22.1      |
-| BERTNLU | RuleDST | **GDPLPolicy** | TemplateNLG | 57.9              | 49.5         | 33.5      |  67.0/76.4/68.2 | 11.5/24.3      |
-| None        | **MDBT**  | RulePolicy | TemplateNLG |     27.7      |       21.2     |   45.4    |  52.2/41.0/42.4 |   11.8/32.1       |
-| None        | **TRADE** | RulePolicy | TemplateNLG |      29.9      |    25.3       |     36.9     | 49.3/48.1/44.4 |     12.7/24.7     |
-| None        | **SUMBT** | RulePolicy | TemplateNLG |       34.7    |    33.8     |    57.8   |  52.3/50.6/47.3   | 12.1/26.6         |
-| BERTNLU | RuleDST | **MDRG**       | None        | 27.0 | 25.2 | 49.0 | 46.6/43.1/42.0 | 13.6/33.6 |
-| BERTNLU | RuleDST | **HDSA**       | None        | 35.6 | 27.5 | 5.4 | 47.8/57.2/48.8 | 13.0/31.5 |
-| BERTNLU | RuleDST | **LaRL**       | None        | 40.6 | 34.0 | 45.6 | 47.8/54.1/47.6 | 15.0/28.6 |
-| None | **SUMBT** | **LaRL** | None |    39.4|   33.1| 39.5  | 48.5/56.0/48.8| 15.5/28.7|
-| None | None | **Sequicity*** | None | 13.1 | 10.5 | 5.1 | 41.4/30.8/31.3 | 12.9/38.3 |
-| None | None | **DAMD***      | None | 38.5 | 33.6 | 50.9 | 62.1/60.7/57.4 | 10.4/28.2 |
+| **BERTNLU** | RuleDST   | RulePolicy     | TemplateNLG |   90.5       |     81.3    |   91.1 | 79.7/92.6/83.5 | 11.6/12.3      |
+| **MILU**    | RuleDST | RulePolicy | TemplateNLG |    93.3       |   81.8      |   93.0    | 80.4/94.7/84.8 | 11.3/12.1      |
+| BERTNLU | RuleDST | RulePolicy | **SCLSTM**  |   48.5    | 40.2 | 56.9   | 62.3/62.5/58.7 |  11.9/27.1         |
+| BERTNLU     | RuleDST | **MLEPolicy**  | TemplateNLG |     42.7          |    35.9      |  17.6   | 62.8/69.8/62.9  |  12.1/24.1    |
+| BERTNLU | RuleDST | **PGPolicy**   | TemplateNLG |     37.4         |    31.7     |   17.4  |  57.4/63.7/56.9  |   11.0/25.3    |
+| BERTNLU | RuleDST | **PPOPolicy**  | TemplateNLG |     61.1         |    44.0    |   44.6    | 63.9/76.8/67.2  |  12.5/20.8   |
+| BERTNLU | RuleDST | **GDPLPolicy** | TemplateNLG |     49.4         |     38.4    |  20.1     |  64.5/73.8/65.6 |  11.5/21.3    |
+| None        | **TRADE** | RulePolicy | TemplateNLG |    32.4      |    20.1     |    34.7      |  46.9/48.5/44.0 |  11.4/23.9      |
+| None        | **SUMBT** | RulePolicy | TemplateNLG |   34.5       |   29.4     |   62.4    |  54.1/50.3/48.3  |   11.0/28.1     |
+| BERTNLU | RuleDST | **MDRG**       | None        | 21.6 | 17.8 | 31.2 | 39.9/36.3/34.8 | 15.6/30.5|
+| BERTNLU | RuleDST | **LaRL**       | None        | 34.8 | 27.0 | 29.6 | 49.1/53.6/47.8 |13.2/24.4|
+| None | **SUMBT** | **LaRL** | None |  32.9 | 23.7  |  25.9 | 48.6/52.0/46.7 | 12.5/24.3|
+| None | None | **DAMD***      | None | 39.5| 34.3 | 51.4 | 60.4/59.8/56.3 | 15.8/29.8 |
 
 *: end-to-end models used as sys_agent directly.
 
@@ -141,6 +145,8 @@ By running `convlab2/dst/evaluate.py MultiWOZ $model`:
 
 ### Policy
 
+*Notice*: The results are for commits before [`bdc9dba`](https://github.com/thu-coai/ConvLab-2/commit/bdc9dba72c957d97788e533f9458ed03a4b0137b) (inclusive). We will update the results after improving user policy.
+
 By running `convlab2/policy/evalutate.py --model_name $model`
 
 |           | Task Success Rate |
@@ -158,6 +164,68 @@ By running `convlab2/nlg/evaluate.py MultiWOZ $model sys`
 | -------- | ------------- |
 | Template | 0.3309        |
 | SCLSTM   | 0.4884        |
+
+## Translation-train SUMBT for cross-lingual DST
+
+### Train
+
+With Convlab-2, you can train SUMBT on a machine-translated dataset like this:
+
+```python
+# train.py
+import os
+from sys import argv
+
+if __name__ == "__main__":
+    if len(argv) != 2:
+        print('usage: python3 train.py [dataset]')
+        exit(1)
+    assert argv[1] in ['multiwoz', 'crosswoz']
+
+    from convlab2.dst.sumbt.multiwoz_zh.sumbt import SUMBT_PATH
+    if argv[1] == 'multiwoz':
+        from convlab2.dst.sumbt.multiwoz_zh.sumbt import SUMBTTracker as SUMBT
+    elif argv[1] == 'crosswoz':
+        from convlab2.dst.sumbt.crosswoz_en.sumbt import SUMBTTracker as SUMBT
+
+    sumbt = SUMBT()
+    sumbt.train(True)
+```
+
+### Evaluate
+
+Execute `evaluate.py` (under `convlab2/dst/`) with following command:
+
+```bash
+python3 evaluate.py [CrossWOZ-en|MultiWOZ-zh] [val|test|human_val]
+```
+
+evaluation of our pre-trained models are: (joint acc.)
+
+| type  | CrossWOZ-en | MultiWOZ-zh |
+| ----- | ----------- | ----------- |
+| val   | 12.4%       | 45.1%       |
+| test  | 12.4%       | 43.5%       |
+| human_val | 10.6%       | 49.4%       |
+
+`human_val` option will make the model evaluate on the validation set translated by human. 
+
+Note: You may want to download pre-traiend BERT models and translation-train SUMBT models provided by us.
+
+Without modifying any code, you could:
+
+- download pre-trained BERT models from:
+
+  - [bert-base-uncased](https://huggingface.co/bert-base-uncased)  for CrossWOZ-en
+  - [chinese-bert-wwm-ext](https://huggingface.co/hfl/chinese-bert-wwm-ext)  for MultiWOZ-zh
+
+  extract it to `./pre-trained-models`.
+
+- for translation-train SUMBT model:
+
+  - [trained on CrossWOZ-en](https://convlab.blob.core.windows.net/convlab-2/crosswoz_en-pytorch_model.bin.zip)
+  - [trained on MultiWOZ-zh](https://convlab.blob.core.windows.net/convlab-2/multiwoz_zh-pytorch_model.bin.zip)
+  - Say the data set is CrossWOZ (English), (after extraction) just save the pre-trained model under `./convlab2/dst/sumbt/crosswoz_en/pre-trained` and name it with `pytorch_model.bin`. 
 
 ## Issues
 
@@ -177,7 +245,7 @@ We welcome contributions from community.
 
 We would like to thank:
 
-Yan Fang, Zhuoer Feng, Jianfeng Gao, Qihan Guo, Kaili Huang, Minlie Huang, Sungjin Lee, Bing Li, Jinchao Li, Xiang Li, Xiujun Li, Wenchang Ma, Baolin Peng, Runze Liang, Ryuichi Takanobu, Jiaxin Wen, Yaoqin Zhang, Zheng Zhang, Qi Zhu, Xiaoyan Zhu.
+Yan Fang, Zhuoer Feng, Jianfeng Gao, Qihan Guo, Kaili Huang, Minlie Huang, Sungjin Lee, Bing Li, Jinchao Li, Xiang Li, Xiujun Li, Lingxiao Luo, Wenchang Ma, Mehrad Moradshahi, Baolin Peng, Runze Liang, Ryuichi Takanobu, Hongru Wang, Jiaxin Wen, Yaoqin Zhang, Zheng Zhang, Qi Zhu, Xiaoyan Zhu.
 
 
 ## Citing

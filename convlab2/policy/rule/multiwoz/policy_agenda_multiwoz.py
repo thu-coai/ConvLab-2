@@ -34,7 +34,7 @@ for dom, ref_slots in REF_SYS_DA.items():
         if slot_a == 'Ref':
             slot_b = 'ref'
         REF_SYS_DA_M[dom][slot_a.lower()] = slot_b
-    REF_SYS_DA_M[dom]['none'] = None
+    REF_SYS_DA_M[dom]['none'] = 'none'
 REF_SYS_DA_M['taxi']['phone'] = 'phone'
 REF_SYS_DA_M['taxi']['car'] = 'car type'
 
@@ -67,18 +67,21 @@ class UserPolicyAgendaMultiWoz(Policy):
     def reset_turn(self):
         self.__turn = 0
 
-    def init_session(self):
+    def init_session(self, ini_goal=None):
         """ Build new Goal and Agenda for next session """
         self.reset_turn()
-        self.goal = Goal(self.goal_generator)
+        if not ini_goal:
+            self.goal = Goal(self.goal_generator)
+        else:
+            self.goal = ini_goal
         self.domain_goals = self.goal.domain_goals
         self.agenda = Agenda(self.goal)
 
-    def predict(self, state):
+    def predict(self, sys_dialog_act):
         """
         Predict an user act based on state and preorder system action.
         Args:
-            state (tuple): Dialog state.
+            sys_dialog_act (list): system dialogue act: [[intent, domain, slot, value],...].
         Returns:
             action (tuple): User act.
             session_over (boolean): True to terminate session, otherwise session continues.
@@ -86,28 +89,37 @@ class UserPolicyAgendaMultiWoz(Policy):
         """
         self.__turn += 2
 
-        assert isinstance(state, list)
+        assert isinstance(sys_dialog_act, list)
 
         sys_action = {}
-        for intent, domain, slot, value in state:
-            k = '-'.join([domain, intent])
-            sys_action.setdefault(k,[])
-            sys_action[k].append([slot, value])
+        for intent, domain, slot, value in sys_dialog_act:
+            if slot == 'Choice' and value.strip().lower() in ['0', 'zero']:
+                nooffer_key = '-'.join([domain, 'NoOffer'])
+                sys_action.setdefault(nooffer_key, [])
+                sys_action[nooffer_key].append(['none', 'none'])
+            else:
+                k = '-'.join([domain, intent])
+                sys_action.setdefault(k, [])
+                sys_action[k].append([slot, value])
 
         if self.__turn > self.max_turn:
             self.agenda.close_session()
         else:
             sys_action = self._transform_sysact_in(sys_action)
+            # print('sys action before update agenda', sys_action)
             self.agenda.update(sys_action, self.goal)
             if self.goal.task_complete():
                 self.agenda.close_session()
 
-        # A -> A' + user_action
-        # action = self.agenda.get_action(random.randint(1, self.max_initiative))
-        action = self.agenda.get_action(self.max_initiative)
+        action = {}
+        while len(action) == 0:
+            # A -> A' + user_action
+            # action = self.agenda.get_action(random.randint(2, self.max_initiative))
+            action = self.agenda.get_action(self.max_initiative)
 
-        # transform to DA
-        action = self._transform_usract_out(action)
+            # transform to DA
+            action = self._transform_usract_out(action)
+            # print(action)
 
         tuples = []
         for domain_intent, svs in action.items():
@@ -143,29 +155,37 @@ class UserPolicyAgendaMultiWoz(Policy):
 
     @classmethod
     def _transform_usract_out(cls, action):
+        # print('before transform', action)
         new_action = {}
         for act in action.keys():
             if '-' in act:
                 if 'general' not in act:
                     (dom, intent) = act.split('-')
                     new_act = dom.capitalize() + '-' + intent.capitalize()
-                    if action[act] == [['none', 'none']]:
-                        new_action[new_act] = [['none', 'none']]
-                        continue
                     new_action[new_act] = []
                     for pairs in action[act]:
                         slot = REF_USR_DA_M[dom.capitalize()].get(pairs[0], None)
-                        if slot is not None:
+                        if pairs[0] == 'none' and pairs[1] == 'none':
+                            new_action[new_act].append(['none', 'none'])
+                        elif pairs[0] == 'choice' and pairs[1] == 'any':
+                            new_action[new_act].append(['Choice', 'any'])
+                        elif pairs[0] == 'NotBook' and pairs[1] == 'none':
+                            new_action[new_act].append(['NotBook', 'none'])
+                        elif slot is not None:
                             new_action[new_act].append([slot, pairs[1]])
+                    if len(new_action[new_act]) == 0:
+                        new_action.pop(new_act)
                     # new_action[new_act] = [[REF_USR_DA_M[dom.capitalize()].get(pairs[0], pairs[0]), pairs[1]] for pairs in action[act]]
                 else:
                     new_action[act] = action[act]
             else:
                 pass
+        # print('after transform', new_action)
         return new_action
 
     @classmethod
     def _transform_sysact_in(cls, action):
+        # print("sys in", action)
         new_action = {}
         if not isinstance(action, dict):
             logging.warning('illegal da: {}'.format(action))
@@ -195,7 +215,7 @@ class UserPolicyAgendaMultiWoz(Policy):
                         new_action[act.lower()] = new_list
             else:
                 new_action[act.lower()] = action[act]
-
+        # print("sys in transformed", new_action)
         return new_action
 
     @classmethod
@@ -208,6 +228,9 @@ class UserPolicyAgendaMultiWoz(Policy):
 
         if slot not in cls.stand_value_dict[domain]:
             return value
+
+        if slot in ['parking', 'internet'] and value == 'none':
+            return 'yes'
 
         value_list = cls.stand_value_dict[domain][slot]
         low_value_list = [item.lower() for item in value_list]
@@ -296,7 +319,7 @@ class Goal(object):
         """
         create new Goal by random
         Args:
-            goal_generator (GoalGenerator): Goal Gernerator.
+            goal_generator (GoalGenerator): Goal Generator.
         """
         self.domain_goals = goal_generator.get_user_goal()
 
@@ -309,6 +332,25 @@ class Goal(object):
 
             if 'book' in self.domain_goals[domain].keys():
                 self.domain_goals[domain]['booked'] = DEF_VAL_UNK
+
+    def set_user_goal(self, user_goal):
+        """
+        set new Goal given user goal generated by goal_generator.get_user_goal()
+        Args:
+            user_goal : user goal generated by GoalGenerator.
+        """
+        self.domain_goals = user_goal
+
+        self.domains = list(self.domain_goals['domain_ordering'])
+        del self.domain_goals['domain_ordering']
+
+        for domain in self.domains:
+            if 'reqt' in self.domain_goals[domain].keys():
+                self.domain_goals[domain]['reqt'] = {slot: DEF_VAL_UNK for slot in self.domain_goals[domain]['reqt']}
+
+            if 'book' in self.domain_goals[domain].keys():
+                self.domain_goals[domain]['booked'] = DEF_VAL_UNK
+
 
     def task_complete(self):
         """
@@ -377,6 +419,7 @@ class Agenda(object):
             domain = goal.domains[idx]
 
             # inform
+            # first ask fail_info which return no result then ask info
             if 'fail_info' in goal.domain_goals[domain]:
                 for slot in random_sample(goal.domain_goals[domain]['fail_info'].keys(),
                                           len(goal.domain_goals[domain]['fail_info'])):
@@ -385,6 +428,8 @@ class Agenda(object):
                 for slot in random_sample(goal.domain_goals[domain]['info'].keys(),
                                           len(goal.domain_goals[domain]['info'])):
                     self.__push(domain + '-inform', slot, goal.domain_goals[domain]['info'][slot])
+
+            self.__push(domain + '-inform', "none", "none")
 
         self.cur_domain = None
 
@@ -421,6 +466,21 @@ class Agenda(object):
             else:
                 if self.update_domain(diaact, slot_vals, goal):
                     return
+
+        for diaact in sys_action.keys():
+            if 'inform' in diaact or 'recommend' in diaact:
+                for slot, val in sys_action[diaact]:
+                    if slot == 'name':
+                        self._remove_item(diaact.split('-')[0]+'-inform', 'choice')
+            if 'booking' in diaact and self.cur_domain:
+                g_book = self._get_goal_infos(self.cur_domain, goal)[-2]
+                if len(g_book) == 0:
+                    self._push_item(self.cur_domain + '-inform', "NotBook", "none")
+            if 'OfferBook' in diaact:
+                domain = diaact.split('-')[0]
+                g_book = self._get_goal_infos(domain, goal)[-2]
+                if len(g_book) == 0:
+                    self._push_item(domain + '-inform', "NotBook", "none")
 
         self.post_process(goal)
 
@@ -507,6 +567,7 @@ class Agenda(object):
     def close_session(self):
         """ Clear up all actions """
         self.__stack = []
+        self.__cur_push_num = 0
         self.__push(self.CLOSE_ACT)
 
     def get_action(self, initiative=1):
@@ -517,6 +578,7 @@ class Agenda(object):
         Returns:
             action (dict): user diaact
         """
+        # print(self)
         diaacts, slots, values = self.__pop(initiative)
         action = {}
         for (diaact, slot, value) in zip(diaacts, slots, values):
@@ -563,6 +625,10 @@ class Agenda(object):
                     logging.warning('illegal booking slot: {}, domain: {}'.format(slot, domain))
                     continue
 
+            # For multiple choices, add new intent to select one:
+            if slot == 'choice' and value.strip().lower() not in ['0', 'zero']:
+                self._push_item(domain + '-inform', "choice", "any")
+
             if slot in g_reqt:
                 if not self._check_reqt_info(domain):
                     self._remove_item(domain + '-request', slot)
@@ -588,7 +654,7 @@ class Agenda(object):
             # booked ok
             if 'booked' in goal.domain_goals[domain]:
                 goal.domain_goals[domain]['booked'] = DEF_VAL_BOOKED
-            self._push_item('general-thank')
+            # self._push_item('general-thank')
 
         return False
 
@@ -618,21 +684,28 @@ class Agenda(object):
 
                 if domain == 'taxi' and (slot == 'destination' or slot == 'departure'):
                     places = [dom for dom in goal.domains[: goal.domains.index('taxi')] if
-                              'address' in goal.domain_goals[dom].get('reqt',[])]
-
-                    if len(places) >= 1 and slot == 'destination' and \
-                            goal.domain_goals[places[-1]]['reqt']['address'] not in NOT_SURE_VALS:
-                        self._push_item(domain + '-inform', slot, goal.domain_goals[places[-1]]['reqt']['address'])
-
-                    elif len(places) >= 2 and slot == 'departure' and \
-                            goal.domain_goals[places[-2]]['reqt']['address'] not in NOT_SURE_VALS:
-                        self._push_item(domain + '-inform', slot, goal.domain_goals[places[-2]]['reqt']['address'])
-
-                    elif random.random() < 0.5:
+                              dom in ['attraction', 'hotel', 'restaurant', 'police', 'hospital']] # name will not appear in reqt
+                    if len(places) >= 1 and slot == 'destination':
+                        place_idx = -1
+                    elif len(places) >= 2 and slot == 'departure':
+                        place_idx = -2
+                    else:
+                        place_idx = None
+                    if place_idx:
+                        if goal.domain_goals[places[place_idx]]['info'].get('name', DEF_VAL_NUL) not in NOT_SURE_VALS:
+                            place = goal.domain_goals[places[place_idx]]['info']['name']
+                        # elif goal.domain_goals[places[place_idx]]['reqt'].get('address', DEF_VAL_NUL) not in NOT_SURE_VALS:
+                        #     place = goal.domain_goals[places[place_idx]]['reqt']['address']
+                        else:
+                            place = "the " + places[place_idx]
+                        self._push_item(domain + '-inform', slot, place)
+                    else:
                         self._push_item(domain + '-inform', slot, DEF_VAL_DNC)
 
-                elif random.random() < 0.5:
+                else:
+                    # for those sys requests that are not in user goal
                     self._push_item(domain + '-inform', slot, DEF_VAL_DNC)
+
         return False
 
     def _handle_nooffer(self, domain, intent, slot_vals, goal: Goal):
@@ -668,6 +741,9 @@ class Agenda(object):
     def _handle_select(self, domain, intent, slot_vals, goal: Goal):
         g_reqt, g_info, g_fail_info, g_book, g_fail_book = self._get_goal_infos(domain, goal)
         # delete Choice
+        for slot, val in slot_vals:
+            if slot == 'choice':
+                self._push_item(domain + '-inform', "choice", "any")
         slot_vals = [[slot, val] for [slot, val] in slot_vals if slot != 'choice']
 
         if slot_vals:
@@ -761,13 +837,23 @@ class Agenda(object):
         return None
 
     def __push(self, diaact, slot=DEF_VAL_NUL, value=DEF_VAL_NUL):
+        if slot in ['people', 'day', 'area', 'pricerange']:
+            for item in self.__stack:
+                if item['slot'] == slot and item['value'] == value and random.random() < 0.3:
+                    if slot == 'people':
+                        item['value'] = 'the same'
+                    elif slot == 'day':
+                        item['value'] = 'the same day'
+                    elif slot == 'pricerange':
+                        item['value'] = 'in the same price range as the {}'.format(diaact.split('-')[0])
+                    elif slot == 'area':
+                        item['value'] = 'same area as the {}'.format(diaact.split('-')[0])
         self.__stack.append({'diaact': diaact, 'slot': slot, 'value': value})
 
     def __pop(self, initiative=1):
         diaacts = []
         slots = []
         values = []
-
         p_diaact, p_slot = self.__check_next_diaact_slot()
         if p_diaact.split('-')[1] == 'inform' and p_slot in BOOK_SLOT:
             for _ in range(10 if self.__cur_push_num == 0 else self.__cur_push_num):
@@ -787,7 +873,13 @@ class Agenda(object):
                 except Exception as e:
                     break
         else:
-            for _ in range(initiative if self.__cur_push_num == 0 else self.__cur_push_num):
+            if self.__cur_push_num == 0 or (all([self.__stack[-i-1]['value'] == DEF_VAL_DNC for i in
+                                                 range(0, min(len(self.__stack), self.__cur_push_num))])):
+                # pop more when only dontcare
+                num2pop = initiative
+            else:
+                num2pop = self.__cur_push_num
+            for _ in range(num2pop):
                 try:
                     item = self.__stack.pop(-1)
                     diaacts.append(item['diaact'])
@@ -814,3 +906,281 @@ class Agenda(object):
         text += '<stack btm>\n'
         text += '-----agenda-----\n'
         return text
+
+
+if __name__ == '__main__':
+    import numpy as np
+    import torch
+    from pprint import pprint
+    from convlab2.dialog_agent import PipelineAgent, BiSession
+    from convlab2.evaluator.multiwoz_eval import MultiWozEvaluator
+    from convlab2.policy.rule.multiwoz import RulePolicy
+    from convlab2.nlg.template.multiwoz.nlg import TemplateNLG
+    from convlab2.dst.rule.multiwoz.dst import RuleDST
+    from convlab2.nlu.jointBERT.multiwoz.nlu import BERTNLU
+
+    seed = 41
+    np.random.seed(seed)
+    random.seed(seed)
+    torch.manual_seed(seed)
+    #
+    # sys_nlu = BERTNLU()
+    # sys_dst = RuleDST()
+    # sys_policy = RulePolicy()
+    # sys_nlg = TemplateNLG(is_user=False)
+    # sys_agent = PipelineAgent(sys_nlu, sys_dst, sys_policy, sys_nlg, name='sys')
+
+    # user_nlu = BERTNLU(mode='sys', config_file='multiwoz_sys_context.json',
+    #                    model_file='https://convlab.blob.core.windows.net/convlab-2/bert_multiwoz_sys_context.zip')
+    # user_dst = None
+    # user_policy = RulePolicy(character='usr')
+    # user_nlg = TemplateNLG(is_user=True)
+    # user_agent = PipelineAgent(user_nlu, user_dst, user_policy, user_nlg, name='user')
+
+    # evaluator = MultiWozEvaluator()
+    # sess = BiSession(sys_agent=sys_agent, user_agent=user_agent, kb_query=None, evaluator=evaluator)
+
+
+
+
+    user_policy = UserPolicyAgendaMultiWoz()
+    #
+    sys_policy = RulePolicy(character='sys')
+    #
+    user_nlg = TemplateNLG(is_user=True, mode='manual')
+    sys_nlg = TemplateNLG(is_user=False, mode='manual')
+    #
+    dst = RuleDST()
+    #
+    # user_nlu = BERTNLU(mode='sys', config_file='multiwoz_sys_context.json',
+    #                    model_file='https://convlab.blob.core.windows.net/convlab-2/bert_multiwoz_sys_context.zip')
+    #
+    goal_generator = GoalGenerator()
+    # while True:
+    #     goal = goal_generator.get_user_goal()
+    #     if 'restaurant' in goal['domain_ordering'] and 'hotel' in goal['domain_ordering']:
+    #         break
+    # # pprint(goal)
+    user_goal = {'domain_ordering': ('hotel', 'attraction'),
+                 'train': {
+                     'info': {'arriveBy': '16:00',
+                              'day': 'monday',
+                              'departure': 'cambridge',
+                              'destination': 'stansted airport'},
+                     'book': {'people': 2}, 'booked': '?'
+                 },
+                 'attraction': {
+                     'info': {'type': 'museum'},
+                     'reqt': ['phone']
+                 },
+                 'hotel': {
+                           'info': {'internet': 'yes',
+                                    'parking': 'yes',
+                                    'stars': '4',
+                                    'type': 'hotel'},
+                           'reqt': ['postcode']},
+                 'restaurant': {'info': {'area': 'centre',
+                                         'food': 'portuguese',
+                                         'pricerange': 'cheap'},
+                                'fail_info': {'area': 'centre',
+                                         'food': 'portuguese',
+                                         'pricerange': 'expensive'},
+                                'reqt': ['postcode']},
+                 'taxi': {'info': {'arriveBy': '13:00'}, 'reqt': ['car type', 'phone']}}
+    # # user_goal = goal
+    goal = Goal(goal_generator)
+    goal.set_user_goal(user_goal)
+    #
+    # user_policy.init_session(ini_goal=goal)
+    # sys_policy.init_session()
+    #
+    # goal = user_policy.get_goal()
+    #
+    # pprint(goal)
+
+    sys_response = ''
+    # sess.init_session(ini_goal=goal)
+    user_policy.init_session(ini_goal=goal)
+    print('init goal:')
+    # pprint(user_policy.get_goal())
+    # pprint(user_agent.policy.get_goal())
+    # pprint(sess.evaluator.goal)
+    # print('-' * 50)
+    # for i in range(20):
+    #     sys_response, user_response, session_over, reward = sess.next_turn(sys_response)
+    #     print('user:', user_response)
+    #     print('sys:', sys_response)
+    #     print()
+    #     if session_over is True:
+    #         break
+    # print('task success:', sess.evaluator.task_success())
+    # print('book rate:', sess.evaluator.book_rate())
+    # print('inform precision/recall/f1:', sess.evaluator.inform_F1())
+    # print('-' * 50)
+    # print('final goal:')
+    # pprint(sess.evaluator.goal)
+    # print('=' * 100)
+
+    history = []
+    # user_utt = user_agent.response('')
+    # print(user_utt)
+    # user_utt = 'I need a restaurant . It just needs to be expensive . I am also in the market for a new restaurant . Is there something in the centre of town ? Do you have portuguese food ?'
+    # # history.append(['user', user_utt])
+    # sys_agent.dst.state['belief_state']['restaurant']['semi']['food'] = 'portuguese'
+    # sys_utt = sys_agent.response(user_utt)
+    # pprint(sys_agent.dst.state)
+    # print(sys_utt)
+    # sys_utt = "I have n't found any in the centre. I am unable to find any portuguese restaurants in town ."
+    # # history.append(['user', user_utt])
+    #
+    # user_utt = user_agent.response(sys_utt)
+    # print(user_utt)
+    # user_utt = "It just needs to be cheap ."
+    # sys_utt = sys_agent.response(user_utt)
+    # print(sys_utt)
+    # sys_utt = "It is in the centre area . They serve portuguese . Would you like to try nandos city centre ? They are in the cheap price range . I will book it for you and get a reference number ?"
+    #
+    # user_utt = user_agent.response(sys_utt)
+    # print(user_utt)
+    # sys_utt = sys_agent.response(user_utt)
+    # print(sys_utt)
+    #
+    # user_utt = user_agent.response(sys_utt)
+    # print(user_utt)
+    # sys_utt = sys_agent.response(user_utt)
+    # print(sys_utt)
+    #
+    # user_utt = user_agent.response(sys_utt)
+    # print(user_utt)
+    # sys_utt = sys_agent.response(user_utt)
+    # print(sys_utt)
+
+    #
+    print(user_policy.agenda)
+    user_act = user_policy.predict([])
+    print(user_act)
+    user_utt = user_nlg.generate(user_act)
+    print(user_utt)
+    history.append(['user', user_utt])
+    state = dst.state
+    state['user_action'] = user_act
+    dst.update(user_act)
+    # pprint(state)
+    sys_act = sys_policy.predict(state)
+    sys_utt = sys_nlg.generate(sys_act)
+    # sys_act.append(["Request", "Restaurant", "Price", "?"])
+    # sys_act = [['Request', 'Hotel', 'Area', '?'], ['Request', 'Hotel', 'Stars', '?']]
+    sys_act = [['Inform', 'Hotel', 'Post', 'pe296fl']]
+    print(sys_act)
+    history.append(['sys', user_utt])
+
+    # sys_utt = sys_agent.response(user_utt)
+    # print(sys_utt)
+    #
+    user_act = user_policy.predict(sys_act)
+    print(user_act)
+    user_utt = user_nlg.generate(user_act)
+    print(user_utt)
+    history.append(['user', user_utt])
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # # sys_act = [['Inform', 'Hotel', 'Choice', '3']]
+    # print(sys_act)
+    sys_act = [
+        ['Inform', 'Hotel', 'Post', 'pe296fl']
+    ]
+    print(sys_act)
+    # sys_utt = sys_agent.response(user_utt)
+    # print(sys_utt)
+    # sys_utt = 'The arrive time is 15:08 . The train will be departing from cambridge . The booking is for arriving in stansted airport . TR6936 will be your perfect fit . How about 14:40 will that work for you ?'
+    # history.append(['sys', user_utt])
+    #
+    #
+    # sys_act = user_nlu.predict(sys_utt, history)
+    # print(sys_act)
+    user_act = user_policy.predict(sys_act)
+    print(user_act)
+    user_utt = user_nlg.generate(user_act)
+    print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    sys_act = [['Request', 'Hotel', 'Price', '?'], ['Request', 'Attraction', 'Price', '?']]
+    print(sys_act)
+    # #
+    user_act = user_policy.predict(sys_act)
+    print(user_act)
+    user_utt = user_nlg.generate(user_act)
+    print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # # sys_act = [["Reqmore", "General", "none", "none"]]
+    # print(sys_act)
+    # #
+    # user_act = user_policy.predict(sys_act)
+    # print(user_act)
+    # user_utt = user_nlg.generate(user_act)
+    # print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # # sys_act = [["Inform", "Hotel", "Parking", "none"]]
+    # print(sys_act)
+    #
+    # user_act = user_policy.predict(sys_act)
+    # print(user_act)
+    # user_utt = user_nlg.generate(user_act)
+    # print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # # sys_act = [["Request", "Booking", "people", "?"]]
+    # print(sys_act)
+    #
+    # user_act = user_policy.predict(sys_act)
+    # print(user_act)
+    # user_utt = user_nlg.generate(user_act)
+    # print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # # sys_act = [["Inform", "Hotel", "Post", "233"], ["Book", "Booking", "none", "none"]]
+    # print(sys_act)
+    #
+    # user_act = user_policy.predict(sys_act)
+    # print(user_act)
+    # user_utt = user_nlg.generate(user_act)
+    # print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # sys_act = [["Request", "Taxi", "Dest", "?"], ["Request", "Taxi", "Depart", "?"]]
+    # print(sys_act)
+    #
+    # user_act = user_policy.predict(sys_act)
+    # print(user_act)
+    # user_utt = user_nlg.generate(user_act)
+    # print(user_utt)
+    # state = dst.state
+    # state['user_action'] = user_act
+    # dst.update(user_act)
+    # # pprint(state)
+    # sys_act = sys_policy.predict(state)
+    # # sys_act = [["Request", "Taxi", "Destination", "?"], ["Request", "Taxi", "Departure", "?"]]
+    # print(sys_act)

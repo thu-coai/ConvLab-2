@@ -43,7 +43,7 @@ if __name__ == "__main__":
     sys_agent_bert = build_sys_agent_bertnlu()
 
     # build analyzer, temporarily only for multiwoz
-    analyzer = Analyzer(user_agent=user_agent, use_nlu=True, dataset='multiwoz')
+    analyzer = Analyzer(user_agent=user_agent, dataset='multiwoz')
 
     #sample dialog
     analyzer.sample_dialog(sys_agent_bert)

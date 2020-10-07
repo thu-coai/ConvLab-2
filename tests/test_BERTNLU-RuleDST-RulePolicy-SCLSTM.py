@@ -67,7 +67,7 @@ def test_end2end():
     analyzer = Analyzer(user_agent=user_agent, dataset='multiwoz')
 
     set_seed(20200202)
-    analyzer.comprehensive_analyze(sys_agent=sys_agent, model_name='BERTNLU-RuleDST-RulePolicy-TemplateNLG', total_dialog=1000)
+    analyzer.comprehensive_analyze(sys_agent=sys_agent, model_name='BERTNLU-RuleDST-RulePolicy-SCLSTM', total_dialog=1000)
 
 if __name__ == '__main__':
     test_end2end()
