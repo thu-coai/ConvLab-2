@@ -5,7 +5,7 @@
 import json
 import os
 
-from convlab2.dst.dstc9.utils import prepare_data, extract_gt, eval_states, get_subdir
+from convlab2.dst.dstc9.utils import prepare_data, extract_gt, eval_states, get_subdir, dump_result
 
 
 def evaluate(model_dir, subtask, gt):
@@ -18,7 +18,7 @@ def evaluate(model_dir, subtask, gt):
         results[i] = eval_states(gt, pred, subtask)
 
     print(json.dumps(results, indent=4, ensure_ascii=False))
-    json.dump(results, open(os.path.join(model_dir, 'file-results.json'), 'w'), indent=4, ensure_ascii=False)
+    dump_result(model_dir, 'file-results.json', results)
 
 
 # generate submission examples
