@@ -144,3 +144,9 @@ def eval_states(gt, pred, subtask):
             'f1': f1,
         }
     }
+
+
+def dump_result(model_dir, filename, result):
+    output_dir = os.path.join('../results', model_dir)
+    os.makedirs(output_dir, exist_ok=True)
+    json.dump(result, open(os.path.join(output_dir, filename), 'w'), indent=4, ensure_ascii=False)

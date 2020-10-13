@@ -7,7 +7,7 @@ import json
 import importlib
 
 from convlab2.dst import DST
-from convlab2.dst.dstc9.utils import prepare_data, eval_states
+from convlab2.dst.dstc9.utils import prepare_data, eval_states, dump_result
 
 
 def evaluate(model_dir, subtask, test_data, gt):
@@ -23,7 +23,7 @@ def evaluate(model_dir, subtask, test_data, gt):
         pred[dialog_id] = [model.update_turn(sys_utt, user_utt) for sys_utt, user_utt, gt_turn in turns]
     result = eval_states(gt, pred, subtask)
     print(json.dumps(result, indent=4))
-    json.dump(result, open(os.path.join(model_dir, 'model-result.json'), 'w'), indent=4, ensure_ascii=False)
+    dump_result(model_dir, 'model-result.json', result)
 
 
 if __name__ == '__main__':
