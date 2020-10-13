@@ -25,7 +25,7 @@ def prepare_data(subtask, split, data_root=DATA_ROOT):
                 user_utt = turns[i]['text']
                 state = {}
                 for domain_name, domain in turns[i + 1]['metadata'].items():
-                    if domain_name in ['警察机关', '医院']:
+                    if domain_name in ['警察机关', '医院', '公共汽车']:
                         continue
                     domain_state = {}
                     for slots in domain.values():
