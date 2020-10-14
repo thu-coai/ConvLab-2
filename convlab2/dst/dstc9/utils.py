@@ -79,7 +79,7 @@ def unify_value(value, subtask):
         'crosswoz': {
             'None': '',
         }
-    }[subtask].get(value, value)
+    }[subtask].get(value, value).lower()
 
     return ' '.join(value.strip().split())
 
