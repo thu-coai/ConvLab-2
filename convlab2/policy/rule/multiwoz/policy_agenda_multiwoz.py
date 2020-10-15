@@ -626,7 +626,7 @@ class Agenda(object):
                     continue
 
             # For multiple choices, add new intent to select one:
-            if slot == 'choice' and value.strip().lower() not in ['0', 'zero']:
+            if slot == 'choice' and value.strip().lower() not in ['0', 'zero', '1', 'one']:
                 self._push_item(domain + '-inform', "choice", "any")
 
             if slot in g_reqt:
@@ -742,7 +742,7 @@ class Agenda(object):
         g_reqt, g_info, g_fail_info, g_book, g_fail_book = self._get_goal_infos(domain, goal)
         # delete Choice
         for slot, val in slot_vals:
-            if slot == 'choice':
+            if slot == 'choice' and val.strip().lower() not in ['0', 'zero', '1', 'one']:
                 self._push_item(domain + '-inform', "choice", "any")
         slot_vals = [[slot, val] for [slot, val] in slot_vals if slot != 'choice']
 
