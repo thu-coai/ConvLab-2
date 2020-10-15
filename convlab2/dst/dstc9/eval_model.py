@@ -23,8 +23,9 @@ def evaluate(model_dir, subtask, test_data, gt):
     bar = tqdm(total=sum(len(turns) for turns in test_data.values()), ncols=80, desc='evaluating')
     for dialog_id, turns in test_data.items():
         model.init_session()
+        pred[dialog_id] = []
         for sys_utt, user_utt, gt_turn in turns:
-            pred[dialog_id] = [model.update_turn(sys_utt, user_utt)]
+            pred[dialog_id].append(model.update_turn(sys_utt, user_utt))
             bar.update()
     bar.close()
     result = eval_states(gt, pred, subtask)
