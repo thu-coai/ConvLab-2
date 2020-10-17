@@ -28,9 +28,10 @@ def evaluate(model_dir, subtask, test_data, gt):
             pred[dialog_id].append(model.update_turn(sys_utt, user_utt))
             bar.update()
     bar.close()
-    result = eval_states(gt, pred, subtask)
+
+    result, errors = eval_states(gt, pred, subtask)
     print(json.dumps(result, indent=4))
-    dump_result(model_dir, 'model-result.json', result)
+    dump_result(model_dir, 'model-result.json', result, errors, pred)
 
 
 if __name__ == '__main__':

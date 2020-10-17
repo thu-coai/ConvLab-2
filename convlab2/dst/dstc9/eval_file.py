@@ -9,16 +9,16 @@ from convlab2.dst.dstc9.utils import prepare_data, extract_gt, eval_states, get_
 
 
 def evaluate(model_dir, subtask, gt):
-    results = {}
     for i in range(1, 6):
         filepath = os.path.join(model_dir, f'submission{i}.json')
         if not os.path.exists(filepath):
             continue
         pred = json.load(open(filepath))
-        results[i] = eval_states(gt, pred, subtask)
-
-    print(json.dumps(results, indent=4, ensure_ascii=False))
-    dump_result(model_dir, 'file-results.json', results)
+        result, errors = eval_states(gt, pred, subtask)
+        print(json.dumps(result, indent=4, ensure_ascii=False))
+        dump_result(model_dir, 'file-result.json', result)
+        return
+    raise ValueError('submission file not found')
 
 
 # generate submission examples
