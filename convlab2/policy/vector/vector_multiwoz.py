@@ -5,31 +5,24 @@ import numpy as np
 from convlab2.policy.vec import Vector
 from convlab2.util.multiwoz.lexicalize import delexicalize_da, flat_da, deflat_da, lexicalize_da
 from convlab2.util.multiwoz.state import default_state
-from convlab2.util.multiwoz.multiwoz_slot_trans import REF_USR_DA
 from convlab2.util.multiwoz.dbquery import Database
 
-mapping = {'restaurant': {'addr': 'address', 'area': 'area', 'food': 'food', 'name': 'name', 'phone': 'phone',
-                          'post': 'postcode', 'price': 'pricerange'},
-           'hotel': {'addr': 'address', 'area': 'area', 'internet': 'internet', 'parking': 'parking', 'name': 'name',
-                     'phone': 'phone', 'post': 'postcode', 'price': 'pricerange', 'stars': 'stars', 'type': 'type'},
-           'attraction': {'addr': 'address', 'area': 'area', 'fee': 'entrance fee', 'name': 'name', 'phone': 'phone',
-                          'post': 'postcode', 'type': 'type'},
-           'train': {'id': 'trainID', 'arrive': 'arriveBy', 'day': 'day', 'depart': 'departure', 'dest': 'destination',
-                     'time': 'duration', 'leave': 'leaveAt', 'ticket': 'price'},
-           'taxi': {'car': 'car type', 'phone': 'phone'},
-           'hospital': {'post': 'postcode', 'phone': 'phone', 'addr': 'address', 'department': 'department'},
-           'police': {'post': 'postcode', 'phone': 'phone', 'addr': 'address'}}
-
+DEFAULT_INTENT_FILEPATH = os.path.join(
+                            os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
+                            'data/multiwoz/trackable_intent.json'
+                        )
 
 class MultiWozVector(Vector):
 
     def __init__(self, voc_file, voc_opp_file, character='sys',
-                 intent_file=os.path.join(
-                     os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
-                     'data/multiwoz/trackable_intent.json')):
+                 intent_file=DEFAULT_INTENT_FILEPATH,
+                 composite_actions=False,
+                 vocab_size=500):
 
         self.belief_domains = ['Attraction', 'Restaurant', 'Train', 'Hotel', 'Taxi', 'Hospital', 'Police']
         self.db_domains = ['Attraction', 'Restaurant', 'Train', 'Hotel']
+        self.composite_actions = composite_actions
+        self.vocab_size = vocab_size
 
         with open(intent_file) as f:
             intents = json.load(f)
@@ -41,9 +34,30 @@ class MultiWozVector(Vector):
             self.da_voc = f.read().splitlines()
         with open(voc_opp_file) as f:
             self.da_voc_opp = f.read().splitlines()
+
+        if self.composite_actions:
+            self.load_composite_actions()
         self.character = character
         self.generate_dict()
         self.cur_domain = None
+
+
+    def load_composite_actions(self):
+        """
+        load the composite actions to self.da_voc
+        """
+        composite_actions_filepath = os.path.join(
+                    os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))),
+                    'data/multiwoz/da_slot_cnt.json')
+        with open(composite_actions_filepath, 'r') as f:
+            composite_actions_stats = json.load(f)
+            for action in composite_actions_stats:
+                if len(action.split(';')) > 1:
+                    # append only composite actions as single actions are already in self.da_voc
+                    self.da_voc.append(action)
+
+                if len(self.da_voc) == self.vocab_size:
+                    break
 
     def generate_dict(self):
         """
@@ -66,10 +80,7 @@ class MultiWozVector(Vector):
     def pointer(self, turn):
         pointer_vector = np.zeros(6 * len(self.db_domains))
         for domain in self.db_domains:
-            constraint = []
-            for k, v in turn[domain.lower()]['semi'].items():
-                if k in mapping[domain.lower()]:
-                    constraint.append((mapping[domain.lower()][k], v))
+            constraint = turn[domain.lower()]['semi'].items()
             entities = self.db.query(domain.lower(), constraint)
             pointer_vector = self.one_hot_vector(len(entities), domain, pointer_vector)
 
@@ -178,10 +189,7 @@ class MultiWozVector(Vector):
             entities list:
                 list of entities of the specified domain
         """
-        constraint = []
-        for k, v in self.state[domain.lower()]['semi'].items():
-            if k in mapping[domain.lower()]:
-                constraint.append((mapping[domain.lower()][k], v))
+        constraint = self.state[domain.lower()]['semi'].items()
         return self.db.query(domain.lower(), constraint)
 
     def action_devectorize(self, action_vec):
@@ -195,9 +203,14 @@ class MultiWozVector(Vector):
                 Dialog act
         """
         act_array = []
-        for i, idx in enumerate(action_vec):
-            if idx == 1:
-                act_array.append(self.vec2act[i])
+
+        if self.composite_actions:
+            act_idx = np.argmax(action_vec)
+            act_array = self.vec2act[act_idx].split(';')
+        else:
+            for i, idx in enumerate(action_vec):
+                if idx == 1:
+                    act_array.append(self.vec2act[i])
         action = deflat_da(act_array)
         entities = {}
         for domint in action:
@@ -213,7 +226,15 @@ class MultiWozVector(Vector):
         action = delexicalize_da(action, self.requestable)
         action = flat_da(action)
         act_vec = np.zeros(self.da_dim)
-        for da in action:
-            if da in self.act2vec:
-                act_vec[self.act2vec[da]] = 1.
+
+        if self.composite_actions:
+            composite_action = ';'.join(action)
+            for act in self.act2vec:
+                if set(action) == set(act.split(';')):
+                    act_vec[self.act2vec[act]] = 1.
+                    break
+        else:
+            for da in action:
+                if da in self.act2vec:
+                    act_vec[self.act2vec[da]] = 1.
         return act_vec
