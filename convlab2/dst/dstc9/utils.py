@@ -83,6 +83,8 @@ def unify_value(value, subtask):
 
     return ' '.join(value.strip().split())
 
+    return ' '.join(value.strip().split())
+
 
 def eval_states(gt, pred, subtask):
     def exception(description, **kargs):
