@@ -79,10 +79,11 @@ def unify_value(value, subtask):
         },
         'crosswoz': {
             'none': '',
+            'free admission': 'free',
         }
     }[subtask].get(value, value)
 
-    return ' '.join(value.strip().split())
+    return ''.join(value.strip().split())
 
 
 def eval_states(gt, pred, subtask):
