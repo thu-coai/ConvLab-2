@@ -6,25 +6,32 @@ import os
 import json
 import importlib
 
+from tqdm import tqdm
+
 from convlab2.dst import DST
-from convlab2.dst.dstc9.utils import prepare_data, eval_states, get_subdir
+from convlab2.dst.dstc9.utils import prepare_data, eval_states, dump_result
 
 
 def evaluate(model_dir, subtask, test_data, gt):
-    subdir = get_subdir(subtask)
-    module = importlib.import_module(f'{model_dir}.{subdir}')
+    module = importlib.import_module(model_dir.replace('/', '.'))
     assert 'Model' in dir(module), 'please import your model as name `Model` in your subtask module root'
-    model_cls = module.__getattribute__('Model')
+    model_cls = getattr(module, 'Model')
     assert issubclass(model_cls, DST), 'the model must implement DST interface'
     # load weights, set eval() on default
     model = model_cls()
     pred = {}
+    bar = tqdm(total=sum(len(turns) for turns in test_data.values()), ncols=80, desc='evaluating')
     for dialog_id, turns in test_data.items():
         model.init_session()
-        pred[dialog_id] = [model.update_turn(sys_utt, user_utt) for sys_utt, user_utt, gt_turn in turns]
-    result = eval_states(gt, pred, subtask)
+        pred[dialog_id] = []
+        for sys_utt, user_utt, gt_turn in turns:
+            pred[dialog_id].append(model.update_turn(sys_utt, user_utt))
+            bar.update()
+    bar.close()
+
+    result, errors = eval_states(gt, pred, subtask)
     print(json.dumps(result, indent=4))
-    json.dump(result, open(os.path.join(model_dir, subdir, 'model-result.json'), 'w'), indent=4, ensure_ascii=False)
+    dump_result(model_dir, 'model-result.json', result, errors, pred)
 
 
 if __name__ == '__main__':
