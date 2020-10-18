@@ -69,6 +69,7 @@ def unify_value(value, subtask):
             ret[i] = unify_value(v, subtask)
         return ret
 
+    value = value.lower()
     value = {
         'multiwoz': {
             '未提及': '',
@@ -77,9 +78,9 @@ def unify_value(value, subtask):
             '不是': '没有',
         },
         'crosswoz': {
-            'None': '',
+            'none': '',
         }
-    }[subtask].get(value, value).lower()
+    }[subtask].get(value, value)
 
     return ' '.join(value.strip().split())
 
