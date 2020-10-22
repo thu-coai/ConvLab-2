@@ -11,6 +11,7 @@ from convlab2.policy.policy import Policy
 from convlab2.policy.rlmodule import EpsilonGreedyPolicy, MemoryReplay
 from convlab2.util.train_util import init_logging_handler
 from convlab2.policy.vector.vector_multiwoz import MultiWozVector
+from convlab2.policy.rule.multiwoz.rule_based_multiwoz_bot import RuleBasedMultiwozBot
 from convlab2.util.file_util import cached_path
 import zipfile
 import sys
@@ -32,6 +33,8 @@ class DQN(Policy):
         self.training_iter = cfg['training_iter']
         self.training_batch_iter = cfg['training_batch_iter']
         self.batch_size = cfg['batch_size']
+        self.epsilon = cfg['epsilon_spec']['start']
+        self.rule_bot = RuleBasedMultiwozBot()
         self.gamma = cfg['gamma']
         self.is_train = is_train
         if is_train:
@@ -58,9 +61,10 @@ class DQN(Policy):
         self.loss_fn = nn.MSELoss()
 
     def update_memory(self, sample):
+        self.memory.reset()
         self.memory.append(sample)
         
-    def predict(self, state):
+    def predict(self, state, warm_up=False):
         """
         Predict an system action given state.
         Args:
@@ -68,12 +72,27 @@ class DQN(Policy):
         Returns:
             action : System act, with the form of (act_type, {slot_name_1: value_1, slot_name_2, value_2, ...})
         """
-        s_vec = torch.Tensor(self.vector.state_vectorize(state))
-        a = self.net.select_action(s_vec.to(device=DEVICE))
-
-        action = self.vector.action_devectorize(a.numpy())
-
-        state['system_action'] = action
+        if warm_up:
+            action = self.rule_action(state)
+            state['system_action'] = action
+        else:
+            s_vec = torch.Tensor(self.vector.state_vectorize(state))
+            a = self.net.select_action(s_vec.to(device=DEVICE), is_train=self.is_train)
+            action = self.vector.action_devectorize(a.numpy())
+            state['system_action'] = action
+        return action
+    
+    def rule_action(self, state):
+        if self.epsilon > np.random.rand():
+            a = torch.randint(self.vector.da_dim, (1, ))
+            # transforms action index to a vector action (one-hot encoding)
+            a_vec = torch.zeros(self.vector.da_dim)
+            a_vec[a] = 1.
+            action = self.vector.action_devectorize(a_vec.numpy())
+        else:
+            # rule-based warm up
+            action = self.rule_bot.predict(state)
+        
         return action
 
     def init_session(self):

@@ -90,8 +90,71 @@ def sampler(pid, queue, evt, env, policy, batchsz):
     queue.put([pid, buff])
     evt.wait()
 
+def warmupsampler(pid, queue, evt, env, policy, batchsz):
+    """
+    This is a sampler function, and it will be called by multiprocess.Process to sample data from environment by multiple
+    processes.
+    :param pid: process id
+    :param queue: multiprocessing.Queue, to collect sampled data
+    :param evt: multiprocessing.Event, to keep the process alive
+    :param env: environment instance
+    :param policy: policy network, to generate action from current policy
+    :param batchsz: total sampled items
+    :return:
+    """
+    buff = Memory()
 
-def sample(env, policy, batchsz, process_num):
+    # we need to sample batchsz of (state, action, next_state, reward, mask)
+    # each trajectory contains `trajectory_len` num of items, so we only need to sample
+    # `batchsz//trajectory_len` num of trajectory totally
+    # the final sampled number may be larger than batchsz.
+
+    sampled_num = 0
+    sampled_traj_num = 0
+    traj_len = 50
+    real_traj_len = 0
+
+    while sampled_num < batchsz:
+        # for each trajectory, we reset the env and get initial state
+        s = env.reset()
+
+        for t in range(traj_len):
+
+            # [s_dim] => [a_dim]
+            s_vec = torch.Tensor(policy.vector.state_vectorize(s))
+            a = policy.predict(s, warm_up=True)
+
+            # interact with env
+            next_s, r, done = env.step(a)
+
+            # a flag indicates ending or not
+            mask = 0 if done else 1
+
+            # get reward compared to demostrations
+            next_s_vec = torch.Tensor(policy.vector.state_vectorize(next_s))
+
+            # save to queue
+            buff.push(s_vec.numpy(), policy.vector.action_vectorize(a), r, next_s_vec.numpy(), mask)
+
+            # update per step
+            s = next_s
+            real_traj_len = t
+
+            if done:
+                break
+
+        # this is end of one trajectory
+        sampled_num += real_traj_len
+        sampled_traj_num += 1
+        # t indicates the valid trajectory length
+
+    # this is end of sampling all batchsz of items.
+    # when sampling is over, push all buff data into queue
+    queue.put([pid, buff])
+    evt.wait()
+
+
+def sample(env, policy, batchsz, process_num, warm_up=False):
     """
     Given batchsz number of task, the batchsz will be splited equally to each processes
     and when processes return, it merge all data and return
@@ -119,7 +182,10 @@ def sample(env, policy, batchsz, process_num):
     processes = []
     for i in range(process_num):
         process_args = (i, queue, evt, env, policy, process_batchsz)
-        processes.append(mp.Process(target=sampler, args=process_args))
+        if warm_up:
+            processes.append(mp.Process(target=warmupsampler, args=process_args))
+        else:
+            processes.append(mp.Process(target=sampler, args=process_args))
     for p in processes:
         # set the process as daemon, and it will be killed once the main process is stoped.
         p.daemon = True
@@ -143,6 +209,13 @@ def update(env, policy, batchsz, epoch, process_num):
     buff = sample(env, policy, batchsz, process_num)
     policy.update_memory(buff)
 
+    policy.update(epoch)
+
+
+def warm_start(env, policy, batchsz, epoch, process_num):
+    # sample data asynchronously
+    buff = sample(env, policy, batchsz, process_num, warm_up=True)
+    policy.update_memory(buff)
     policy.update(epoch)
 
 
@@ -170,6 +243,7 @@ if __name__ == '__main__':
     evaluator = MultiWozEvaluator()
     env = Environment(None, simulator, None, dst_sys, evaluator)
 
+    warm_start(env, policy_sys, args.batchsz, 0, args.process_num)
 
     for i in range(args.epoch):
         update(env, policy_sys, args.batchsz, i, args.process_num)
