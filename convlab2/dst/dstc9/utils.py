@@ -95,7 +95,7 @@ def eval_states(gt, pred, subtask):
         for k, v in kargs.items():
             ret[k] = v
         return ret, None
-    errors = []
+    errors = [['dialog id', 'turn id', 'domain name', 'slot name', 'ground truth', 'predict']]
 
     joint_acc, joint_tot = 0, 0
     slot_acc, slot_tot = 0, 0
@@ -128,7 +128,7 @@ def eval_states(gt, pred, subtask):
                         if gt_value:
                             tp += 1
                     else:
-                        errors.append([gt_value, pred_value])
+                        errors.append([dialog_id, turn_id, domain_name, slot_name, gt_value, pred_value])
                         turn_result = False
                         if gt_value:
                             fn += 1
