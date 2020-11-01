@@ -10,7 +10,7 @@ def get_subdir(subtask):
     return subdir
 
 
-def prepare_data(subtask, split, data_root=DATA_ROOT):
+def prepare_data(subtask, split, data_root=DATA_ROOT, correct_name_label=False):
     data_dir = os.path.join(data_root, get_subdir(subtask))
     zip_filename = os.path.join(data_dir, f'{split}.json.zip')
     test_data = json.load(zipfile.ZipFile(zip_filename).open(f'{split}.json'))
@@ -37,25 +37,31 @@ def prepare_data(subtask, split, data_root=DATA_ROOT):
         for dialog_id, dialog in test_data.items():
             dialog_data = []
             turns = dialog['messages']
-            selected_results = {k: [] for k in turns[1]['sys_state'].keys()}
+            if correct_name_label:
+                selected_results = {domain_name: [] for domain_name in turns[1]['sys_state_init']}
             for i in range(0, len(turns), 2):
                 sys_utt = turns[i - 1]['content'] if i else None
                 user_utt = turns[i]['content']
                 dialog_state = {}
                 for domain_name, state in turns[i + 1]['sys_state_init'].items():
-                    state.pop('selectedResults')
-                    sys_selected_results = turns[i + 1]['sys_state'][domain_name].pop('selectedResults')
-                    # if state has changed compared to previous sys state
-                    state_change = i == 0 or state != turns[i - 1]['sys_state'][domain_name]
-                    # clear the outdated previous selected results if state has been updated
-                    if state_change:
-                        selected_results[domain_name].clear()
-                    if not state.get('name', 'something nonempty') and len(selected_results[domain_name]) == 1:
-                        state['name'] = selected_results[domain_name][0]
-                    dialog_state[domain_name] = state
-                    if state_change and sys_selected_results:
-                        selected_results[domain_name] = sys_selected_results
-
+                    if correct_name_label:
+                        state.pop('selectedResults')
+                        sys_selected_results = turns[i + 1]['sys_state'][domain_name].pop('selectedResults')
+                        # if state has changed compared to previous sys state
+                        state_change = i == 0 or state != turns[i - 1]['sys_state'][domain_name]
+                        # clear the outdated previous selected results if state has been updated
+                        if state_change:
+                            selected_results[domain_name].clear()
+                        if not state.get('name', 'something nonempty') and len(selected_results[domain_name]) == 1:
+                            state['name'] = selected_results[domain_name][0]
+                        dialog_state[domain_name] = state
+                        if state_change and sys_selected_results:
+                            selected_results[domain_name] = sys_selected_results
+                    else:
+                        selected_results = state.pop('selectedResults')
+                        if selected_results and 'name' in state and not state['name']:
+                            state['name'] = selected_results
+                        dialog_state[domain_name] = state
                 dialog_data.append((sys_utt, user_utt, dialog_state))
             data[dialog_id] = dialog_data
 

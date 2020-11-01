@@ -51,10 +51,11 @@ if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser()
     parser.add_argument('subtask', type=str, choices=['multiwoz', 'crosswoz'])
-    parser.add_argument('split', type=str, choices=['train', 'val', 'test', 'human_val'])
+    parser.add_argument('split', type=str, choices=['train', 'val', 'test', 'human_val', 'dstc9-250'])
+    parser.add_argument('correct_name_label', action='store_true')
     args = parser.parse_args()
     subtask = args.subtask
     split = args.split
     dump_example(subtask, split)
-    test_data = prepare_data(subtask, split)
+    test_data = prepare_data(subtask, split, correct_name_label=args.correct_name_label)
     gt = extract_gt(test_data)

@@ -34,9 +34,9 @@ def evaluate(model_dir, subtask, test_data, gt):
     dump_result(model_dir, 'model-result.json', result, errors, pred)
 
 
-def eval_team(team):
+def eval_team(team, correct_name_label):
     for subtask in ['multiwoz', 'crosswoz']:
-        test_data = prepare_data(subtask, 'dstc9')
+        test_data = prepare_data(subtask, 'dstc9', correct_name_label=correct_name_label)
         gt = extract_gt(test_data)
         for i in range(1, 6):
             model_dir = os.path.join(team, f'{subtask}-dst', f'submission{i}')
@@ -50,12 +50,13 @@ if __name__ == '__main__':
     from argparse import ArgumentParser
     parser = ArgumentParser()
     parser.add_argument('--teams', type=str, nargs='*')
+    parser.add_argument('correct_name_label', action='store_true')
     args = parser.parse_args()
     if not args.teams:
         for team in os.listdir('.'):
             if not os.path.isdir(team):
                 continue
-            eval_team(team)
+            eval_team(team, args.correct_name_label)
     else:
         for team in args.teams:
-            eval_team(team)
+            eval_team(team, args.correct_name_label)
