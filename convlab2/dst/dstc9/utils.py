@@ -1,7 +1,6 @@
-import os
 import json
+import os
 import zipfile
-from copy import deepcopy
 
 from convlab2 import DATA_ROOT
 
@@ -79,12 +78,6 @@ def extract_gt(test_data):
 
 # for unifying values with the same meaning to the same expression
 def unify_value(value, subtask):
-    if isinstance(value, list):
-        ret = deepcopy(value)
-        for i, v in enumerate(ret):
-            ret[i] = unify_value(v, subtask)
-        return ret
-
     value = value.lower()
     value = {
         'multiwoz': {
@@ -139,7 +132,7 @@ def eval_states(gt, pred, subtask):
                     pred_value = unify_value(pred_domain[slot_name], subtask)
                     slot_tot += 1
 
-                    if gt_value == pred_value or isinstance(gt_value, list) and pred_value in gt_value:
+                    if gt_value == pred_value:
                         slot_acc += 1
                         if gt_value:
                             tp += 1
