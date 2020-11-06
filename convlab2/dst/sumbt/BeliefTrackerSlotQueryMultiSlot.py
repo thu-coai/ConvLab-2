@@ -91,7 +91,7 @@ class BeliefTracker(nn.Module):
         self.device = device
 
         ### Utterance Encoder
-        self.utterance_encoder = BertForUtteranceEncoding.from_pretrained(args.bert_model_name, cache_dir=args.bert_model_cache_dir)
+        self.utterance_encoder = BertForUtteranceEncoding.from_pretrained(args.bert_model_name)
         self.utterance_encoder.train()
         self.bert_output_dim = self.utterance_encoder.config.hidden_size
         self.hidden_dropout_prob = self.utterance_encoder.config.hidden_dropout_prob
@@ -100,7 +100,7 @@ class BeliefTracker(nn.Module):
                 p.requires_grad = False
 
         ### slot, slot-value Encoder (not trainable)
-        self.sv_encoder = BertForUtteranceEncoding.from_pretrained(args.bert_model_name, cache_dir=args.bert_model_cache_dir)
+        self.sv_encoder = BertForUtteranceEncoding.from_pretrained(args.bert_model_name)
         self.sv_encoder.train()
         for p in self.sv_encoder.bert.parameters():
             p.requires_grad = False
