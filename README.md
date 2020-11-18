@@ -46,7 +46,7 @@ Our documents are on https://thu-coai.github.io/ConvLab-2_docs/convlab2.html.
 We provide following models:
 
 - NLU: SVMNLU, MILU, BERTNLU
-- DST: rule, MDBT, TRADE, SUMBT
+- DST: rule, TRADE, SUMBT
 - Policy: rule, Imitation, REINFORCE, PPO, GDPL, MDRG, HDSA, LaRL
 - Simulator policy: Agenda, VHUS
 - NLG: Template, SCLSTM

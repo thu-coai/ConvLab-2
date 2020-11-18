@@ -29,7 +29,6 @@ RUN pip install scipy
 RUN pip install scikit-learn==0.20.3
 RUN pip install pytorch-pretrained-bert==0.6.1
 RUN pip install transformers==2.3.0
-RUN pip install tensorflow==1.14
 RUN pip install tensorboard==1.14.0
 RUN pip install tensorboardX==1.7
 RUN pip install tokenizers==0.8.0
