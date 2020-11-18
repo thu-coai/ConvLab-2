@@ -4,7 +4,6 @@
             "I am planning a trip to town and want to sight see a bit . Can you let me know some attractions I may be interested in ?",
             "Hi , I am planning a trip and need some help with a particular attraction .",
             "Yeah , I ' m looking for an entertaining tourist attraction , can point me in the direction of some places to check out ?",
-            "Something fun . It needs to be an attraction . Can you make a suggestion ?",
             "I ca n't wait to get there and see some of the local attractions . Can you help me ?",
             "I am looking for tourist attractions .",
             "I am looking for a particular attraction .",
@@ -16,10 +15,10 @@
             "I would like to visit on in town #ATTRACTION-INFORM-AREA# please .",
             "Are there anything fun to do in city #ATTRACTION-INFORM-AREA# ?",
             "I ' m looking for some attractions in the #ATTRACTION-INFORM-AREA# .",
-            "I am also looking for suggestions on places to go in the #ATTRACTION-INFORM-AREA# . Can you help me with that ?",
+            "I am also looking for suggestions on places to go in the #ATTRACTION-INFORM-AREA# .",
             "I am also looking for places to go in town . Maybe something in the #ATTRACTION-INFORM-AREA# .",
             "I also need a place to go in the #ATTRACTION-INFORM-AREA# .",
-            "Can you recommend some fun entertainment in the #ATTRACTION-INFORM-AREA# ?"
+            "Can you recommend some attractions in the #ATTRACTION-INFORM-AREA# ?"
         ],
         "Type": [
             "I was hoping to see local places while in cambridge . Some #ATTRACTION-INFORM-TYPE# would be great .",
@@ -32,7 +31,7 @@
             "I am looking for a #ATTRACTION-INFORM-TYPE# to visit ."
         ],
         "Name": [
-            "Yes , I ' m also looking for info on #ATTRACTION-INFORM-NAME# .",
+            "I ' m also looking for info on #ATTRACTION-INFORM-NAME# .",
             "Can you help me find information on #ATTRACTION-INFORM-NAME# ?",
             "Hello , I ' m looking for the #ATTRACTION-INFORM-NAME# , could you tell me more about it ?",
             "I am also looking for a attraction called #ATTRACTION-INFORM-NAME# .",
@@ -46,13 +45,13 @@
     },
     "Attraction-Request": {
         "Addr": [
-            "Could I get the address for it ?",
+            "Could I get the address of the attraction ?",
             "Can I have the address of a good one ?",
-            "Can I get the address ?",
+            "Can I get the address of the attraction ?",
             "Just the address please",
-            "That sounds great ! May I have the address ?",
+            "That sounds great ! May I have the address of the attraction ?",
             "Is there an exact address , like a street number ?",
-            "What is the address ?",
+            "What is the address of the attraction ?",
             "Can I get the address please ?",
             "Can I get the precise address please ?"
         ],
@@ -62,14 +61,14 @@
             "Can I please have the postcode of the attraction ?",
             "Can you give me the postcode of the attraction ?",
             "Can you tell me their postcode ?",
-            "Yes , that will work great . Can I get their postcode please ?",
+            "that will work great . Can I get their postcode please ?",
             "What is the postcode for this place ?",
             "Can you let me have their postcode ?",
             "I 'll need the postcode of the attraction ."
         ],
         "Phone": [
             "can I get the phone number of one ?",
-            "Yes can I get the phone number of one you 'd recommend ?",
+            "can I get the phone number of one you 'd recommend ?",
             "Can you give me their phone number please ?",
             "What is the phone number of the attraction ?",
             "I need the phone number of the attraction as well .",
@@ -83,15 +82,15 @@
             "Is there an entrance fee ?",
             "Does it have an entrance fee ?",
             "Can you let me know what the entrance fee is too ?",
-            "can you recommend one and give me the entrance fee ?",
-            "Can you just recommend one and tell me the entrance fee ?",
-            "Yes , what are the entrance fees ?",
-            "Certainly , pick out a good option . I will need the entrance fee please .",
+            "can you give me the entrance fee ?",
+            "Can you tell me the entrance fee ?",
+            "what are the entrance fees ?",
+            "I will need the entrance fee please .",
             "I would like to know the entrance fee ."
         ],
         "Area": [
             "Can you tell me what area it is located in ?",
-            "What 's the area ?",
+            "What 's the area of the attraction ?",
             "What area is it located ?",
             "What area of town is that in ?",
             "Just need to know what area it 's in .",
@@ -99,8 +98,8 @@
             "And what area are they in ?"
         ],
         "Type": [
-            "Yes , what is the attraction type ?",
-            "yes I 'll need the attraction type please .",
+            "what is the attraction type ?",
+            "I 'll need the attraction type please .",
             "What type of attraction is this ?",
             "Can you tell me what type of attraction that is considered ?",
             "What type of attraction is this ?",
@@ -111,7 +110,7 @@
         "none": [
             "I ' ve been injured and need to find a hospital nearby .",
             "Can you tell me how to get to Hospital ?",
-            "Am looking for the Hospital",
+            "I am looking for the Hospital",
             "Could you find me a hospital in town ?",
             "I need to know where the Hospital is please .",
             "I want a hospital in town .",
@@ -204,14 +203,12 @@
             "I would prefer something that is in the #HOTEL-INFORM-PRICE# price range .",
             "How about in the #HOTEL-INFORM-PRICE# price range ?",
             "it needs to be in the #HOTEL-INFORM-PRICE# price range .",
-            "I ' m looking for some #HOTEL-INFORM-PRICE# priced accommodations for my visit . Can you help me with that ?",
+            "I ' m looking for some #HOTEL-INFORM-PRICE# priced accommodations for my visit .",
             "I would like to keep the price #HOTEL-INFORM-PRICE# .",
             "I also need a #HOTEL-INFORM-PRICE# place to stay ."
         ],
         "Day": [
-            "#HOTEL-INFORM-DAY# please .",
             "i want to check in on #HOTEL-INFORM-DAY#",
-            "Try #HOTEL-INFORM-DAY# please .",
             "Great , can you book that for first day #HOTEL-INFORM-DAY# please ?",
             "On #HOTEL-INFORM-DAY# please",
             "I need a room starting on #HOTEL-INFORM-DAY# .",
@@ -227,7 +224,7 @@
             "I need it in the #HOTEL-INFORM-AREA# , please ."
         ],
         "People": [
-            "Yes , could you book the reservation for me for #HOTEL-INFORM-PEOPLE# people ?",
+            "Could you book the reservation for me for #HOTEL-INFORM-PEOPLE# people ?",
             "That will work . Can you make a reservation for #HOTEL-INFORM-PEOPLE# people , please ?",
             "Actually , I 'd like to book it for #HOTEL-INFORM-PEOPLE# people . Can you help with that ?",
             "There will be #HOTEL-INFORM-PEOPLE# people .",
@@ -249,7 +246,7 @@
             "I am looking for a particular hotel . Its name is called #HOTEL-INFORM-NAME#",
             "I am looking for a hotel call #HOTEL-INFORM-NAME# .",
             "I am staying in Cambridge soon and would like to stay at #HOTEL-INFORM-NAME# .",
-            "Yes ! I ' m looking for a particular hotel , the name is #HOTEL-INFORM-NAME# .",
+            "I ' m looking for a particular hotel , the name is #HOTEL-INFORM-NAME# .",
             "Can you tell me about the #HOTEL-INFORM-NAME# hotel ?",
             "I ' m looking for information on a hotel called #HOTEL-INFORM-NAME# .",
             "Can you also help me find a hotel called the #HOTEL-INFORM-NAME# ?",
@@ -259,7 +256,7 @@
         "none": [
             "I need a hotel as well .",
             "I ' m looking for a hotel .",
-            "I need a hotel close to downtown Cambridge please .",
+            "I need a hotel please .",
             "I also need a hotel"
         ],
         "Internet": [
@@ -270,13 +267,13 @@
     },
     "Hotel-Request": {
         "Addr": [
-            "I just need the address .",
+            "I just need the address of the hotel .",
             "no , i just need their address .",
-            "Can you give me the address please ?",
+            "Can you give me the address of the hotel please ?",
             "could I get their address ?",
-            "Could you give me the address , please ?",
+            "Could you give me the address of the hotel , please ?",
             "may I have the address for that hotel ?",
-            "what s the address ?"
+            "what s the address of the hotel ?"
         ],
         "Ref": [
             "Please book it and provide the reference number .",
@@ -284,14 +281,14 @@
             "a reference number would be great !",
             "please book it and provide a reference number .",
             "can I get the reference number once you make that reservation ?",
-            "That 's great . Can you book the room and give me the reference number ?",
+            "Can you book the room and give me the reference number ?",
             "I 'd like the reference number as well .",
             "I will also need the booking reference number .",
-            "Okay , just let me get a reference number when you book it .",
+            "just let me get a reference number when you book it .",
             "I need the reference number too ."
         ],
         "Post": [
-            "Can I get the postcode ?",
+            "Can I get the postcode of the hotel ?",
             "That sounds fine , I just need the postcode of the hotel though .",
             "Can I please have the post code ?",
             "I just need the postcode .",
@@ -335,7 +332,7 @@
             "Can you tell me which area it is in ?",
             "What area is it in ?",
             "Do you know the area the hotel is located in ?",
-            "that would be great . What 's the area ?",
+            "What 's the area ?",
             "can you tell me what area that 's in ?",
             "Can you also confirm the area that is in please ?",
             "What is the area ?",
@@ -352,7 +349,7 @@
         ],
         "Internet": [
             "Does it have internet ?",
-            "No , I just need to know if they have free internet .",
+            "I just need to know if they have free internet .",
             "Can I just confirm it has free internet as well",
             "can you tell me if the hotel has internet available ?",
             "Can you tell me if they have free internet ?",
@@ -395,15 +392,14 @@
             "What is the postcode of the police station ?"
         ],
         "Addr": [
-            "Was Parkside the address of the police station ? If not , can I have the address please ?",
+            "Can I have the address please ?",
             "Also , can you give me the exact address to the station ?",
             "Could I also get the address of the police station ?",
             "Can you give me their address , please ?",
-            "Yes and the address , as well .",
             "What is the address ?",
             "Can you give me the exact address for the police ?",
-            "Yes , I will need their address also please .",
-            "Great , could I also have their address .",
+            "I will need their address also please .",
+            "Could I also have their address .",
             "Do you have their address ?"
         ],
         "Phone": [
@@ -412,7 +408,7 @@
             "Can you give me the phone number please ?",
             "May I get the phone number of the police station ?",
             "What is their phone number ?",
-            "Yes , I 'll also need their phone number .",
+            "I 'll also need their phone number .",
             "Could you tell me where to find the nearest police station and give the telephone number ?",
             "I only needed the phone number of the police station .",
             "I do n't know I am new to this area , please just give me the phone number to the police station .",
@@ -448,7 +444,7 @@
             "I want to find a #RESTAURANT-INFORM-PRICE# priced restaurant .",
             "I ' m looking for an #RESTAURANT-INFORM-PRICE# restaurant .",
             "I am looking for a #RESTAURANT-INFORM-PRICE# restaurant .",
-            "Actually I need a #RESTAURANT-INFORM-PRICE# priced restaurant . Are there any fitting that description ?",
+            "Actually I need a #RESTAURANT-INFORM-PRICE# priced restaurant .",
             "Oh , I really need something #RESTAURANT-INFORM-PRICE# .",
             "I also need a place to dine that is #RESTAURANT-INFORM-PRICE# priced ."
         ],
@@ -458,7 +454,7 @@
             "Hmm , I 'll try #RESTAURANT-INFORM-FOOD# food .",
             "I 'd like to find a #RESTAURANT-INFORM-FOOD# restaurant , if possible .",
             "Do you have #RESTAURANT-INFORM-FOOD# food ?",
-            "Yes . This restaurant should serve #RESTAURANT-INFORM-FOOD# food too .",
+            "This restaurant should serve #RESTAURANT-INFORM-FOOD# food too .",
             "I ' m visiting Cambridge and would like some suggestions for an restaurant which serves #RESTAURANT-INFORM-FOOD# food .",
             "how about a #RESTAURANT-INFORM-FOOD# restaurant ?",
             "I would prefer #RESTAURANT-INFORM-FOOD# food please ."
@@ -472,7 +468,7 @@
         "Time": [
             "can you try for #RESTAURANT-INFORM-TIME# ?",
             "arriving at the restaurant by #RESTAURANT-INFORM-TIME# .",
-            "Yes . How about #RESTAURANT-INFORM-TIME# ?",
+            "How about #RESTAURANT-INFORM-TIME# ?",
             "Can you try to book it at #RESTAURANT-INFORM-TIME# .",
             "How about #RESTAURANT-INFORM-TIME# ?",
             "can you please try #RESTAURANT-INFORM-TIME# ?",
@@ -481,7 +477,7 @@
         ],
         "People": [
             "There are #RESTAURANT-INFORM-PEOPLE# people",
-            "Yes , I want to book a table for #RESTAURANT-INFORM-PEOPLE# people .",
+            "I want to book a table for #RESTAURANT-INFORM-PEOPLE# people .",
             "Please try to book a table for #RESTAURANT-INFORM-PEOPLE# people at your favorite one .",
             "I need a reservation for #RESTAURANT-INFORM-PEOPLE# people .",
             "I need a table for #RESTAURANT-INFORM-PEOPLE# people .",
@@ -536,16 +532,15 @@
             "What is the price range ?",
             "What is the price range of the restaurant ?",
             "I was wondering the price range of the restaurant .",
-            "Could you recommend one and give me the price range ?",
             "I also need to know what the price range is for this restaurant .",
-            "Yes , do you happen to know what their price range is ?",
+            "do you happen to know what their price range is ?",
             "Can you tell me the price range for the restaurant ?",
             "What is the price range for the restaurant ?"
         ],
         "Ref": [
             "Can I have the reference number please ?",
             "Can I have the reference number .",
-            "Sounds good . Book it please and I 'll need the reference number .",
+            "Book it please and I 'll need the reference number .",
             "Why do n't you just schedule it and give me the reference number please .",
             "give me the reference number",
             "Can you book it for me and get a reference number ?",
@@ -569,7 +564,7 @@
             "I 'll need to know the area that it 's located in .",
             "What is the area ?",
             "What area is the restaurant in ?",
-            "Yes I need the area for that as well .",
+            "I need the area for that as well .",
             "Can you tell me what area they are in ?",
             "What is the area for the restaurant ?",
             "What area is the restaurant in ?"
@@ -590,8 +585,8 @@
             "Now I need a taxi .",
             "Alright book a taxi for me as well . I 'll need to get to the two places and I ' m not familiar with the town .",
             "I also want to book a taxi to commute between the two places .",
-            "Yes please . I need a taxi to commute .",
-            "Yes I would also like a taxi to commute between the two places .",
+            "I need a taxi to commute .",
+            "I would also like a taxi to commute between the two places .",
             "i 'll need a taxi",
             "Can you schedule me a taxi to take me there ?",
             "Would you also give me the contact number for the taxi ?",
@@ -599,7 +594,6 @@
         ],
         "Arrive": [
             "I 'd like to arrive prior to the #TAXI-INFORM-ARRIVE# time .",
-            "I 'd like to get to the Gallery by #TAXI-INFORM-ARRIVE# , please .",
             "I want to arrive by #TAXI-INFORM-ARRIVE#",
             "I 'd like the arrival time to be #TAXI-INFORM-ARRIVE# , please .",
             "I need to arrive by #TAXI-INFORM-ARRIVE# .",
@@ -634,10 +628,10 @@
     },
     "Taxi-Request": {
         "Car": [
-            "Yes I would like the car type please for my booking .",
+            "I would like the car type please for my booking .",
             "It would be nice if you would tell me the car type .",
             "What is the car type for the taxi ?",
-            "Please . Can I get the car type for that ?",
+            "Can I get the car type for that ?",
             "Could I have the car type for this trip ?",
             "I need the car type please .",
             "Can you give me the car type ?"
@@ -689,8 +683,8 @@
             "Please make a booking for #TRAIN-INFORM-PEOPLE# people please .",
             "I need #TRAIN-INFORM-PEOPLE# tickets .",
             "I need to make a booking for #TRAIN-INFORM-PEOPLE# people ?",
-            "Yes , please book #TRAIN-INFORM-PEOPLE# seats .",
-            "Yes , can you book that for #TRAIN-INFORM-PEOPLE# ?",
+            "please book #TRAIN-INFORM-PEOPLE# seats .",
+            "can you book that for #TRAIN-INFORM-PEOPLE# ?",
             "I would like #TRAIN-INFORM-PEOPLE# tickets please .",
             "I will need #TRAIN-INFORM-PEOPLE# seats .",
             "Book #TRAIN-INFORM-PEOPLE# seats for me please .",
@@ -701,9 +695,9 @@
             "Please book that train for me now .",
             "I would also like to book a train , please .",
             "yeah i need a train too",
-            "please book the train for me . That will be all .",
-            "I am also looking for information about a train . Can you help me with that ?",
-            "I would just like to find a train first , and get the info . I think I have the info I needed .",
+            "please book the train for me .",
+            "I am also looking for information about a train .",
+            "I would just like to find a train first , and get the info .",
             "I also need a train"
         ],
         "Dest": [
@@ -713,7 +707,7 @@
             "I need a train going to #TRAIN-INFORM-DEST# .",
             "I need to find a train to #TRAIN-INFORM-DEST# please .",
             "Can you tell me when that train will be arriving in #TRAIN-INFORM-DEST# ?",
-            "Yes I would like to go to #TRAIN-INFORM-DEST# please .",
+            "I would like to go to #TRAIN-INFORM-DEST# please .",
             "I need to book a train to #TRAIN-INFORM-DEST# .",
             "I need some information on a train going to #TRAIN-INFORM-DEST# .",
             "Can you also help me find a train going to #TRAIN-INFORM-DEST# ?"
@@ -724,8 +718,7 @@
             "I need a train leaving after #TRAIN-INFORM-LEAVE# .",
             "I would like to leave after #TRAIN-INFORM-LEAVE# .",
             "I need to leave after #TRAIN-INFORM-LEAVE# .",
-            "Yes , I need to leave sometimes after #TRAIN-INFORM-LEAVE# .",
-            "Yes I ' m leaving on Saturday and not too early , sometime after #TRAIN-INFORM-LEAVE# .",
+            "I need to leave sometimes after #TRAIN-INFORM-LEAVE# .",
             "I would like to leave anytime after #TRAIN-INFORM-LEAVE# .",
             "I would like to leave after #TRAIN-INFORM-LEAVE#"
         ]
@@ -736,7 +729,7 @@
             "Could I get the reference number ?",
             "Great , can you give me the reference number .",
             "if I could please get the reference number .",
-            "Sounds great . Please book and provide me with a reference number .",
+            "Please book and provide me with a reference number .",
             "please book and send me a reference number .",
             "please and I will need the reference number .",
             "Can you provide me with a reference number after booking ?"
@@ -745,7 +738,7 @@
             "Can you please give me the travel time .",
             "Can you give me the travel time please ?",
             "What is the total travel time ?",
-            "Yes , what is the duration of the train ride ?",
+            "what is the duration of the train ride ?",
             "What 's the travel time on that trip ?",
             "What is the travel time ?",
             "That should work , what is the travel time on that ?",
@@ -763,7 +756,7 @@
         ],
         "Leave": [
             "What time does the train leave ?",
-            "Could you comfirm the departure time of that train ?",
+            "Could you confirm the departure time of that train ?",
             "What is the departure time ?",
             "Can you tell me what time it leaves ?",
             "I need the departure time .",

@@ -45,6 +45,7 @@ class PolicyDataLoaderCrossWoz():
                 dst.init_session()
                 for i, turn in enumerate(sess):
                     if turn['role'] == 'usr':
+                        dst.state['user_action'] = turn['dialog_act']
                         dst.update(usr_da=turn['dialog_act'])
                         if i + 2 == len(sess):
                             dst.state['terminated'] = True

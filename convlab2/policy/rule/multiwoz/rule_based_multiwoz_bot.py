@@ -114,7 +114,7 @@ class RuleBasedMultiwozBot(Policy):
 
         # print("Sys action: ", DA)
 
-        if DA == {}:
+        if len([domain_intent for domain_intent, slots in DA.items() if slots or 'nooffer' in domain_intent.lower()]) == 0:
             DA = {'general-greet': [['none', 'none']]}
         tuples = []
         for domain_intent, svs in DA.items():
@@ -201,6 +201,17 @@ class RuleBasedMultiwozBot(Policy):
                 self.choice = ""
             elif self.recommend_flag == 1:
                 self.recommend_flag == 0
+
+            if len(kb_result) == 0:
+                if (domain + "-NoOffer") not in DA:
+                    DA[domain + "-NoOffer"] = []
+
+                for slot in state['belief_state'][domain.lower()]['semi']:
+                    if state['belief_state'][domain.lower()]['semi'][slot] != "" and \
+                            state['belief_state'][domain.lower()]['semi'][slot] not in ["do nt care", "do n't care",
+                                                                                        "dontcare"]:
+                        slot_name = REF_USR_DA[domain].get(slot, slot)
+                        DA[domain + "-NoOffer"].append([slot_name, state['belief_state'][domain.lower()]['semi'][slot]])
             if (domain + "-Inform") not in DA:
                 DA[domain + "-Inform"] = []
             for slot in user_action[user_act]:
