@@ -19,6 +19,7 @@ class Environment():
         self.sys_dst.init_session()
         if self.evaluator:
             self.evaluator.add_goal(self.usr.policy.get_goal())
+        s, r, t = self.step([])
         return self.sys_dst.state
         
     def step(self, action):
