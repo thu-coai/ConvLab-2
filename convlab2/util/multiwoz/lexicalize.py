@@ -54,8 +54,9 @@ def lexicalize_da(meta, entities, state, requestable, cur_domain=None):
                 else:
                     continue
             for pair in v:
-                if pair[0] in state[domain.lower()]['semi']:
-                    pair[1] = state[domain.lower()]['semi'][pair[0]]
+                slot = REF_SYS_DA[domain][pair[0]]
+                if slot in state[domain.lower()]['semi']:
+                    pair[1] = state[domain.lower()]['semi'][slot]
                 else:
                     pair[1] = 'none'
         else:
