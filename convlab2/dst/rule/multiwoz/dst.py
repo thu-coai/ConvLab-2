@@ -56,7 +56,7 @@ class RuleDST(DST):
                     self.state['belief_state'][domain]['book'][k.lower()] = value
                 elif k == 'trainID' and domain == 'train':
                     self.state['belief_state'][domain]['book'][k] = normalize_value(self.value_dict, domain, k, value)
-                else:
+                elif k != 'none':
                     # raise Exception('unknown slot name <{}> of domain <{}>'.format(k, domain))
                     with open('unknown_slot.log', 'a+') as f:
                         f.write('unknown slot name <{}> of domain <{}>\n'.format(k, domain))
