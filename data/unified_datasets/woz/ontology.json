@@ -1,0 +1,117 @@
+{
+    "domains": {
+        "restaurant": {
+            "description": "search for a restaurant to dine",
+            "slots": {
+                "food": {
+                    "is_categorical": false,
+                    "possible_values": [],
+                    "description": "food type of the restaurant"
+                },
+                "area": {
+                    "is_categorical": true,
+                    "possible_values": [
+                        "east",
+                        "west",
+                        "center",
+                        "north",
+                        "south"
+                    ],
+                    "description": "area of the restaurant"
+                },
+                "postcode": {
+                    "is_categorical": false,
+                    "possible_values": [],
+                    "description": "postal code of the restaurant"
+                },
+                "phone": {
+                    "is_categorical": false,
+                    "possible_values": [],
+                    "description": "phone number of the restaurant"
+                },
+                "address": {
+                    "is_categorical": false,
+                    "possible_values": [],
+                    "description": "address of the restaurant"
+                },
+                "price range": {
+                    "is_categorical": true,
+                    "possible_values": [
+                        "expensive",
+                        "moderate",
+                        "cheap"
+                    ],
+                    "description": "price range of the restaurant"
+                },
+                "name": {
+                    "is_categorical": false,
+                    "possible_values": [],
+                    "description": "name of the restaurant"
+                }
+            }
+        }
+    },
+    "intents": {
+        "inform": {
+            "description": "system informs user the value of a slot"
+        },
+        "request": {
+            "description": "system asks the user to provide value of a slot"
+        }
+    },
+    "binary_dialogue_act": [
+        {
+            "intent": "request",
+            "domain": "restaurant",
+            "slot": "postcode",
+            "value": ""
+        },
+        {
+            "intent": "request",
+            "domain": "restaurant",
+            "slot": "phone",
+            "value": ""
+        },
+        {
+            "intent": "request",
+            "domain": "restaurant",
+            "slot": "address",
+            "value": ""
+        },
+        {
+            "intent": "request",
+            "domain": "restaurant",
+            "slot": "area",
+            "value": ""
+        },
+        {
+            "intent": "request",
+            "domain": "restaurant",
+            "slot": "price range",
+            "value": ""
+        },
+        {
+            "intent": "request",
+            "domain": "restaurant",
+            "slot": "food",
+            "value": ""
+        },
+        {
+            "intent": "request",
+            "domain": "restaurant",
+            "slot": "name",
+            "value": ""
+        }
+    ],
+    "state": {
+        "restaurant": {
+            "food": "",
+            "area": "",
+            "postcode": "",
+            "phone": "",
+            "address": "",
+            "price range": "",
+            "name": ""
+        }
+    }
+}
