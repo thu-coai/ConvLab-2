@@ -1,0 +1,1488 @@
+{
+  "domains": {
+    "travel": {
+      "description": "Book a vacation package containing round-trip flights and a hotel.",
+      "slots": {
+        "dst_city": {
+          "description": "Destination city",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "or_city": {
+          "description": "Origin city",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "str_date": {
+          "description": "Start date for the trip",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "n_adults": {
+          "description": "Number of adults",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "budget": {
+          "description": "The amount of money that the user has available to spend for the trip.",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "flex": {
+          "description": "Boolean value indicating whether the constraints are flexible",
+          "is_categorical": true,
+          "possible_values": [
+            "false",
+            "true"
+          ]
+        },
+        "duration": {
+          "description": "Duration of the trip",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "ref_anaphora": {
+          "description": "Words used to refer to a frame",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "price": {
+          "description": "Price of the trip including flights and hotel",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "end_date": {
+          "description": "End date for the trip",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "max_duration": {
+          "description": "Maximum number of days for the trip",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "name": {
+          "description": "Name of the hotel",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "category": {
+          "description": "Rating of the hotel (in number of stars)",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "wifi": {
+          "description": "Boolean value indicating whether or not the hotel offers free wifi",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "dep_time_or": {
+          "description": "Time of departure from origin city",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "n_children": {
+          "description": "Number of children",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "gst_rating": {
+          "description": "Rating of the hotel by guests (in number of stars)",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "parking": {
+          "description": "Boolean value indicating whether or not the hotel offers free parking",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "arr_time_or": {
+          "description": "Time of arrival to origin city",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "breakfast": {
+          "description": "Boolean value indicating whether or not the hotel offers free breakfast",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "count": {
+          "description": "Number of different packages",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "seat": {
+          "description": "Seat type (economy or business)",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "count_name": {
+          "description": "Number of different hotels",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "budget_ok": {
+          "description": "Boolean value indicating whether the package fits the budget",
+          "is_categorical": true,
+          "possible_values": [
+            "true"
+          ]
+        },
+        "arr_time_dst": {
+          "description": "Time of arrival to destination",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "dep_time_dst": {
+          "description": "Time of departure from destination",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "gym": {
+          "description": "Boolean value indicating whether or not the hotel offers gym",
+          "is_categorical": true,
+          "possible_values": [
+            "true"
+          ]
+        },
+        "spa": {
+          "description": "Boolean value indicating whether or not the hotel offers spa",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "downtown": {
+          "description": "Boolean value indicating whether or not the hotel is in the heart of the city",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "count_dst_city": {
+          "description": "Number of destination cities",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "min_duration": {
+          "description": "Minimum number of days for the trip",
+          "is_categorical": false,
+          "possible_values": []
+        },
+        "airport": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of an airport",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "beach": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of a beach",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "museum": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of a museum",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "theatre": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of a theatre",
+          "is_categorical": true,
+          "possible_values": [
+            "true"
+          ]
+        },
+        "park": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of a park",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "market": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of a market",
+          "is_categorical": true,
+          "possible_values": [
+            "true"
+          ]
+        },
+        "shopping": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of a shopping center",
+          "is_categorical": true,
+          "possible_values": [
+            "true",
+            "false"
+          ]
+        },
+        "university": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of an university",
+          "is_categorical": true,
+          "possible_values": [
+            "true"
+          ]
+        },
+        "mall": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of a mall",
+          "is_categorical": true,
+          "possible_values": [
+            "true"
+          ]
+        },
+        "palace": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of a palace",
+          "is_categorical": true,
+          "possible_values": [
+            "true"
+          ]
+        },
+        "cathedral": {
+          "description": "Boolean value indicating whether or not the hotel is in the vicinity of a cathedral",
+          "is_categorical": true,
+          "possible_values": [
+            "true"
+          ]
+        }
+      }
+    }
+  },
+  "intents": {
+    "inform": {
+      "description": "Inform a slot value"
+    },
+    "suggest": {
+      "description": "Suggest a slot value or package that does not match the user's constraints"
+    },
+    "no_result": {
+      "description": "Tell the user that the database returned no results"
+    },
+    "negate": {
+      "description": "Negate something said by the other speaker"
+    },
+    "switch_frame": {
+      "description": "Switch to a frame"
+    },
+    "request": {
+      "description": "Ask for the value of a particular slot"
+    },
+    "affirm": {
+      "description": "Affirm something said by the other speaker"
+    },
+    "offer": {
+      "description": "Offer a package to the user"
+    },
+    "request_alts": {
+      "description": "Ask for other possibilities"
+    },
+    "request_compare": {
+      "description": "Ask the wizard to compare packages"
+    },
+    "confirm": {
+      "description": "Ask the other speaker to confirm a given slot value"
+    },
+    "hearmore": {
+      "description": "Ask the user if she'd like to hear more about a given package"
+    },
+    "moreinfo": {
+      "description": "Ask for more information on a given set of results"
+    }
+  },
+  "binary_dialogue_act": [
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "book",
+      "value": "true"
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "booked",
+      "value": "true"
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "n_adults",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "budget",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "duration",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "name",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "seat",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "count",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "count_name",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "category",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "n_children",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": "true"
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "breakfast",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "gst_rating",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "max_duration",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": ""
+    },
+    {
+      "intent": "affirm",
+      "domain": "travel",
+      "slot": "price",
+      "value": ""
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": "dontcare"
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "book",
+      "value": "true"
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "n_adults",
+      "value": ""
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "booked",
+      "value": "true"
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "budget",
+      "value": ""
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "max_duration",
+      "value": ""
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "price",
+      "value": ""
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": "dontcare"
+    },
+    {
+      "intent": "confirm",
+      "domain": "travel",
+      "slot": "budget",
+      "value": "dontcare"
+    },
+    {
+      "intent": "hearmore",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": ""
+    },
+    {
+      "intent": "hearmore",
+      "domain": "travel",
+      "slot": "price",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "book",
+      "value": "true"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "budget",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "booked",
+      "value": "true"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "budget",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "max_duration",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "n_adults",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "n_children",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "dep_time_or",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "arr_time_dst",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "dep_time_dst",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "arr_time_or",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "category",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "name",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "n_adults",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "max_duration",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "spa",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "vicinity",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "vicinity",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "vicinity",
+      "value": "false"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": "false"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "category",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "parking",
+      "value": "dontcare"
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "price",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "duration",
+      "value": ""
+    },
+    {
+      "intent": "inform",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "budget",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "price",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "airport",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "booked",
+      "value": "true"
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "n_adults",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "book",
+      "value": "true"
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "shopping",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "duration",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "arr_time_or",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": "dontcare"
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "gst_rating",
+      "value": ""
+    },
+    {
+      "intent": "negate",
+      "domain": "travel",
+      "slot": "category",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "dep_time_or",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "dep_time_dst",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "budget",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "max_duration",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "museum",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "n_adults",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "n_children",
+      "value": ""
+    },
+    {
+      "intent": "no_result",
+      "domain": "travel",
+      "slot": "downtown",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "n_adults",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "n_children",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "name",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "price",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "budget",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "duration",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": ""
+    },
+    {
+      "intent": "offer",
+      "domain": "travel",
+      "slot": "vicinity",
+      "value": "false"
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "duration",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "price",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "vicinity",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "n_adults",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "n_children",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "budget",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "name",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "category",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "breakfast",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "max_duration",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "seat",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "count_dst_city",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "count_name",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "dep_time_dst",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "dep_time_or",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "arr_time_dst",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "arr_time_or",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "wifi",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "gym",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "flex",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "parking",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "spa",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "gst_rating",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "count",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "beach",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "park",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "museum",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "downtown",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "airport",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "mall",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "shopping",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "budget",
+      "value": "dontcare"
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "university",
+      "value": ""
+    },
+    {
+      "intent": "request",
+      "domain": "travel",
+      "slot": "palace",
+      "value": ""
+    },
+    {
+      "intent": "request_alts",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "request_alts",
+      "domain": "travel",
+      "slot": "name",
+      "value": ""
+    },
+    {
+      "intent": "request_alts",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": ""
+    },
+    {
+      "intent": "request_alts",
+      "domain": "travel",
+      "slot": "dep_time_dst",
+      "value": ""
+    },
+    {
+      "intent": "request_alts",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": ""
+    },
+    {
+      "intent": "request_alts",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "request_alts",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "request_alts",
+      "domain": "travel",
+      "slot": "vicinity",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "category",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "vicinity",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "wifi",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "parking",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "breakfast",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "seat",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "price",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "gst_rating",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "name",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "dep_time_or",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "arr_time_dst",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "dep_time_dst",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "arr_time_or",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "budget",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "duration",
+      "value": ""
+    },
+    {
+      "intent": "request_compare",
+      "domain": "travel",
+      "slot": "beach",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "dst_city",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "booked",
+      "value": "true"
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "budget",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "budget",
+      "value": "dontcare"
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "name",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "price",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "amenities",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "vicinity",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "museum",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "park",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "beach",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "n_adults",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "n_children",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "market",
+      "value": ""
+    },
+    {
+      "intent": "suggest",
+      "domain": "travel",
+      "slot": "or_city",
+      "value": "dontcare"
+    },
+    {
+      "intent": "switch_frame",
+      "domain": "travel",
+      "slot": "museum",
+      "value": ""
+    },
+    {
+      "intent": "switch_frame",
+      "domain": "travel",
+      "slot": "str_date",
+      "value": ""
+    },
+    {
+      "intent": "switch_frame",
+      "domain": "travel",
+      "slot": "end_date",
+      "value": ""
+    },
+    {
+      "intent": "switch_frame",
+      "domain": "travel",
+      "slot": "gst_rating",
+      "value": ""
+    }
+  ],
+  "state": {}
+}

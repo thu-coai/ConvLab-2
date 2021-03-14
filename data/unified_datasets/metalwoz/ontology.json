@@ -1,0 +1,211 @@
+{
+    "domains": {
+        "AGREEMENT_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "ALARM_SET": {
+            "description": "",
+            "slots": {}
+        },
+        "APARTMENT_FINDER": {
+            "description": "",
+            "slots": {}
+        },
+        "APPOINTMENT_REMINDER": {
+            "description": "",
+            "slots": {}
+        },
+        "AUTO_SORT": {
+            "description": "",
+            "slots": {}
+        },
+        "BANK_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "BUS_SCHEDULE_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "CATALOGUE_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "CHECK_STATUS": {
+            "description": "",
+            "slots": {}
+        },
+        "CITY_INFO": {
+            "description": "",
+            "slots": {}
+        },
+        "CONTACT_MANAGER": {
+            "description": "",
+            "slots": {}
+        },
+        "DECIDER_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "EDIT_PLAYLIST": {
+            "description": "",
+            "slots": {}
+        },
+        "EVENT_RESERVE": {
+            "description": "",
+            "slots": {}
+        },
+        "GAME_RULES": {
+            "description": "",
+            "slots": {}
+        },
+        "GEOGRAPHY": {
+            "description": "",
+            "slots": {}
+        },
+        "GUINESS_CHECK": {
+            "description": "",
+            "slots": {}
+        },
+        "HOME_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "HOW_TO_BASIC": {
+            "description": "",
+            "slots": {}
+        },
+        "INSURANCE": {
+            "description": "",
+            "slots": {}
+        },
+        "LIBRARY_REQUEST": {
+            "description": "",
+            "slots": {}
+        },
+        "LOOK_UP_INFO": {
+            "description": "",
+            "slots": {}
+        },
+        "MAKE_RESTAURANT_RESERVATIONS": {
+            "description": "",
+            "slots": {}
+        },
+        "MOVIE_LISTINGS": {
+            "description": "",
+            "slots": {}
+        },
+        "MUSIC_SUGGESTER": {
+            "description": "",
+            "slots": {}
+        },
+        "NAME_SUGGESTER": {
+            "description": "",
+            "slots": {}
+        },
+        "ORDER_PIZZA": {
+            "description": "",
+            "slots": {}
+        },
+        "PET_ADVICE": {
+            "description": "",
+            "slots": {}
+        },
+        "PHONE_PLAN_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "PHONE_SETTINGS": {
+            "description": "",
+            "slots": {}
+        },
+        "PLAY_TIMES": {
+            "description": "",
+            "slots": {}
+        },
+        "POLICY_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "PRESENT_IDEAS": {
+            "description": "",
+            "slots": {}
+        },
+        "PROMPT_GENERATOR": {
+            "description": "",
+            "slots": {}
+        },
+        "QUOTE_OF_THE_DAY_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "RESTAURANT_PICKER": {
+            "description": "",
+            "slots": {}
+        },
+        "SCAM_LOOKUP": {
+            "description": "",
+            "slots": {}
+        },
+        "SHOPPING": {
+            "description": "",
+            "slots": {}
+        },
+        "SKI_BOT": {
+            "description": "",
+            "slots": {}
+        },
+        "SPORTS_INFO": {
+            "description": "",
+            "slots": {}
+        },
+        "STORE_DETAILS": {
+            "description": "",
+            "slots": {}
+        },
+        "TIME_ZONE": {
+            "description": "",
+            "slots": {}
+        },
+        "UPDATE_CALENDAR": {
+            "description": "",
+            "slots": {}
+        },
+        "UPDATE_CONTACT": {
+            "description": "",
+            "slots": {}
+        },
+        "WEATHER_CHECK": {
+            "description": "",
+            "slots": {}
+        },
+        "WEDDING_PLANNER": {
+            "description": "",
+            "slots": {}
+        },
+        "WHAT_IS_IT": {
+            "description": "",
+            "slots": {}
+        },
+        "BOOKING_FLIGHT": {
+            "description": "",
+            "slots": {}
+        },
+        "HOTEL_RESERVE": {
+            "description": "",
+            "slots": {}
+        },
+        "TOURISM": {
+            "description": "",
+            "slots": {}
+        },
+        "VACATION_IDEAS": {
+            "description": "",
+            "slots": {}
+        }
+    },
+    "intents": {},
+    "binary_dialogue_act": [],
+    "state": {}
+}

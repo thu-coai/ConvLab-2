@@ -1,0 +1,1168 @@
+{
+  "domains": {
+    "uber_lyft": {
+      "description": "order a car for a ride inside a city",
+      "slots": {
+        "location.from": {
+          "description": "pickup location",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5764,
+          "in original ontology": true
+        },
+        "location.to": {
+          "description": "destination of the ride",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 6026,
+          "in original ontology": true
+        },
+        "type.ride": {
+          "description": "type of ride",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 13317,
+          "in original ontology": true
+        },
+        "num.people": {
+          "description": "number of people",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2636,
+          "in original ontology": true
+        },
+        "price.estimate": {
+          "description": "estimated cost of the ride",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4996,
+          "in original ontology": true
+        },
+        "duration.estimate": {
+          "description": "estimated duration of the ride",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1152,
+          "in original ontology": true
+        },
+        "time.pickup": {
+          "description": "time of pickup",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4303,
+          "in original ontology": true
+        },
+        "time.dropoff": {
+          "description": "time of dropoff",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 111,
+          "in original ontology": true
+        }
+      }
+    },
+    "movie_ticket": {
+      "description": "book movie tickets for a film",
+      "slots": {
+        "name.movie": {
+          "description": "name of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 8959,
+          "in original ontology": true
+        },
+        "name.theater": {
+          "description": "name of the theater",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 6842,
+          "in original ontology": true
+        },
+        "num.tickets": {
+          "description": "number of tickets",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 7368,
+          "in original ontology": true
+        },
+        "time.start": {
+          "description": "start time of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 14820,
+          "in original ontology": true
+        },
+        "location.theater": {
+          "description": "location of the theater",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5295,
+          "in original ontology": true
+        },
+        "price.ticket": {
+          "description": "price of the ticket",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2418,
+          "in original ontology": true
+        },
+        "type.screening": {
+          "description": "type of the screening",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4579,
+          "in original ontology": true
+        },
+        "time.end": {
+          "description": "end time of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 10,
+          "in original ontology": true
+        },
+        "time.duration": {
+          "description": "duration of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 250,
+          "in original ontology": true
+        }
+      }
+    },
+    "restaurant_reservation": {
+      "description": "searching for a restaurant and make reservation",
+      "slots": {
+        "name.restaurant": {
+          "description": "name of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 14544,
+          "in original ontology": true
+        },
+        "name.reservation": {
+          "description": "name of the person who make the reservation",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 609,
+          "in original ontology": true
+        },
+        "num.guests": {
+          "description": "number of guests",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 6962,
+          "in original ontology": true
+        },
+        "time.reservation": {
+          "description": "time of the reservation",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 12073,
+          "in original ontology": true
+        },
+        "type.seating": {
+          "description": "type of the seating",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 8983,
+          "in original ontology": true
+        },
+        "location.restaurant": {
+          "description": "location of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4311,
+          "in original ontology": true
+        }
+      }
+    },
+    "coffee_ordering": {
+      "description": "order a coffee drink from either Starbucks or Peets for pick up",
+      "slots": {
+        "location.store": {
+          "description": "location of the coffee store",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5510,
+          "in original ontology": true
+        },
+        "name.drink": {
+          "description": "name of the drink",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 9182,
+          "in original ontology": true
+        },
+        "size.drink": {
+          "description": "size of the drink",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 7804,
+          "in original ontology": true
+        },
+        "num.drink": {
+          "description": "number of drinks",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 848,
+          "in original ontology": true
+        },
+        "type.milk": {
+          "description": "type of the milk",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 8433,
+          "in original ontology": true
+        },
+        "preference": {
+          "description": "user preference of the drink",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 11266,
+          "in original ontology": true
+        }
+      }
+    },
+    "pizza_ordering": {
+      "description": "order a pizza",
+      "slots": {
+        "name.store": {
+          "description": "name of the pizza store",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5127,
+          "in original ontology": true
+        },
+        "name.pizza": {
+          "description": "name of the pizza",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 9208,
+          "in original ontology": true
+        },
+        "size.pizza": {
+          "description": "size of the pizza",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 9661,
+          "in original ontology": true
+        },
+        "type.topping": {
+          "description": "type of the topping",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 20639,
+          "in original ontology": true
+        },
+        "type.crust": {
+          "description": "type of the crust",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5099,
+          "in original ontology": true
+        },
+        "preference": {
+          "description": "user preference of the pizza",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4998,
+          "in original ontology": true
+        },
+        "location.store": {
+          "description": "location of the pizza store",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1487,
+          "in original ontology": true
+        }
+      }
+    },
+    "auto_repair": {
+      "description": "set up an auto repair appointment with a repair shop",
+      "slots": {
+        "name.store": {
+          "description": "name of the repair store",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4005,
+          "in original ontology": true
+        },
+        "name.customer": {
+          "description": "name of the customer",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4547,
+          "in original ontology": true
+        },
+        "date.appt": {
+          "description": "date of the appointment",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 7650,
+          "in original ontology": true
+        },
+        "time.appt": {
+          "description": "time of the appointment",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 9827,
+          "in original ontology": true
+        },
+        "reason.appt": {
+          "description": "reason of the appointment",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 6509,
+          "in original ontology": true
+        },
+        "name.vehicle": {
+          "description": "name of the vehicle",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5262,
+          "in original ontology": true
+        },
+        "year.vehicle": {
+          "description": "year of the vehicle",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4561,
+          "in original ontology": true
+        },
+        "location.store": {
+          "description": "location of the repair store",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 709,
+          "in original ontology": true
+        }
+      }
+    },
+    "flights": {
+      "description": "find a round trip or multi-city flights",
+      "slots": {
+        "type": {
+          "description": "type of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1999,
+          "in original ontology": true
+        },
+        "destination1": {
+          "description": "the first destination city of the trip",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3993,
+          "in original ontology": true
+        },
+        "destination2": {
+          "description": "the second destination city of the trip",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 128,
+          "in original ontology": true
+        },
+        "origin": {
+          "description": "the origin city of the trip",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2595,
+          "in original ontology": true
+        },
+        "date.depart_origin": {
+          "description": "date of departure from origin",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3177,
+          "in original ontology": true
+        },
+        "date.depart_intermediate": {
+          "description": "date of departure from intermediate",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 48,
+          "in original ontology": true
+        },
+        "date.return": {
+          "description": "date of return",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2822,
+          "in original ontology": true
+        },
+        "time_of_day": {
+          "description": "time of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3840,
+          "in original ontology": true
+        },
+        "seating_class": {
+          "description": "seat type (first class, business class, economy class, etc.",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3626,
+          "in original ontology": true
+        },
+        "seat_location": {
+          "description": "location of the seat",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 313,
+          "in original ontology": true
+        },
+        "stops": {
+          "description": "non-stop, layovers, etc.",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 6174,
+          "in original ontology": true
+        },
+        "price_range": {
+          "description": "price range of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2646,
+          "in original ontology": true
+        },
+        "num.pax": {
+          "description": "number of people",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 437,
+          "in original ontology": true
+        },
+        "luggage": {
+          "description": "luggage information",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 17,
+          "in original ontology": true
+        },
+        "total_fare": {
+          "description": "total cost of the trip",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1238,
+          "in original ontology": true
+        },
+        "other_description": {
+          "description": "other description of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2620,
+          "in original ontology": true
+        },
+        "from": {
+          "description": "departure of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1293,
+          "in original ontology": true
+        },
+        "to": {
+          "description": "destination of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1979,
+          "in original ontology": true
+        },
+        "airline": {
+          "description": "airline of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3981,
+          "in original ontology": true
+        },
+        "flight_number": {
+          "description": "the number of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 42,
+          "in original ontology": true
+        },
+        "date": {
+          "description": "date of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 756,
+          "in original ontology": true
+        },
+        "from.time": {
+          "description": "departure time of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 6440,
+          "in original ontology": true
+        },
+        "to.time": {
+          "description": "arrival time of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2571,
+          "in original ontology": true
+        },
+        "stops.location": {
+          "description": "location of the stop",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1097,
+          "in original ontology": true
+        },
+        "fare": {
+          "description": "cost of the flight",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1475,
+          "in original ontology": true
+        }
+      }
+    },
+    "food_order": {
+      "description": "order take-out for a particular cuisine choice",
+      "slots": {
+        "name.item": {
+          "description": "name of the item",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 6080,
+          "in original ontology": true
+        },
+        "other_description.item": {
+          "description": "other description of the item",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1474,
+          "in original ontology": true
+        },
+        "type.retrieval": {
+          "description": "type of the retrieval method",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1868,
+          "in original ontology": true
+        },
+        "total_price": {
+          "description": "total price",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5,
+          "in original ontology": true
+        },
+        "time.pickup": {
+          "description": "pick up time",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 981,
+          "in original ontology": true
+        },
+        "num.people": {
+          "description": "number of people",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 880,
+          "in original ontology": true
+        },
+        "name.restaurant": {
+          "description": "name of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 106,
+          "in original ontology": true
+        },
+        "type.food": {
+          "description": "type of food",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1247,
+          "in original ontology": true
+        },
+        "type.meal": {
+          "description": "type of meal",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 64,
+          "in original ontology": true
+        },
+        "location.restaurant": {
+          "description": "location of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 8,
+          "in original ontology": true
+        },
+        "rating.restaurant": {
+          "description": "rating of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5,
+          "in original ontology": true
+        },
+        "price_range": {
+          "description": "price range of the food",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5,
+          "in original ontology": true
+        }
+      }
+    },
+    "hotel": {
+      "description": "find a hotel using typical preferences",
+      "slots": {
+        "name.hotel": {
+          "description": "name of the hotel",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5241,
+          "in original ontology": true
+        },
+        "location.hotel": {
+          "description": "location of the hotel",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2940,
+          "in original ontology": true
+        },
+        "sub_location.hotel": {
+          "description": "rough location of the hotel",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1869,
+          "in original ontology": true
+        },
+        "star_rating": {
+          "description": "star rating of the hotel",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2049,
+          "in original ontology": true
+        },
+        "customer_rating": {
+          "description": "customer rating of the hotel",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1239,
+          "in original ontology": true
+        },
+        "price_range": {
+          "description": "price range of the hotel",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2357,
+          "in original ontology": true
+        },
+        "amenity": {
+          "description": "amenity of the hotel",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 19030,
+          "in original ontology": true
+        },
+        "num.beds": {
+          "description": "number of beds to book",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 733,
+          "in original ontology": true
+        },
+        "type.bed": {
+          "description": "type of the bed",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1423,
+          "in original ontology": true
+        },
+        "num.rooms": {
+          "description": "number of rooms to book",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 256,
+          "in original ontology": true
+        },
+        "check-in_date": {
+          "description": "check-in date",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 608,
+          "in original ontology": true
+        },
+        "check-out_date": {
+          "description": "check-out date",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 428,
+          "in original ontology": true
+        },
+        "date_range": {
+          "description": "date range of the reservation",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2458,
+          "in original ontology": true
+        },
+        "num.guests": {
+          "description": "number of guests",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1323,
+          "in original ontology": true
+        },
+        "type.room": {
+          "description": "type of the room",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1840,
+          "in original ontology": true
+        },
+        "price_per_night": {
+          "description": "price per night",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2357,
+          "in original ontology": true
+        },
+        "total_fare": {
+          "description": "total fare",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 28,
+          "in original ontology": true
+        },
+        "location": {
+          "description": "location of the hotel",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 352,
+          "in original ontology": true
+        }
+      }
+    },
+    "movie": {
+      "description": "find a movie to watch in theaters or using a streaming service at home",
+      "slots": {
+        "name.movie": {
+          "description": "name of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 13413,
+          "in original ontology": true
+        },
+        "genre": {
+          "description": "genre of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4982,
+          "in original ontology": true
+        },
+        "name.theater": {
+          "description": "name of the theater",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2371,
+          "in original ontology": true
+        },
+        "location.theater": {
+          "description": "location of the theater",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2894,
+          "in original ontology": true
+        },
+        "time.start": {
+          "description": "start time of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 6455,
+          "in original ontology": true
+        },
+        "time.end": {
+          "description": "end time of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3,
+          "in original ontology": true
+        },
+        "price.ticket": {
+          "description": "price of the ticket",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 989,
+          "in original ontology": true
+        },
+        "price.streaming": {
+          "description": "price of the streaming",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 397,
+          "in original ontology": true
+        },
+        "type.screening": {
+          "description": "type of the screening",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1419,
+          "in original ontology": true
+        },
+        "audience_rating": {
+          "description": "audience rating",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1506,
+          "in original ontology": true
+        },
+        "movie_rating": {
+          "description": "film rating",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 273,
+          "in original ontology": true
+        },
+        "release_date": {
+          "description": "release date of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 386,
+          "in original ontology": true
+        },
+        "runtime": {
+          "description": "running time of the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 262,
+          "in original ontology": true
+        },
+        "real_person": {
+          "description": "name of actors, directors, etc.",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3406,
+          "in original ontology": true
+        },
+        "character": {
+          "description": "name of character in the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1676,
+          "in original ontology": true
+        },
+        "streaming_service": {
+          "description": "streaming service that provide the movie",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2729,
+          "in original ontology": true
+        },
+        "num.tickets": {
+          "description": "number of tickets",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1045,
+          "in original ontology": true
+        },
+        "seating": {
+          "description": "type of seating",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 13,
+          "in original ontology": true
+        }
+      }
+    },
+    "music": {
+      "description": "find several tracks to play and then comment on each one",
+      "slots": {
+        "name.track": {
+          "description": "name of the track",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4916,
+          "in original ontology": true
+        },
+        "name.artist": {
+          "description": "name of the artist",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 9287,
+          "in original ontology": true
+        },
+        "name.album": {
+          "description": "name of the album",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1106,
+          "in original ontology": true
+        },
+        "name.genre": {
+          "description": "music genre",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 452,
+          "in original ontology": true
+        },
+        "type.music": {
+          "description": "rough type of the music",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 603,
+          "in original ontology": true
+        },
+        "describes_track": {
+          "description": "description of a track to find",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2969,
+          "in original ontology": true
+        },
+        "describes_artist": {
+          "description": "description of a artist to find",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 612,
+          "in original ontology": true
+        },
+        "describes_album": {
+          "description": "description of an album to find",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 189,
+          "in original ontology": true
+        },
+        "describes_genre": {
+          "description": "description of a genre to find",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 26,
+          "in original ontology": true
+        },
+        "describes_type.music": {
+          "description": "description of the music type",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 375,
+          "in original ontology": true
+        }
+      }
+    },
+    "restaurant": {
+      "description": "ask for recommendations for a particular type of cuisine",
+      "slots": {
+        "name.restaurant": {
+          "description": "name of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 8676,
+          "in original ontology": true
+        },
+        "location": {
+          "description": "location of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 5165,
+          "in original ontology": true
+        },
+        "sub-location": {
+          "description": "rough location of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1210,
+          "in original ontology": true
+        },
+        "type.food": {
+          "description": "the cuisine of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 12412,
+          "in original ontology": true
+        },
+        "menu_item": {
+          "description": "item in the menu",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1499,
+          "in original ontology": true
+        },
+        "type.meal": {
+          "description": "type of meal",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2677,
+          "in original ontology": true
+        },
+        "rating": {
+          "description": "rating of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2951,
+          "in original ontology": true
+        },
+        "price_range": {
+          "description": "price range of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1930,
+          "in original ontology": true
+        },
+        "business_hours": {
+          "description": "business hours of the restaurant",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2024,
+          "in original ontology": true
+        },
+        "name.reservation": {
+          "description": "name of the person who make the reservation",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 16,
+          "in original ontology": true
+        },
+        "num.guests": {
+          "description": "number of guests",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 179,
+          "in original ontology": true
+        },
+        "time.reservation": {
+          "description": "time of the reservation",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 216,
+          "in original ontology": true
+        },
+        "date.reservation": {
+          "description": "date of the reservation",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 130,
+          "in original ontology": true
+        },
+        "type.seating": {
+          "description": "type of the seating",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 11,
+          "in original ontology": true
+        }
+      }
+    },
+    "sport": {
+      "description": "discuss facts and stats about players, teams, games, etc. in EPL, MLB, MLS, NBA, NFL",
+      "slots": {
+        "name.team": {
+          "description": "name of the team",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 19651,
+          "in original ontology": true
+        },
+        "record.team": {
+          "description": "record of the team (number of wins and losses)",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3338,
+          "in original ontology": true
+        },
+        "record.games_ahead": {
+          "description": "number of games ahead",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 33,
+          "in original ontology": true
+        },
+        "record.games_back": {
+          "description": "number of games behind",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 361,
+          "in original ontology": true
+        },
+        "place.team": {
+          "description": "ranking of the team",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4075,
+          "in original ontology": true
+        },
+        "result.match": {
+          "description": "result of the match",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3245,
+          "in original ontology": true
+        },
+        "score.match": {
+          "description": "score of the match",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 3241,
+          "in original ontology": true
+        },
+        "date.match": {
+          "description": "date of the match",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2660,
+          "in original ontology": true
+        },
+        "day.match": {
+          "description": "day of the match",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 4743,
+          "in original ontology": true
+        },
+        "time.match": {
+          "description": "time of the match",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 1283,
+          "in original ontology": true
+        },
+        "name.player": {
+          "description": "name of the player",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2365,
+          "in original ontology": true
+        },
+        "position.player": {
+          "description": "position of the player",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 2746,
+          "in original ontology": true
+        },
+        "record.player": {
+          "description": "record of the player",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 80,
+          "in original ontology": true
+        },
+        "name.non_player": {
+          "description": "name of non-palyer such as the manager, coach",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 843,
+          "in original ontology": true
+        },
+        "venue": {
+          "description": "venue of the match take place",
+          "is_categorical": false,
+          "possible_values": [],
+          "count": 328,
+          "in original ontology": true
+        }
+      }
+    }
+  },
+  "intents": {
+    "inform": {
+      "description": ""
+    }
+  },
+  "binary_dialogue_act": [],
+  "state": {}
+}
