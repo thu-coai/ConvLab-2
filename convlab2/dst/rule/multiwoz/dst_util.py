@@ -77,11 +77,12 @@ def normalize_value(value_set, domain, slot, value):
     v = special_match(domain, slot, value)
     if v is not None:
         return v
-    _log(
-        'Failed: domain {} slot {} value {}, raw value returned.'.format(
-            domain,
-            slot,
-            value))
+    if v != 'dontcare':
+        _log(
+            'Failed: domain {} slot {} value {}, raw value returned.'.format(
+                domain,
+                slot,
+                value))
     return value
 
 
