@@ -48,17 +48,28 @@ def lexicalize_da(meta, entities, state, requestable, cur_domain=None):
             for pair in v:
                 pair[1] = '?'
         elif intent.lower() in ['nooffer', 'nobook']:
+            booking = False
             if domain.lower() in ['booking']:
                 if cur_domain and cur_domain in entities:
                     domain = cur_domain
+                    booking = True
                 else:
                     continue
             for pair in v:
-                slot = REF_SYS_DA[domain][pair[0]]
-                if slot in state[domain.lower()]['semi']:
-                    pair[1] = state[domain.lower()]['semi'][slot]
+                if not booking:
+                    if pair[0] in REF_SYS_DA[domain]:
+                        slot = REF_SYS_DA[domain][pair[0]]
+                        if slot in state[domain.lower()]['semi']:
+                            pair[1] = state[domain.lower()]['semi'][slot]
+                    else:
+                        pair[1] = 'none'
                 else:
-                    pair[1] = 'none'
+                    if pair[0] in REF_SYS_DA['Booking']:
+                        slot = REF_SYS_DA['Booking'][pair[0]]
+                        if slot in state[domain.lower()]['book']:
+                            pair[1] = state[domain.lower()]['book'][slot]
+                    else:
+                        pair[1] = 'none'
         else:
             if domain.lower() in ['booking']:
                 if cur_domain and cur_domain in entities:
