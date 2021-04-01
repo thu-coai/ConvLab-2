@@ -204,9 +204,9 @@ evaluation of our pre-trained models are: (joint acc.)
 
 | type  | CrossWOZ-en | MultiWOZ-zh |
 | ----- | ----------- | ----------- |
-| val   | 12.4%       | 45.1%       |
-| test  | 12.4%       | 43.5%       |
-| human_val | 10.6%       | 49.4%       |
+| val   | 12.4%       | 48.5%       |
+| test  | 12.4%       | 46.0%       |
+| human_val | 10.6%       | 47.4%       |
 
 `human_val` option will make the model evaluate on the validation set translated by human. 
 
