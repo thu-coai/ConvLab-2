@@ -114,7 +114,7 @@ class SUMBTTracker(DST):
         num_labels = [len(labels) for labels in label_list]  # number of slot-values in each slot-type
 
         # tokenizer
-        self.tokenizer = BertTokenizer.from_pretrained(args.bert_model_name)
+        self.tokenizer = BertTokenizer.from_pretrained(args.bert_model_name, cache_dir=args.bert_model_cache_dir)
         random.seed(args.seed)
         np.random.seed(args.seed)
         torch.manual_seed(args.seed)
