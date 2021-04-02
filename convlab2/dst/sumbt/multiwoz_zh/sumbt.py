@@ -582,28 +582,20 @@ class SUMBTTracker(DST):
         new_belief_state = copy.deepcopy(prev_state['belief_state'])
         for state in pred_states:
             domain, slot, value = state.split('-', 2)
-            
-            if slot not in ['name', 'book']:
-                if domain not in new_belief_state:
-                    if domain == 'bus':
-                        continue
-                    else:
-                        raise Exception(
-                            'Error: domain <{}> not in belief state'.format(domain))
             # slot = REF_SYS_DA[domain.capitalize()].get(slot, slot)
             assert 'semi' in new_belief_state[domain]
             assert 'book' in new_belief_state[domain]
+            domain_dic = new_belief_state[domain]
             if '预订' in slot:
                 assert slot.startswith('预订')
+                slot = slot[2:]
+                assert slot in domain_dic['book']
 
-            domain_dic = new_belief_state[domain]
             if slot in domain_dic['semi']:
                 new_belief_state[domain]['semi'][slot] = value
                 # normalize_value(self.value_dict, domain, slot, value)
             elif slot in domain_dic['book']:
                 new_belief_state[domain]['book'][slot] = value
-            elif slot.lower() in domain_dic['book']:
-                new_belief_state[domain]['book'][slot.lower()] = value
             else:
                 with open('trade_tracker_unknown_slot.log', 'a+') as f:
                     f.write(
