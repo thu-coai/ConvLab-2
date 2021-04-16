@@ -195,7 +195,9 @@ class Analyzer:
                     domain_turn.append(da[0][1].lower())
 
             for domain in domain_set:
-                reporter.record(domain, sess.evaluator.domain_success(domain), sess.evaluator.domain_reqt_inform_analyze(domain), failed_da_sys, failed_da_usr, cycle_start, domain_turn)
+                domain_success = sess.evaluator.domain_success(domain)
+                if domain_success is not None:
+                    reporter.record(domain, domain_success, sess.evaluator.domain_reqt_inform_analyze(domain), failed_da_sys, failed_da_usr, cycle_start, domain_turn)
 
         tmp = 0 if suc_num == 0 else turn_suc_num / suc_num
         print("=" * 100)
