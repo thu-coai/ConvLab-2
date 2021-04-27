@@ -81,8 +81,8 @@ class BERTNLU(NLU):
         da = {}
 
         word_seq, tag_seq, new2ori = self.dataloader.bert_tokenize(ori_word_seq, ori_tag_seq)
-        word_seq = word_seq[:512]
-        tag_seq = tag_seq[:512]
+        word_seq = word_seq[:510]
+        tag_seq = tag_seq[:510]
         batch_data = [[ori_word_seq, ori_tag_seq, intents, da, context_seq,
                        new2ori, word_seq, self.dataloader.seq_tag2id(tag_seq), self.dataloader.seq_intent2id(intents)]]
 
