@@ -47,6 +47,7 @@ setup(
         'tensorboard>=1.14.0',
         'tensorboardX==1.7',
         'tokenizers>=0.8.0',
+        'overrides==4.1.2',
         'allennlp==0.9.0',
         'requests',
         'simplejson',
