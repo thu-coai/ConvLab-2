@@ -166,13 +166,13 @@ class GoalGenerator:
             self._build_goal_model()
             print('Building goal model is done')
 
-        # remove some slot
-        del self.ind_slot_dist['police']['reqt']['postcode']
-        del self.ind_slot_value_dist['police']['reqt']['postcode']
-        del self.ind_slot_dist['hospital']['reqt']['postcode']
-        del self.ind_slot_value_dist['hospital']['reqt']['postcode']
-        del self.ind_slot_dist['hospital']['reqt']['address']
-        del self.ind_slot_value_dist['hospital']['reqt']['address']
+        # remove some slot. Fixed: add postcode for policy db, add postcode and address for hospital db
+        # del self.ind_slot_dist['police']['reqt']['postcode']
+        # del self.ind_slot_value_dist['police']['reqt']['postcode']
+        # del self.ind_slot_dist['hospital']['reqt']['postcode']
+        # del self.ind_slot_value_dist['hospital']['reqt']['postcode']
+        # del self.ind_slot_dist['hospital']['reqt']['address']
+        # del self.ind_slot_value_dist['hospital']['reqt']['address']
 
         # print(self.slots_combination_dist['police'])
         # print(self.slots_combination_dist['hospital'])
