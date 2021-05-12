@@ -57,4 +57,5 @@ class Evaluator(object):
         raise NotImplementedError
 
     def get_reward(self):
+        """returns a reward, which can be used by RL training."""
         raise NotImplementedError
