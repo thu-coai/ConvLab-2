@@ -1,4 +1,5 @@
 import os
+import re
 import zipfile
 import json
 import torch
@@ -66,6 +67,8 @@ class BERTNLU(NLU):
         print("BERTNLU loaded")
 
     def predict(self, utterance, context=list()):
+        # Note: spacy cannot tokenize 'id' or 'Id' correctly.
+        utterance = re.sub(r'\b(id|Id)\b', 'ID', utterance)
         # tokenization first, very important!
         ori_word_seq = [token.text for token in self.nlp(unidecode(utterance)) if token.text.strip()]
         # print(ori_word_seq)
