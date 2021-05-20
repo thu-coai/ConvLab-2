@@ -413,3 +413,12 @@ class MultiWozEvaluator(Evaluator):
             return 1
         else:
             return match / (match + mismatch)
+
+    def get_reward(self):
+        if self.task_success():
+            reward = 40
+        elif self.cur_domain and self.domain_success(self.cur_domain):
+            reward = 5
+        else:
+            reward = -1
+        return reward

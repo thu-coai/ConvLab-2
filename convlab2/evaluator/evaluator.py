@@ -55,3 +55,7 @@ class Evaluator(object):
     def final_goal_analyze(self):
         """judge whether the final goal satisfies the database constraints"""
         raise NotImplementedError
+
+    def get_reward(self):
+        """returns a reward, which is used for RL training."""
+        raise NotImplementedError

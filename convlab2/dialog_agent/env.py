@@ -33,12 +33,7 @@ class Environment():
         state = self.sys_dst.update(dialog_act)
         
         if self.evaluator:
-            if self.evaluator.task_success():
-                reward = 40
-            elif self.evaluator.cur_domain and self.evaluator.domain_success(self.evaluator.cur_domain):
-                reward = 5
-            else:
-                reward = -1
+            reward = self.evaluator.get_reward()
         else:
             reward = self.usr.get_reward()
         terminated = self.usr.is_terminated()
