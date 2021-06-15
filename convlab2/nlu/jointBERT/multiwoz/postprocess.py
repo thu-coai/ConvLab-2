@@ -33,6 +33,7 @@ def calculateF1(predict_golden):
 
 
 def tag2triples(word_seq, tag_seq):
+    word_seq = word_seq[:len(tag_seq)]
     assert len(word_seq)==len(tag_seq)
     triples = []
     i = 0
