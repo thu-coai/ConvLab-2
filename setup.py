@@ -59,7 +59,10 @@ setup(
         'pyyaml',
         'fuzzywuzzy',
         'python-Levenshtein',
-        'json_lines'
+        'json_lines',
+        'gtts',
+        'DeepSpeech',
+        'pydub'
     ],
     extras_require={
         'develop': [
