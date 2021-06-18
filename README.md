@@ -15,8 +15,10 @@
 - [Citing](#citing)
 - [License](#license)
 
-## News
-- 2021.6.18: Add [LAUG](https://github.com/thu-coai/LAUG) [[paper]](https://arxiv.org/abs/2012.15262), an open-source toolkit for Language understanding AUGmentation. It is an automatic method to approximate the natural perturbations to existing data. Augmented data could be used to conduct black-box robustness testing or enhancing training. Add [SC-GPT](https://github.com/pengbaolin/SC-GPT) [[paper]](https://arxiv.org/abs/2002.12328) for NLG.
+## Updates
+6/18/2021
+- Add [LAUG](https://github.com/thu-coai/LAUG) [[paper]](https://arxiv.org/abs/2012.15262), an open-source toolkit for Language understanding AUGmentation. It is an automatic method to approximate the natural perturbations to existing data. Augmented data could be used to conduct black-box robustness testing or enhancing training. 
+- Add [SC-GPT](https://github.com/pengbaolin/SC-GPT) [[paper]](https://arxiv.org/abs/2002.12328) for NLG.
 
 ## Installation
 
