@@ -43,7 +43,9 @@ RUN pip install quadprog
 RUN pip install pyyaml
 RUN pip install fuzzywuzzy
 RUN pip install python-Levenshtein
-
+RUN pip install gtts
+RUN pip install DeepSpeech
+RUN pip install pydub
 
 RUN [ "python", "-c", "import nltk; nltk.download('stopwords')" ]
 
