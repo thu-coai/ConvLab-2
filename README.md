@@ -15,6 +15,9 @@
 - [Citing](#citing)
 - [License](#license)
 
+## News
+- 2021.6.18: Add [LAUG](https://github.com/thu-coai/LAUG) [[paper]](https://arxiv.org/abs/2012.15262), an open-source toolkit for Language understanding AUGmentation. It is an automatic method to approximate the natural perturbations to existing data. Augmented data could be used to conduct black-box robustness testing or enhancing training. Add [SC-GPT](https://github.com/pengbaolin/SC-GPT) [[paper]](https://arxiv.org/abs/2002.12328) for NLG.
+
 ## Installation
 
 Require python 3.6.
@@ -245,7 +248,7 @@ We welcome contributions from community.
 
 We would like to thank:
 
-Yan Fang, Zhuoer Feng, Jianfeng Gao, Qihan Guo, Kaili Huang, Minlie Huang, Sungjin Lee, Bing Li, Jinchao Li, Xiang Li, Xiujun Li, Lingxiao Luo, Wenchang Ma, Mehrad Moradshahi, Baolin Peng, Runze Liang, Ryuichi Takanobu, Hongru Wang, Jiaxin Wen, Yaoqin Zhang, Zheng Zhang, Qi Zhu, Xiaoyan Zhu.
+Yan Fang, Zhuoer Feng, Jianfeng Gao, Qihan Guo, Kaili Huang, Minlie Huang, Sungjin Lee, Bing Li, Jinchao Li, Xiang Li, Xiujun Li, Jiexi Liu, Lingxiao Luo, Wenchang Ma, Mehrad Moradshahi, Baolin Peng, Runze Liang, Ryuichi Takanobu, Hongru Wang, Jiaxin Wen, Yaoqin Zhang, Zheng Zhang, Qi Zhu, Xiaoyan Zhu.
 
 
 ## Citing
@@ -258,6 +261,13 @@ If you use ConvLab-2 in your research, please cite:
     author={Qi Zhu and Zheng Zhang and Yan Fang and Xiang Li and Ryuichi Takanobu and Jinchao Li and Baolin Peng and Jianfeng Gao and Xiaoyan Zhu and Minlie Huang},
     year={2020},
     booktitle={Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics},
+}
+
+@inproceedings{liu2021robustness,
+    title={Robustness Testing of Language Understanding in Task-Oriented Dialog},
+    author={Liu, Jiexi and Takanobu, Ryuichi and Wen, Jiaxin and Wan, Dazhen and Li, Hongguang and Nie, Weiran and Li, Cheng and Peng, Wei and Huang, Minlie},
+    year={2021},
+    booktitle={Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics},
 }
 ```
 
