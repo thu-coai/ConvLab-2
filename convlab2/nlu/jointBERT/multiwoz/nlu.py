@@ -58,6 +58,14 @@ class BERTNLU(NLU):
         self.use_context = config['model']['context']
         self.dataloader = dataloader
         self.nlp = spacy.load('en_core_web_sm')
+        try:
+            self.nlp = spacy.load("en_core_web_sm")
+        except Exception:
+            print('download en_core_web_sm for spacy')
+            from spacy.cli.download import download as spacy_download
+            spacy_download("en_core_web_sm")
+            spacy_model_module = __import__("en_core_web_sm")
+            self.nlp = spacy_model_module.load()
         with open(os.path.join(get_root_path(), 'data/multiwoz/db/postcode.json'), 'r') as f:
             token_list = json.load(f)
 
