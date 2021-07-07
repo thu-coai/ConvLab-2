@@ -22,7 +22,7 @@
 
 ## Installation
 
-Require python 3.6.
+Require python >= 3.6.
 
 Clone this repository:
 ```bash
