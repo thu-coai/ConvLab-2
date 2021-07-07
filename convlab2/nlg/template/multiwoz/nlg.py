@@ -99,7 +99,7 @@ class TemplateNLG(NLG):
             new_action += new_action_group['general']['other']
             del new_action_group['general']
         for domain in new_action_group:
-            for k in ['nooffer', 'inform-name', 'inform-other', 'request', 'other']:
+            for k in ['other', 'request', 'inform-other', 'inform-name', 'nooffer']:
                 new_action = new_action_group[domain][k] + new_action
         return new_action
 
