@@ -776,11 +776,10 @@ class Agenda(object):
                 self.cur_domain = domain
 
     def _setdefault_current_domain_by_usraction(self, usr_action):
-        if self.cur_domain is None:
-            for diaact in usr_action.keys():
-                domain, _ = diaact.split('-')
-                if domain in ['attraction', 'hotel', 'restaurant', 'taxi', 'train']:
-                    self.cur_domain = domain
+        for diaact in usr_action.keys():
+            domain, _ = diaact.split('-')
+            if domain in ['attraction', 'hotel', 'restaurant', 'taxi', 'train']:
+                self.cur_domain = domain
 
     def _remove_item(self, diaact, slot=DEF_VAL_UNK):
         for idx in range(len(self.__stack)):
