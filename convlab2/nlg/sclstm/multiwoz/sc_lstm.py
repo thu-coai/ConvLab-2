@@ -88,9 +88,7 @@ class SCLSTM(NLG):
                 for pair in v:
                     if type(pair[1]) != str:
                         pair[1] = str(pair[1])
-                    if pair[0] == 'Internet' or pair[0] == 'Parking':
-                        pair.insert(1, 'yes')
-                    elif pair[0] == 'none':
+                    if pair[0] == 'none':
                         pair.insert(1, 'none')
                     else:
                         if pair[0] in counter:
