@@ -16,7 +16,13 @@
 - [License](#license)
 
 ## Updates
+
+2021.9.13:
+
+- Add [MultiWOZ 2.3](https://github.com/lexmen318/MultiWOZ-coref) dataset in `data` dir. The dataset adds co-reference annotations in addition to corrections of dialogue acts and dialogue states. [[paper]](https://arxiv.org/abs/2010.05594)
+
 2021.6.18:
+
 - Add [LAUG](https://github.com/thu-coai/LAUG), an open-source toolkit for Language understanding AUGmentation. It is an automatic method to approximate the natural perturbations to existing data. Augmented data could be used to conduct black-box robustness testing or enhancing training. [[paper]](https://arxiv.org/abs/2012.15262)
 - Add [SC-GPT](https://github.com/pengbaolin/SC-GPT) for NLG. [[paper]](https://arxiv.org/abs/2002.12328)
 
