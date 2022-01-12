@@ -57,7 +57,6 @@ class BERTNLU(NLU):
         self.model = model
         self.use_context = config['model']['context']
         self.dataloader = dataloader
-        self.nlp = spacy.load('en_core_web_sm')
         try:
             self.nlp = spacy.load("en_core_web_sm")
         except Exception:
