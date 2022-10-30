@@ -17,6 +17,10 @@
 
 ## Updates
 
+2022.10.30:
+
+- Due to the potential security risk, The trained models of ConvLab-2 hosted at Azure can not be accessed currently. Therefore, we copied these models and placed them in [Hugging Face](https://huggingface.co/ConvLab/ConvLab-2_models). If you try to use trained models of ConvLab-2, you need to replace the model URL in the ConvLab-2 code with the model URL in our Hugging Face repo (the suffix should be the same).
+
 2021.9.13:
 
 - Add [MultiWOZ 2.3](https://github.com/lexmen318/MultiWOZ-coref) dataset in `data` dir. The dataset adds co-reference annotations in addition to corrections of dialogue acts and dialogue states. [[paper]](https://arxiv.org/abs/2010.05594)
