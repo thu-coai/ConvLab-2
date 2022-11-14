@@ -238,7 +238,7 @@ class LaRL(Policy):
     def __init__(self,
                  archive_file=DEFAULT_ARCHIVE_FILE,
                  cuda_device=DEFAULT_CUDA_DEVICE,
-                 model_file="https://convlab.blob.core.windows.net/convlab-2/larl.zip"):
+                 model_file="https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/larl.zip"):
 
         if not os.path.isfile(archive_file):
             if not model_file:

@@ -44,8 +44,8 @@ def revert_state(model_output:dict, reversed_vocab:dict):
 
 
 class ComerTracker(DST):
-    def __init__(self, model_file='https://convlab.blob.core.windows.net/convlab-2/comer.zip',
-                 embed_file='https://convlab.blob.core.windows.net/convlab-2/comer_embed.zip'):
+    def __init__(self, model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/comer.zip',
+                 embed_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/comer_embed.zip'):
         super().__init__()
         parser = argparse.ArgumentParser(description='predict.py')
         parser.add_argument('-config', default='config.yaml', type=str,

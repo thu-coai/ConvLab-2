@@ -28,7 +28,7 @@ class MILU(NLU):
     def __init__(self,
                 archive_file=DEFAULT_ARCHIVE_FILE,
                 cuda_device=DEFAULT_CUDA_DEVICE,
-                model_file="https://convlab.blob.core.windows.net/convlab-2/new_milu(20200922)_multiwoz_all_context.tar.gz",
+                model_file="https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/new_milu(20200922)_multiwoz_all_context.tar.gz",
                 context_size=3):
         """ Constructor for NLU class. """
 
@@ -88,7 +88,7 @@ class MILU(NLU):
 
 
 if __name__ == "__main__":
-    nlu = MILU(model_file="https://convlab.blob.core.windows.net/convlab-2/milu.tar.gz")
+    nlu = MILU(model_file="https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/milu.tar.gz")
     test_contexts = [
         "SENT_END",
         "SENT_END",

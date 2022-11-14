@@ -6,7 +6,7 @@ class Text_Paraphrasing:
         if dataset=='multiwoz':
             self.model=SCGPT()
         if dataset=='frames':
-            self.model=SCGPT(model_file='https://convlab.blob.core.windows.net/convlab-2/nlg-gpt-frames.zip')
+            self.model=SCGPT(model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/nlg-gpt-frames.zip')
         self.model.init_session()
     def aug(self,text,span_info):
         t=span2tuple(span_info)

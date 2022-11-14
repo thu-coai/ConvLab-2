@@ -57,7 +57,7 @@ def test_end2end():
 
     # BERT nlu trained on sys utterance
     user_nlu = BERTNLU(mode='sys', config_file='multiwoz_sys_context.json',
-                       model_file='https://convlab.blob.core.windows.net/convlab-2/bert_multiwoz_sys_context.zip')
+                       model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/bert_multiwoz_sys_context.zip')
     # not use dst
     user_dst = None
     # rule policy

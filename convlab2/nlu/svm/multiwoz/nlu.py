@@ -4,9 +4,9 @@ For more information, please refer to ``convlab2/nlu/svm/multiwoz/README.md``
 
 Trained models can be download on:
 
-- https://convlab.blob.core.windows.net/convlab-2/svm_multiwoz_all.zip
-- https://convlab.blob.core.windows.net/convlab-2/svm_multiwoz_sys.zip
-- https://convlab.blob.core.windows.net/convlab-2/svm_multiwoz_usr.zip
+- https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_multiwoz_all.zip
+- https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_multiwoz_sys.zip
+- https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_multiwoz_usr.zip
 
 Reference:
 
@@ -34,7 +34,7 @@ class SVMNLU(NLU):
             nlu = SVMNLU(mode='all')
         """
         assert mode == 'usr' or mode == 'sys' or mode == 'all'
-        model_file = 'https://convlab.blob.core.windows.net/convlab-2/svm_multiwoz_{}.zip'.format(mode)
+        model_file = 'https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_multiwoz_{}.zip'.format(mode)
         config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'configs/multiwoz_{}.cfg'.format(mode))
         self.config = configparser.ConfigParser()
         self.config.read(config_file)

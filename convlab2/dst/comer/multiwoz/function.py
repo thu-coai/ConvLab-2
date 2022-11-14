@@ -107,7 +107,7 @@ class ComerTracker(DST):
         self.state = None
         self.init_session()
 
-    def download_data(self, data_url="https://convlab.blob.core.windows.net/convlab-2/comer.zip"):
+    def download_data(self, data_url="https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/comer.zip"):
         """Automatically download the pretrained model and necessary data."""
         if os.path.exists(os.path.join(self.multiwoz_root, 'data/mwoz2_dm.dict')) and \
                 os.path.exists(os.path.join(self.multiwoz_root, 'data/mwoz2_sl.dict')) and \

@@ -43,7 +43,7 @@ class SCLSTM(NLG):
                  archive_file=DEFAULT_ARCHIVE_FILE, 
                  use_cuda=False,
                  is_user=False,
-                 model_file='https://convlab.blob.core.windows.net/convlab-2/nlg_sclstm_multiwoz.zip'):
+                 model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/nlg_sclstm_multiwoz.zip'):
 
         if not os.path.isfile(archive_file):
             if not model_file:

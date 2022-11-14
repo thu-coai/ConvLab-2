@@ -33,7 +33,7 @@
       "ini_params": {
         "mode": "all",
         "config_file": "crosswoz_all.json",
-        "model_file": "https://convlab.blob.core.windows.net/convlab-2/bert_crosswoz_all.zip"
+        "model_file": "https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/bert_crosswoz_all.zip"
       },
       "model_name": "bert-cro",
       "max_core": 1,
@@ -46,7 +46,7 @@
       "ini_params": {
         "mode": "all",
         "config_file": "multiwoz_all.json",
-        "model_file": "https://convlab.blob.core.windows.net/convlab-2/bert_multiwoz_all.zip"
+        "model_file": "https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/bert_multiwoz_all.zip"
       },
       "model_name": "bert-mul",
       "max_core": 1,

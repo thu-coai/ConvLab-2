@@ -75,7 +75,7 @@ class SUMBTTracker(DST):
     """
 
 
-    def __init__(self, data_dir=DATA_PATH, model_file='https://convlab.blob.core.windows.net/convlab-2/sumbt.tar.gz', eval_slots=multiwoz_slot_list):
+    def __init__(self, data_dir=DATA_PATH, model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/sumbt.tar.gz', eval_slots=multiwoz_slot_list):
 
         DST.__init__(self)
 
@@ -153,7 +153,7 @@ class SUMBTTracker(DST):
         # model_file = os.path.join(DOWNLOAD_DIRECTORY, 'pytorch_model.zip')
 
         # if not os.path.isfile(model_file):
-        model_file = 'https://convlab.blob.core.windows.net/convlab-2/sumbt.tar.gz'
+        model_file = 'https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/sumbt.tar.gz'
 
         import tarfile
         if not os.path.isfile(os.path.join(DOWNLOAD_DIRECTORY, 'pytorch_model.bin')):

@@ -11,7 +11,7 @@ We adapt the code from [github](https://github.com/WING-NUS/sequicity) to work i
 
 ### Prepare data
 
-Download [data](https://convlab.blob.core.windows.net/convlab-2/sequicity_multiwoz_data.zip) and unzip here.
+Download [data](https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/sequicity_multiwoz_data.zip) and unzip here.
 
 ### Training with default parameters
 
@@ -36,7 +36,7 @@ $ python model.py -mode rl -model multiwoz -cfg multiwoz/configs/multiwoz.json
 
 ### Trained model
 
-Trained model can be download on [here](https://convlab.blob.core.windows.net/convlab-2/sequicity_multiwoz.zip). Place it under `output` dir.
+Trained model can be download on [here](https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/sequicity_multiwoz.zip). Place it under `output` dir.
 
 ### Predict
 

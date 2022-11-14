@@ -4,9 +4,9 @@ For more information, please refer to ``convlab2/nlu/svm/camrest/README.md``
 
 Trained models can be download on:
 
-- https://convlab.blob.core.windows.net/convlab-2/svm_camrest_all.zip
-- https://convlab.blob.core.windows.net/convlab-2/svm_camrest_sys.zip
-- https://convlab.blob.core.windows.net/convlab-2/svm_camrest_usr.zip
+- https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_camrest_all.zip
+- https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_camrest_sys.zip
+- https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_camrest_usr.zip
 
 Reference:
 
@@ -34,7 +34,7 @@ class SVMNLU(NLU):
             nlu = SVMNLU(mode='usr')
         """
         assert mode == 'usr' or mode == 'sys' or mode == 'all'
-        model_file = 'https://convlab.blob.core.windows.net/convlab-2/svm_camrest_{}.zip'.format(mode)
+        model_file = 'https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_camrest_{}.zip'.format(mode)
         config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'configs/camrest_{}.cfg'.format(mode))
         self.config = configparser.ConfigParser()
         self.config.read(config_file)

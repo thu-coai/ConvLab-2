@@ -33,9 +33,9 @@ The model will be saved on `model/svm_multiwoz_[mode].pickle`. Also, it will be 
 
 Trained models can be download on: 
 
-- Trained on all data: [mode=all](https://convlab.blob.core.windows.net/convlab-2/svm_multiwoz_all.zip)
-- Trained on user utterances only: [mode=usr](https://convlab.blob.core.windows.net/convlab-2/svm_multiwoz_usr.zip)
-- Trained on system utterances only: [mode=sys](https://convlab.blob.core.windows.net/convlab-2/svm_multiwoz_usr.zip)
+- Trained on all data: [mode=all](https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_multiwoz_all.zip)
+- Trained on user utterances only: [mode=usr](https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_multiwoz_usr.zip)
+- Trained on system utterances only: [mode=sys](https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/svm_multiwoz_usr.zip)
 
 #### Evaluate
 
