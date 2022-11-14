@@ -11,9 +11,9 @@ def auto_download():
     db_path = os.path.join(os.path.dirname(__file__), os.pardir, 'db')
     root_path = os.path.join(os.path.dirname(__file__), os.pardir)
 
-    urls = {model_path: 'https://convlab.blob.core.windows.net/convlab-2/mdrg_model.zip',
-            data_path: 'https://convlab.blob.core.windows.net/convlab-2/mdrg_data.zip',
-            db_path: 'https://convlab.blob.core.windows.net/convlab-2/mdrg_db.zip'}
+    urls = {model_path: 'https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/mdrg_model.zip',
+            data_path: 'https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/mdrg_data.zip',
+            db_path: 'https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/mdrg_db.zip'}
 
     for path in [model_path, data_path, db_path]:
         if not os.path.exists(path):

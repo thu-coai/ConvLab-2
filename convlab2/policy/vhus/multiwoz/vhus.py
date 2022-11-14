@@ -18,7 +18,7 @@ class UserPolicyVHUS(UserPolicyVHUSAbstract):
     def __init__(self,
                  load_from_zip=False,
                  archive_file=DEFAULT_ARCHIVE_FILE,
-                 model_file='https://convlab.blob.core.windows.net/convlab-2/vhus_simulator_multiwoz.zip'):
+                 model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/vhus_simulator_multiwoz.zip'):
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json'), 'r') as f:
             config = json.load(f)
         manager = UserDataManager()

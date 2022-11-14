@@ -17,7 +17,7 @@ python train.py
 '''
 
 
-def download_data(data_url="https://convlab.blob.core.windows.net/convlab-2/trade_multiwoz_data.zip"):
+def download_data(data_url="https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/trade_multiwoz_data.zip"):
     """Automatically download the pretrained model and necessary data."""
     multiwoz_root = os.path.dirname(os.path.abspath(__file__))
     if os.path.exists(os.path.join(multiwoz_root, 'data/multi-woz')) and \

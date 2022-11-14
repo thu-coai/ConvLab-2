@@ -28,7 +28,7 @@ class MLE(MLEAbstract):
     @classmethod
     def from_pretrained(cls,
                         archive_file=DEFAULT_ARCHIVE_FILE,
-                        model_file='https://convlab.blob.core.windows.net/convlab-2/mle_policy_multiwoz.zip'):
+                        model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/mle_policy_multiwoz.zip'):
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json'), 'r') as f:
             cfg = json.load(f)
         model = cls()
@@ -38,7 +38,7 @@ class MLE(MLEAbstract):
 class MLEPolicy(MLE):
     def __init__(self,
                  archive_file=DEFAULT_ARCHIVE_FILE,
-                 model_file='https://convlab.blob.core.windows.net/convlab-2/mle_policy_multiwoz.zip'):
+                 model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/mle_policy_multiwoz.zip'):
         super().__init__()
         if model_file:
             with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'config.json'), 'r') as f:

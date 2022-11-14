@@ -24,4 +24,4 @@ Performance:
 
 The model can be downloaded from: 
 
-https://convlab.blob.core.windows.net/convlab-2/mle_policy_multiwoz.zip
+https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/mle_policy_multiwoz.zip

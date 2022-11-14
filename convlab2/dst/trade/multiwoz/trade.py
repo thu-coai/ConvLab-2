@@ -116,7 +116,7 @@ class MultiWOZTRADE(TRADE, nn.Module):
     def init_session(self):
         self.state = default_state()
 
-    def download_model(self, model_url="https://convlab.blob.core.windows.net/convlab-2/trade_multiwoz_model.zip"):
+    def download_model(self, model_url="https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/trade_multiwoz_model.zip"):
         """Automatically download the pretrained model and necessary data."""
         if os.path.exists(os.path.join(self.multiwoz_root, 'model/TRADE-multiwozdst')):
             return
@@ -143,7 +143,7 @@ class MultiWOZTRADE(TRADE, nn.Module):
             print('unzipping model file ...')
             zip_ref.extractall(model_dir)
 
-    def download_data(self, data_url="https://convlab.blob.core.windows.net/convlab-2/trade_multiwoz_data.zip"):
+    def download_data(self, data_url="https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/trade_multiwoz_data.zip"):
         """Automatically download the pretrained model and necessary data."""
         if os.path.exists(os.path.join(self.multiwoz_root, 'data/multi-woz')) and \
                 os.path.exists(os.path.join(self.multiwoz_root, 'data/dev_dials.json')):

@@ -56,9 +56,9 @@ We have trained two models: one use context information (`configs/multiwoz_all_c
 
 Models can be download form:
 
-Without context: https://convlab.blob.core.windows.net/convlab-2/bert_multiwoz_all.zip
+Without context: https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/bert_multiwoz_all.zip
 
-With context: https://convlab.blob.core.windows.net/convlab-2/bert_multiwoz_all_context.zip
+With context: https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/bert_multiwoz_all_context.zip
 
 
 

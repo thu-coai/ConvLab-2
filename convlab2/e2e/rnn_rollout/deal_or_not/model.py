@@ -12,7 +12,7 @@ import shutil
 class DealornotAgent(RNNRolloutAgent):
     """The Rnn Rollout model for DealorNot dataset."""
     def __init__(self, name, args, sel_args, train=False, diverse=False, max_total_len=100,
-                 model_url='https://convlab.blob.core.windows.net/convlab-2/rnnrollout_dealornot.zip'):
+                 model_url='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/rnnrollout_dealornot.zip'):
         self.config_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'configs')
 
         self.file_url = model_url
@@ -75,7 +75,7 @@ def get_context_generator(context_file):
 #             os.path.exists(os.path.join(config_path, 'selection_model_state_dict.th')):
 #         exit()
 #     models_dir = os.path.join(config_path, 'models')
-#     file_url = 'https://convlab.blob.core.windows.net/convlab-2/rnnrollout_dealornot.zip'
+#     file_url = 'https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/rnnrollout_dealornot.zip'
 #     cached_path(file_url, models_dir)
 #     files = os.listdir(models_dir)
 #     target_file = ''

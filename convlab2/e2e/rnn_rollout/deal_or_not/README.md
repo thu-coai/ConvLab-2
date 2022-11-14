@@ -12,7 +12,7 @@ license when using the code and datasets.
 
 ## Data preparation
 To use this model, you have to first download the pre-trained models
-from [here](https://convlab.blob.core.windows.net/convlab-2/rnnrollout_dealornot.zip), and put the *.th
+from [here](https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/rnnrollout_dealornot.zip), and put the *.th
 files under ```convlab2/e2e/rnn_rullout/deal_or_not/configs```.
 
 ## Run the Model

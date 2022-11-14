@@ -19,7 +19,7 @@ class SCGPT(NLG):
                  archive_file=DEFAULT_ARCHIVE_FILE,
                  use_cuda=True,
                  is_user=False,
-                 model_file='https://convlab.blob.core.windows.net/convlab-2/nlg-gpt-multiwoz.zip'):
+                 model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/nlg-gpt-multiwoz.zip'):
         model_dir = os.path.dirname(os.path.abspath(__file__))
         if not os.path.isfile(archive_file):
             archive_file = cached_path(model_file)

@@ -16,7 +16,7 @@ from spacy.symbols import ORTH, LEMMA, POS
 
 class BERTNLU(NLU):
     def __init__(self, mode='all', config_file='multiwoz_all_context.json',
-                 model_file='https://convlab.blob.core.windows.net/convlab-2/bert_multiwoz_all_context.zip'):
+                 model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/bert_multiwoz_all_context.zip'):
         assert mode == 'usr' or mode == 'sys' or mode == 'all'
         self.mode = mode
         config_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'configs/{}'.format(config_file))
@@ -114,7 +114,7 @@ class BERTNLU(NLU):
 if __name__ == '__main__':
     text = "How about rosa's bed and breakfast ? Their postcode is cb22ha."
     nlu = BERTNLU(mode='sys', config_file='multiwoz_sys_context.json',
-                  model_file='https://convlab.blob.core.windows.net/convlab-2/bert_multiwoz_all_context.zip')
+                  model_file='https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/bert_multiwoz_all_context.zip')
     print(nlu.predict(text))
     # text = "I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant.I don't care about the Price of the restaurant."
     # print(nlu.predict(text))

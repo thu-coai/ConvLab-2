@@ -11,7 +11,7 @@ The code derives from [github](https://github.com/andy194673/nlg-sclstm-multiwoz
 
 ### Prepare the data
 
-unzip [zip](https://convlab.blob.core.windows.net/convlab-2/nlg_sclstm_multiwoz.zip) here
+unzip [zip](https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/nlg_sclstm_multiwoz.zip) here
 
 ### Train
 

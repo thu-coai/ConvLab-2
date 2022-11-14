@@ -26,8 +26,8 @@ from convlab2.dialog_agent import Agent
 # DEFAULT_CUDA_DEVICE = -1
 DEFAULT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_CONFIG_FILE = os.path.join(DEFAULT_DIRECTORY, "multiwoz/configs/multiwoz.json")
-DEFAULT_ARCHIVE_FILE_URL = "https://convlab.blob.core.windows.net/convlab-2/sequicity_multiwoz_data.zip"
-DEFAULT_MODEL_URL = "https://convlab.blob.core.windows.net/convlab-2/sequicity_multiwoz.zip"
+DEFAULT_ARCHIVE_FILE_URL = "https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/sequicity_multiwoz_data.zip"
+DEFAULT_MODEL_URL = "https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/sequicity_multiwoz.zip"
 
 
 def denormalize(uttr):
@@ -46,7 +46,7 @@ class Sequicity(Agent):
 
         Args:
             model_file (str):
-                trained model path or url. default="https://convlab.blob.core.windows.net/convlab-2/sequicity_multiwoz.zip"
+                trained model path or url. default="https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/sequicity_multiwoz.zip"
 
         Example:
             sequicity = Sequicity()

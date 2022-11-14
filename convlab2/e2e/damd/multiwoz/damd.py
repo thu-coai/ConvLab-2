@@ -16,8 +16,8 @@ from convlab2.e2e.damd.multiwoz.ontology import eos_tokens
 from convlab2.dialog_agent import Agent
 
 DEFAULT_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DEFAULT_ARCHIVE_FILE_URL = "https://convlab.blob.core.windows.net/convlab-2/damd_multiwoz_data.zip"
-DEFAULT_MODEL_URL = "https://convlab.blob.core.windows.net/convlab-2/damd_multiwoz.zip"
+DEFAULT_ARCHIVE_FILE_URL = "https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/damd_multiwoz_data.zip"
+DEFAULT_MODEL_URL = "https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/damd_multiwoz.zip"
 
 class Damd(Agent):
     def __init__(self,

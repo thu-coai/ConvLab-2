@@ -32,7 +32,7 @@ Performance:
 
 The model can be downloaded from: 
 
-https://convlab.blob.core.windows.net/convlab-2/gdpl_policy_multiwoz.zip
+https://huggingface.co/ConvLab/ConvLab-2_models/resolve/main/gdpl_policy_multiwoz.zip
 
 ## Reference
 
