@@ -17,6 +17,12 @@
 
 ## Updates
 
+2022.11.30:
+
+- [ConvLab-3](https://github.com/ConvLab/ConvLab-3) release! [[paper]](https://arxiv.org/abs/2211.17148). Most part of ConvLab-2 is retained. New features include:
+  - dfd
+  - fds
+
 2022.11.14:
 
 - Due to the potential security risk, The trained models of ConvLab-2 hosted at Azure can not be accessed currently. Therefore, we copied these models and placed them in [Hugging Face](https://huggingface.co/ConvLab/ConvLab-2_models). We've replaced the model URL in the ConvLab-2 code with the model URL in our Hugging Face repo. If you try to use trained models of ConvLab-2, make sure to update the code.
