@@ -19,9 +19,10 @@
 
 2022.11.30:
 
-- [ConvLab-3](https://github.com/ConvLab/ConvLab-3) release! [[paper]](https://arxiv.org/abs/2211.17148). Most part of ConvLab-2 is retained. New features include:
-  - dfd
-  - fds
+- [ConvLab-3](https://github.com/ConvLab/ConvLab-3) [[paper]](https://arxiv.org/abs/2211.17148) release! Building dialog systems on custom datasets is easier now. Most part of ConvLab-2 is retained. New features include:
+  - We proposed a unified format for TOD datasets, transformed many commonly used datasets, and adapted models to support the unified format, facilitating research involving many datasets.
+  - We added powerful transformer-based models for **every** module, including two transferable user simulators which can be used for custom datasets.
+  - We advanced the RL toolkit. We simplified the process of building the dialogue system and its RL environment, provided plotting tools to compare policies, and offered a wide range of evaluation metrics.
 
 2022.11.14:
 
