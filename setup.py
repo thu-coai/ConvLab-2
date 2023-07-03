@@ -46,7 +46,7 @@ setup(
         'transformers>=2.3.0,<3.0.0',
         'tensorboard>=1.14.0',
         'tensorboardX==1.7',
-        'tokenizers>=0.8.0',
+        'tokenizers==0.8.0',
         'overrides==4.1.2',
         'allennlp==0.9.0',
         'requests',
@@ -61,7 +61,6 @@ setup(
         'python-Levenshtein',
         'json_lines',
         'gtts',
-        'DeepSpeech',
         'pydub'
     ],
     extras_require={
