@@ -41,7 +41,7 @@ setup(
         'torch>=1.2.0,<1.6.0',
         'numpy>=1.15.0',
         'scipy',
-        'scikit-learn==0.20.3',
+        'scikit-learn==1.5.0',
         'pytorch-pretrained-bert>=0.6.1',
         'transformers>=2.3.0,<3.0.0',
         'tensorboard>=1.14.0',
